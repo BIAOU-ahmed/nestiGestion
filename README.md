@@ -27,6 +27,7 @@ Il faut donc prévoir la possibilité d’ajouter un nouveaufournisseur avec les
 - Nom et prénom du contact, avec son numéro de téléphoneLes prix varient aussi en fonction du temps.
 Commande aux fournisseurs
 Prévoir un affichage qui permet de saisir une entrée dans le stock d’un article.
+
 Par exemple :
 - Achat de 100 articles ( 1kg de farine ) au fournisseur X.
 
