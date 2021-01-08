@@ -1,28 +1,24 @@
-# nestiGestion
-group project 
-
-
-Projet fil rouge : partie 2
+#Projet fil rouge : partie 2
 Gestion de stock en JAVA
-Contexte :
+##Contexte :
 L’entreprise Nesti souhaite gérer ses stocks via une application.Pour cela, L’entreprise Nesti vous propose de développer une application en JAVA accompagnée d’une base de données locale ( MySQL ) qui sera accessible uniquement parles administrateurs. 
-Objectif
+##Objectif
 Le but de cette application est de gérer les articles de type ustensile de cuisine, ainsi que lesingrédients nécessaires aux recettes.L’outil doit être clair et  intuitif. 
-Connexion :
+##Connexion :
 L’application sera accessible après une étape de connexion par un administrateur.
-Ingrédients :
+##Ingrédients :
 L’application doit permettre de créer, modifier, supprimer et mettre à jour les informationsdes ingrédients.
 A partir d’ingrédient, l’administrateur peut choisir de créer un article vendable.
-Par exemple :
+###Par exemple :
 -un paquet de 1 kg de farineUn ingrédient peut être vendu sous différents conditionnements.
-Par exemple :
+###Par exemple :
 -une boite de 6 oeufs-une boite de 12 oeufs
-Ustensiles :
+##Ustensiles :
 L'administrateur peut aussi ajouter des articles de type ustensiles de cuisine, comme :
 -cuillère en bois
 -fouet
 -manic
-Articles :
+##Articles :
 Les articles peuvent être de type ustensile ou de type ingrédient.
 Les frais de livraison varient en fonction du poids de l’article.
 Les articles seront achetés à différents fournisseurs. Il se peut qu’un nouveau fournisseurpuisse nous vendre des articles. 
@@ -49,20 +45,16 @@ Utilisation de SWING, Java, Mysql Pour des raisons pédagogiques : on ne tiendra
 
 Trello : https://trello.com/b/Ixz1jhAb/nestistelare
 
-Logiciels utilisés :
+##Logiciels utilisés :
 
-    https://staruml.io/
+[lien star UML] (https://staruml.io/)
+  [lien  https://staruml.io/
     https://www.looping-mcd.fr/
 
-Outils
+##Outils
 Répartition des taches
 
 Utilisation de Trello
 
-Trello : https://trello.com/b/Ixz1jhAb/nestistelare
-Logiciels utilisés
-
-    StarUML (https://staruml.io/)
-    Looping (https://www.looping-mcd.fr/)
 
 2021©Nesti_Stelare Réalisé par Stéphane, Laurélenne et Rémi
