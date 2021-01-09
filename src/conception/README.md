@@ -5,7 +5,7 @@ Le concept de l'application est de permettre à un administrateur de gérer des ar
 Après concertation entre nous, nous avons decider de commencer par l'use Case.
 
 ## Use Case
-![matrice de dépendance](/conception/images/useCase.png)
+![matrice de dépendance](https://github.com/BIAOU-ahmed/nestiGestion/blob/master/src/conception/images/useCase.PNG)
 ## Docummentations Use Case
 #### Cases :
 - Manage Account : permet d'ajouter, de mettre à jour ou de supprimer les administrateurs.
