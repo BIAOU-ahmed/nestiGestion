@@ -22,10 +22,23 @@ Aprés le UseCase on à basculé sur le diagramme de class .
 ## Diagramme de classe
 ![Diagramme de class](/src/conception/images)
 
+
+Une fois le diagramme de class fini on à decider de réalisé le modele conceptuel de données, le model logique...
+## MCD
+![Diagramme de class](/src/conception/images)
+
+## MLD
+![Diagramme de class](/src/conception/images)
+
 ## Dictionnaire de données
 ![dictionnaire de donnée](/images/logo.png)
 ## Matrice de dépendance fonctionnelle
 ![matrice de dépendance](/images/logo.png)
+
+
+## Maquette
+La réalisé de la maquette nous a poussé a posé quelque question
+
 
 
 
