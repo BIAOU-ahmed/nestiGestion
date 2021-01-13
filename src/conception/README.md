@@ -41,7 +41,7 @@ La réalisé de la maquette nous a poussé a posé quelque question
 
 ![Page de connexion](https://github.com/BIAOU-ahmed/nestiGestion/blob/master/src/conception/images/maquette/Connexion.png)
 
-![Historique de commande](https://github.com/BIAOU-ahmed/nestiGestion/blob/master/src/conception/images/maquette/HistoriqueCommande.png)
+![Historique de commande](https://github.com/BIAOU-ahmed/nestiGestion/blob/master/src/conception/images/maquette/HistoriqueCommandes.png)
 
 ![Gestion de livraison](https://github.com/BIAOU-ahmed/nestiGestion/blob/master/src/conception/images/maquette/GestionLivraisons.png)
 
