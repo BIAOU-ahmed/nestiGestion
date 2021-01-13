@@ -39,25 +39,25 @@ Une fois le diagramme de class fini on à decider de réalisé le modele conceptuel
 ## Maquette
 La réalisé de la maquette nous a poussé a posé quelque question
 
-![Page de connexion](https://github.com/BIAOU-ahmed/nestiGestion/blob/master/src/conception/images/Maquette/Connexion.png)
+![Page de connexion](https://github.com/BIAOU-ahmed/nestiGestion/blob/master/src/conception/images/maquette/Connexion.png)
 
-![matrice de dépendance](https://github.com/BIAOU-ahmed/nestiGestion/blob/master/src/conception/images/Maquette/HistoriqueCommande.png)
+![matrice de dépendance](https://github.com/BIAOU-ahmed/nestiGestion/blob/master/src/conception/images/maquette/HistoriqueCommande.png)
 
-![matrice de dépendance](https://github.com/BIAOU-ahmed/nestiGestion/blob/master/src/conception/images/Maquette/GestionLivraisons.png)
+![matrice de dépendance](https://github.com/BIAOU-ahmed/nestiGestion/blob/master/src/conception/images/maquette/GestionLivraisons.png)
 
-![matrice de dépendance](https://github.com/BIAOU-ahmed/nestiGestion/blob/master/src/conception/images/Maquette/GestionCommandes.png)
+![matrice de dépendance](https://github.com/BIAOU-ahmed/nestiGestion/blob/master/src/conception/images/maquette/GestionCommandes.png)
 
-![matrice de dépendance](https://github.com/BIAOU-ahmed/nestiGestion/blob/master/src/conception/images/Maquette/GestionArticles.png)
+![matrice de dépendance](https://github.com/BIAOU-ahmed/nestiGestion/blob/master/src/conception/images/maquette/GestionArticles.png)
 
-![matrice de dépendance](https://github.com/BIAOU-ahmed/nestiGestion/blob/master/src/conception/images/Maquette/GestionProduits.png)
+![matrice de dépendance](https://github.com/BIAOU-ahmed/nestiGestion/blob/master/src/conception/images/maquette/GestionProduits.png)
 
-![matrice de dépendance](https://github.com/BIAOU-ahmed/nestiGestion/blob/master/src/conception/images/Maquette/GestionFournisseurs.png)
+![matrice de dépendance](https://github.com/BIAOU-ahmed/nestiGestion/blob/master/src/conception/images/maquette/GestionFournisseurs.png)
 
-![matrice de dépendance](https://github.com/BIAOU-ahmed/nestiGestion/blob/master/src/conception/images/Maquette/ProfilAdmin.png)
+![matrice de dépendance](https://github.com/BIAOU-ahmed/nestiGestion/blob/master/src/conception/images/maquette/ProfilAdmin.png)
 
-![matrice de dépendance](https://github.com/BIAOU-ahmed/nestiGestion/blob/master/src/conception/images/Maquette/ProfilSuperAdmin.png)
+![matrice de dépendance](https://github.com/BIAOU-ahmed/nestiGestion/blob/master/src/conception/images/maquette/ProfilSuperAdmin.png)
 
-![matrice de dépendance](https://github.com/BIAOU-ahmed/nestiGestion/blob/master/src/conception/images/Maquette/GestionAdmin.png)
+![matrice de dépendance](https://github.com/BIAOU-ahmed/nestiGestion/blob/master/src/conception/images/maquette/GestionAdmin.png)
 
 
 
