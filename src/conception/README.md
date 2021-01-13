@@ -39,15 +39,24 @@ Une fois le diagramme de class fini on à decider de réalisé le modele conceptuel
 ## Maquette
 La réalisé de la maquette nous a poussé a posé quelque question
 
-![matrice de dépendance](https://github.com/BIAOU-ahmed/nestiGestion/blob/master/src/conception/images/Maquette/Connexion.PNG)
+![Page de connexion](https://github.com/BIAOU-ahmed/nestiGestion/blob/master/src/conception/images/Maquette/Connexion.PNG)
+
 ![matrice de dépendance](https://github.com/BIAOU-ahmed/nestiGestion/blob/master/src/conception/images/Maquette/HistoriqueCommande.PNG)
+
 ![matrice de dépendance](https://github.com/BIAOU-ahmed/nestiGestion/blob/master/src/conception/images/Maquette/GestionLivraisons.PNG)
+
 ![matrice de dépendance](https://github.com/BIAOU-ahmed/nestiGestion/blob/master/src/conception/images/Maquette/GestionCommandes.PNG)
+
 ![matrice de dépendance](https://github.com/BIAOU-ahmed/nestiGestion/blob/master/src/conception/images/Maquette/GestionArticles.PNG)
+
 ![matrice de dépendance](https://github.com/BIAOU-ahmed/nestiGestion/blob/master/src/conception/images/Maquette/GestionProduits.PNG)
+
 ![matrice de dépendance](https://github.com/BIAOU-ahmed/nestiGestion/blob/master/src/conception/images/Maquette/GestionFournisseurs.PNG)
+
 ![matrice de dépendance](https://github.com/BIAOU-ahmed/nestiGestion/blob/master/src/conception/images/Maquette/ProfilAdmin.PNG)
+
 ![matrice de dépendance](https://github.com/BIAOU-ahmed/nestiGestion/blob/master/src/conception/images/Maquette/ProfilSuperAdmin.PNG)
+
 ![matrice de dépendance](https://github.com/BIAOU-ahmed/nestiGestion/blob/master/src/conception/images/Maquette/GestionAdmin.PNG)
 
 
