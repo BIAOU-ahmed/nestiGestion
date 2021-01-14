@@ -26,6 +26,7 @@ public class Management extends JFrame {
 	private JTable table;
 	private JTextField textField_2;
 	private JTable table_2;
+	private JTextField textField_3;
 
 	/**
 	 * Launch the application.
@@ -152,7 +153,7 @@ public class Management extends JFrame {
 		textField_2.setColumns(10);
 		
 		JScrollPane scrollPane_1 = new JScrollPane();
-		scrollPane_1.setBounds(76, 121, 558, 492);
+		scrollPane_1.setBounds(809, 132, 571, 492);
 		panel_4.add(scrollPane_1);
 		
 		table_2 = new JTable();
@@ -161,6 +162,11 @@ public class Management extends JFrame {
 				new String[] { "Numéro commande", "Fournisseur","Montant €", "Date commande","Date livraison","Statut" });
 		table_2.setModel(model2);
 		scrollPane_1.setViewportView(table_2);
+		
+		textField_3 = new JTextField();
+		textField_3.setBounds(95, 160, 86, 20);
+		panel_4.add(textField_3);
+		textField_3.setColumns(10);
 		
 		JPanel panel_5 = new JPanel();
 		tabbedPane.addTab("Gestion Fournisseur", null, panel_5, null);
