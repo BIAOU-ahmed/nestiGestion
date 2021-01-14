@@ -1,7 +1,7 @@
 /**
  * 
  */
-package vue;
+package view;
 
 import com.lambdaworks.crypto.SCryptUtil;
 
