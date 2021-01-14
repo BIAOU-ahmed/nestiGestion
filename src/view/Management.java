@@ -164,7 +164,7 @@ public class Management extends JFrame {
 		scrollPane_1.setViewportView(table_2);
 		
 		textField_3 = new JTextField();
-		textField_3.setBounds(95, 160, 86, 20);
+		textField_3.setBounds(95, 160, 167, 20);
 		panel_4.add(textField_3);
 		textField_3.setColumns(10);
 		
