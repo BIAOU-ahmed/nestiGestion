@@ -20,20 +20,20 @@ Après concertation entre nous, nous avons decider de commencer par l'use Case.
 Aprés le UseCase on à basculé sur le diagramme de class .
 
 ## Diagramme de classe
-![Diagramme de class](https://github.com/BIAOU-ahmed/nestiGestion/blob/master/src/conception/images/diagrammeClass.png)
+![Diagramme de class](https://github.com/BIAOU-ahmed/nestiGestion/blob/master/src/conception/images/diagrammeClass.PNG)
 
 
 Une fois le diagramme de class fini on à decider de réalisé le modele conceptuel de données, le model logique...
 ## MCD
-![Diagramme de class](https://github.com/BIAOU-ahmed/nestiGestion/blob/master/src/conception/images/mcd.png)
+![Diagramme de class](https://github.com/BIAOU-ahmed/nestiGestion/blob/master/src/conception/images/mcd.PNG)
 
 ## MLD
 ![Diagramme de class](https://github.com/BIAOU-ahmed/nestiGestion/blob/master/src/conception/images/mcd.png)
 
 ## Dictionnaire de données
-![dictionnaire de donnée](https://github.com/BIAOU-ahmed/nestiGestion/blob/master/src/conception/images/dictionnaire.png)
+![dictionnaire de donnée](https://github.com/BIAOU-ahmed/nestiGestion/blob/master/src/conception/images/dictionnaire.PNG)
 ## Matrice de dépendance fonctionnelle
-![matrice de dépendance](https://github.com/BIAOU-ahmed/nestiGestion/blob/master/src/conception/images/matrice.png)
+![matrice de dépendance](https://github.com/BIAOU-ahmed/nestiGestion/blob/master/src/conception/images/matrice.PNG)
 
 
 ## Maquette
