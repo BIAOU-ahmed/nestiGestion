@@ -17,7 +17,7 @@ import javax.swing.JButton;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JScrollPane;
 
-public class Gestion extends JFrame {
+public class Management extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField textField;
@@ -32,7 +32,7 @@ public class Gestion extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Gestion frame = new Gestion();
+					Management frame = new Management();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -44,7 +44,7 @@ public class Gestion extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Gestion() {
+	public Management() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1440, 810);
 		contentPane = new JPanel();

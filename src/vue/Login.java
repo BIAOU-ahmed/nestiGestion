@@ -16,8 +16,8 @@ import javax.swing.JButton;
 public class Login extends JFrame {
 
 	private JPanel contentPane;
-	private JTextField textField;
-	private JTextField textField_1;
+	private JTextField textFieldUserName;
+	private JTextField textFieldPssw;
 
 	/**
 	 * Launch the application.
@@ -46,46 +46,46 @@ public class Login extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JPanel panel = new JPanel();
-		panel.setBackground(Color.WHITE);
-		panel.setBounds(47, 25, 341, 76);
-		contentPane.add(panel);
-		panel.setLayout(null);
+		JPanel titlePane = new JPanel();
+		titlePane.setBackground(Color.WHITE);
+		titlePane.setBounds(47, 25, 341, 76);
+		contentPane.add(titlePane);
+		titlePane.setLayout(null);
 		
-		JLabel lblNewLabel = new JLabel("Nesti");
-		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 36));
-		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel.setBounds(10, 11, 321, 54);
-		panel.add(lblNewLabel);
+		JLabel title = new JLabel("Nesti");
+		title.setFont(new Font("Tahoma", Font.PLAIN, 36));
+		title.setHorizontalAlignment(SwingConstants.CENTER);
+		title.setBounds(10, 11, 321, 54);
+		titlePane.add(title);
 		
-		textField = new JTextField();
-		textField.setBounds(85, 176, 271, 44);
-		contentPane.add(textField);
-		textField.setColumns(10);
+		textFieldUserName = new JTextField();
+		textFieldUserName.setBounds(85, 176, 271, 44);
+		contentPane.add(textFieldUserName);
+		textFieldUserName.setColumns(10);
 		
-		JLabel lblNewLabel_1 = new JLabel("Nomd'utilisateur");
-		lblNewLabel_1.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		lblNewLabel_1.setBounds(85, 141, 131, 24);
-		contentPane.add(lblNewLabel_1);
+		JLabel lblUserName = new JLabel("Nomd'utilisateur");
+		lblUserName.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		lblUserName.setBounds(85, 141, 131, 24);
+		contentPane.add(lblUserName);
 		
-		textField_1 = new JTextField();
-		textField_1.setColumns(10);
-		textField_1.setBounds(85, 282, 271, 44);
-		contentPane.add(textField_1);
+		textFieldPssw = new JTextField();
+		textFieldPssw.setColumns(10);
+		textFieldPssw.setBounds(85, 282, 271, 44);
+		contentPane.add(textFieldPssw);
 		
-		JLabel lblNewLabel_1_1 = new JLabel("Mot de passe");
-		lblNewLabel_1_1.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		lblNewLabel_1_1.setBounds(85, 247, 131, 24);
-		contentPane.add(lblNewLabel_1_1);
+		JLabel lblPssw = new JLabel("Mot de passe");
+		lblPssw.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		lblPssw.setBounds(85, 247, 131, 24);
+		contentPane.add(lblPssw);
 		
-		JButton btnNewButton = new JButton("Connexion");
-		btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		btnNewButton.setBounds(64, 352, 122, 51);
-		contentPane.add(btnNewButton);
+		JButton btnConnection = new JButton("Connexion");
+		btnConnection.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		btnConnection.setBounds(64, 352, 122, 51);
+		contentPane.add(btnConnection);
 		
-		JButton btnNewButton_1 = new JButton("Annuler");
-		btnNewButton_1.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		btnNewButton_1.setBounds(252, 352,122, 51);
-		contentPane.add(btnNewButton_1);
+		JButton btnCancel = new JButton("Annuler");
+		btnCancel.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		btnCancel.setBounds(252, 352,122, 51);
+		contentPane.add(btnCancel);
 	}
 }
