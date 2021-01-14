@@ -5,7 +5,7 @@ Le concept de l'application est de permettre à un administrateur de gérer des 
 Après concertation entre nous, nous avons decider de commencer par l'use Case.
 
 ## Use Case
-![matrice de dépendance](https://github.com/BIAOU-ahmed/nestiGestion/blob/master/src/conception/images/useCase.PNG)
+![matrice de dépendance](https://github.com/BIAOU-ahmed/nestiGestion/blob/master/conception/images/useCase.PNG)
 ## Docummentations Use Case
 #### Cases :
 - Manage Account : permet d'ajouter, de mettre à jour ou de supprimer les administrateurs.
@@ -20,44 +20,44 @@ Après concertation entre nous, nous avons decider de commencer par l'use Case.
 Aprés le UseCase on à basculé sur le diagramme de class .
 
 ## Diagramme de classe
-![Diagramme de class](https://github.com/BIAOU-ahmed/nestiGestion/blob/master/src/conception/images/diagrammeClass.PNG)
+![Diagramme de class](https://github.com/BIAOU-ahmed/nestiGestion/blob/master/conception/images/diagrammeClass.PNG)
 
 
 Une fois le diagramme de class fini on à decider de réalisé le modele conceptuel de données, le model logique...
 ## MCD
-![Diagramme de class](https://github.com/BIAOU-ahmed/nestiGestion/blob/master/src/conception/images/mcd.PNG)
+![Diagramme de class](https://github.com/BIAOU-ahmed/nestiGestion/blob/master/conception/images/mcd.PNG)
 
 ## MLD
-![Diagramme de class](https://github.com/BIAOU-ahmed/nestiGestion/blob/master/src/conception/images/mcd.png)
+![Diagramme de class](https://github.com/BIAOU-ahmed/nestiGestion/blob/master/conception/images/mcd.png)
 
 ## Dictionnaire de données
-![dictionnaire de donnée](https://github.com/BIAOU-ahmed/nestiGestion/blob/master/src/conception/images/dictionnaire.PNG)
+![dictionnaire de donnée](https://github.com/BIAOU-ahmed/nestiGestion/blob/master/conception/images/dictionnaire.PNG)
 ## Matrice de dépendance fonctionnelle
-![matrice de dépendance](https://github.com/BIAOU-ahmed/nestiGestion/blob/master/src/conception/images/matrice.PNG)
+![matrice de dépendance](https://github.com/BIAOU-ahmed/nestiGestion/blob/master/conception/images/matrice.PNG)
 
 
 ## Maquette
 La réalisé de la maquette nous a poussé a posé quelque question
 
-![Page de connexion](https://github.com/BIAOU-ahmed/nestiGestion/blob/master/src/conception/images/maquette/Connexion.png)
+![Page de connexion](https://github.com/BIAOU-ahmed/nestiGestion/blob/master/conception/images/maquette/Connexion.png)
 
-![Historique de commande](https://github.com/BIAOU-ahmed/nestiGestion/blob/master/src/conception/images/maquette/HistoriqueCommandes.png)
+![Historique de commande](https://github.com/BIAOU-ahmed/nestiGestion/blob/master/conception/images/maquette/HistoriqueCommandes.png)
 
-![Gestion de livraison](https://github.com/BIAOU-ahmed/nestiGestion/blob/master/src/conception/images/maquette/GestionLivraisons.png)
+![Gestion de livraison](https://github.com/BIAOU-ahmed/nestiGestion/blob/master/conception/images/maquette/GestionLivraisons.png)
 
-![Gestion de commande](https://github.com/BIAOU-ahmed/nestiGestion/blob/master/src/conception/images/maquette/GestionCommandes.png)
+![Gestion de commande](https://github.com/BIAOU-ahmed/nestiGestion/blob/master/conception/images/maquette/GestionCommandes.png)
 
-![destion d'article](https://github.com/BIAOU-ahmed/nestiGestion/blob/master/src/conception/images/maquette/GestionArticles.png)
+![destion d'article](https://github.com/BIAOU-ahmed/nestiGestion/blob/master/conception/images/maquette/GestionArticles.png)
 
-![gestion de produit](https://github.com/BIAOU-ahmed/nestiGestion/blob/master/src/conception/images/maquette/GestionProduits.png)
+![gestion de produit](https://github.com/BIAOU-ahmed/nestiGestion/blob/master/conception/images/maquette/GestionProduits.png)
 
-![gestion des fournisseur](https://github.com/BIAOU-ahmed/nestiGestion/blob/master/src/conception/images/maquette/GestionFournisseurs.png)
+![gestion des fournisseur](https://github.com/BIAOU-ahmed/nestiGestion/blob/master/conception/images/maquette/GestionFournisseurs.png)
 
-![profil admin](https://github.com/BIAOU-ahmed/nestiGestion/blob/master/src/conception/images/maquette/ProfilAdmin.png)
+![profil admin](https://github.com/BIAOU-ahmed/nestiGestion/blob/master/conception/images/maquette/ProfilAdmin.png)
 
-![profil supper admin](https://github.com/BIAOU-ahmed/nestiGestion/blob/master/src/conception/images/maquette/ProfilSuperAdmin.png)
+![profil supper admin](https://github.com/BIAOU-ahmed/nestiGestion/blob/master/conception/images/maquette/ProfilSuperAdmin.png)
 
-![gestion des admin](https://github.com/BIAOU-ahmed/nestiGestion/blob/master/src/conception/images/maquette/GestionAdmin.png)
+![gestion des admin](https://github.com/BIAOU-ahmed/nestiGestion/blob/master/conception/images/maquette/GestionAdmin.png)
 
 
 
