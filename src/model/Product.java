@@ -1,12 +1,19 @@
 package model;
 
 
+import java.sql.PreparedStatement;
 import java.util.*;
+
+import javax.swing.JComboBox;
+import javax.swing.JOptionPane;
+import javax.swing.JTextField;
+
+import com.lambdaworks.crypto.SCryptUtil;
 
 /**
  * 
  */
-public class Product {
+public class Product extends DBConnection{
 
     /**
      * Default constructor
@@ -56,8 +63,24 @@ public class Product {
     /**
      * 
      */
-    public void create() {
-        // TODO implement here
+    public void create(JTextField libeleTxt,JComboBox typeCombo, JComboBox Unity) {
+    	boolean flag = false;
+	 
+			try {
+				startCo();
+				String query = "INSERT INTO `product` (`productName`) VALUES ?;";
+				PreparedStatement declaration = accessDataBase.prepareStatement(query);
+				declaration.setString(1,libeleTxt.getText());
+				int executeUpdate = declaration.executeUpdate();
+
+				flag = (executeUpdate == 1);
+			} catch (Exception e) {
+				System.err.println("Erreur d'insertion d'utilisateur: " + e.getMessage());
+			}
+			startCo();
+		 
+
+//		return flag;
     }
 
     /**

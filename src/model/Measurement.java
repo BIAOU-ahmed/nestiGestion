@@ -8,13 +8,8 @@ import java.util.*;
  */
 public class Measurement {
 
-    /**
-     * Default constructor
-     */
-    public Measurement() {
-    }
-
-    /**
+	
+	 /**
      * 
      */
     public int id;
@@ -23,6 +18,16 @@ public class Measurement {
      * 
      */
     public String unit;
+    
+    
+    
+    /**
+     * Default constructor
+     */
+    public Measurement() {
+    }
+
+   
 
 
 
