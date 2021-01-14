@@ -24,6 +24,8 @@ public class Management extends JFrame {
 	private JTable table_1;
 	private JTextField textField_1;
 	private JTable table;
+	private JTextField textField_2;
+	private JTable table_2;
 
 	/**
 	 * Launch the application.
@@ -120,13 +122,7 @@ public class Management extends JFrame {
 		DefaultTableModel model = new DefaultTableModel(new Object[][] {,},
 				new String[] { "Numéro commande", "Fournisseur","Montant €", "Date commande","Date livraison","Statut" });
 
-		table.setModel(new DefaultTableModel(
-			new Object[][] {
-			},
-			new String[] {
-				"Num\u00E9ro commande", "Fournisseur", "Montant \u20AC", "Date commande", "Date livraison", "Statut"
-			}
-		));
+		table.setModel(model);
 		table.getColumnModel().getColumn(0).setResizable(false);
 		table.getColumnModel().getColumn(1).setResizable(false);
 		table.getColumnModel().getColumn(2).setResizable(false);
@@ -148,6 +144,23 @@ public class Management extends JFrame {
 		
 		JPanel panel_4 = new JPanel();
 		tabbedPane.addTab("Gestion produit", null, panel_4, null);
+		panel_4.setLayout(null);
+		
+		textField_2 = new JTextField();
+		textField_2.setBounds(809, 70, 571, 20);
+		panel_4.add(textField_2);
+		textField_2.setColumns(10);
+		
+		JScrollPane scrollPane_1 = new JScrollPane();
+		scrollPane_1.setBounds(76, 121, 558, 492);
+		panel_4.add(scrollPane_1);
+		
+		table_2 = new JTable();
+		
+		DefaultTableModel model2 = new DefaultTableModel(new Object[][] {,},
+				new String[] { "Numéro commande", "Fournisseur","Montant €", "Date commande","Date livraison","Statut" });
+		table_2.setModel(model2);
+		scrollPane_1.setViewportView(table_2);
 		
 		JPanel panel_5 = new JPanel();
 		tabbedPane.addTab("Gestion Fournisseur", null, panel_5, null);
