@@ -6,18 +6,24 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import model.AppConnection;
 import java.awt.Color;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import java.awt.Font;
 import javax.swing.JTextField;
 import javax.swing.JButton;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import javax.swing.JPasswordField;
 
 public class Login extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField textFieldUserName;
-	private JTextField textFieldPssw;
+	private JPasswordField passwordField;
 
 	/**
 	 * Launch the application.
@@ -68,17 +74,29 @@ public class Login extends JFrame {
 		lblUserName.setBounds(85, 141, 131, 24);
 		contentPane.add(lblUserName);
 		
-		textFieldPssw = new JTextField();
-		textFieldPssw.setColumns(10);
-		textFieldPssw.setBounds(85, 282, 271, 44);
-		contentPane.add(textFieldPssw);
-		
 		JLabel lblPssw = new JLabel("Mot de passe");
 		lblPssw.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		lblPssw.setBounds(85, 247, 131, 24);
 		contentPane.add(lblPssw);
 		
 		JButton btnConnection = new JButton("Connexion");
+		btnConnection.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				
+				String username = textFieldUserName.getText();
+				String passwords = String.valueOf(passwordField.getPassword());
+				
+				AppConnection newLogin = new AppConnection();
+				if(newLogin.logIn(username, passwords)) {
+				Management manage = new Management();
+				manage.setVisible(true);
+				}else {
+					JOptionPane.showMessageDialog(null, "Invalid informations");
+				}
+				
+			}
+		});
 		btnConnection.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		btnConnection.setBounds(64, 352, 122, 51);
 		contentPane.add(btnConnection);
@@ -87,5 +105,9 @@ public class Login extends JFrame {
 		btnCancel.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		btnCancel.setBounds(252, 352,122, 51);
 		contentPane.add(btnCancel);
+		
+		passwordField = new JPasswordField();
+		passwordField.setBounds(85, 293, 271, 44);
+		contentPane.add(passwordField);
 	}
 }

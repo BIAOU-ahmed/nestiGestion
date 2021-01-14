@@ -139,47 +139,7 @@ public class Administrator {
         // TODO implement here
     }
 
-    /**
-     * 
-     */
-    public void getId() {
-        // TODO implement here
-    }
 
-    /**
-     * 
-     */
-    public void setId() {
-        // TODO implement here
-    }
-
-    /**
-     * 
-     */
-    public void getUserName() {
-        // TODO implement here
-    }
-
-    /**
-     * 
-     */
-    public void setUserName() {
-        // TODO implement here
-    }
-
-    /**
-     * 
-     */
-    public void getPassword() {
-        // TODO implement here
-    }
-
-    /**
-     * 
-     */
-    public void setPassword() {
-        // TODO implement here
-    }
 
     /**
      * 
@@ -188,32 +148,77 @@ public class Administrator {
         // TODO implement here
     }
 
-    /**
-     * 
-     */
-    public void getAdminState() {
-        // TODO implement here
-    }
+	/**
+	 * @return the id
+	 */
+	public int getId() {
+		return id;
+	}
 
-    /**
-     * 
-     */
-    public void setAdminState() {
-        // TODO implement here
-    }
+	/**
+	 * @param id the id to set
+	 */
+	public void setId(int id) {
+		this.id = id;
+	}
 
-    /**
-     * 
-     */
-    public void getCreatedAt() {
-        // TODO implement here
-    }
+	/**
+	 * @return the userName
+	 */
+	public String getUserName() {
+		return userName;
+	}
 
-    /**
-     * 
-     */
-    public void setCreatedAt() {
-        // TODO implement here
-    }
+	/**
+	 * @param userName the userName to set
+	 */
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	/**
+	 * @return the password
+	 */
+	public String getPassword() {
+		return password;
+	}
+
+	/**
+	 * @param password the password to set
+	 */
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	/**
+	 * @return the adminState
+	 */
+	public String getAdminState() {
+		return adminState;
+	}
+
+	/**
+	 * @param adminState the adminState to set
+	 */
+	public void setAdminState(String adminState) {
+		this.adminState = adminState;
+	}
+
+	/**
+	 * @return the createdAt
+	 */
+	public Date getCreatedAt() {
+		return createdAt;
+	}
+
+	/**
+	 * @param createdAt the createdAt to set
+	 */
+	public void setCreatedAt(Date createdAt) {
+		this.createdAt = createdAt;
+	}
+
+    
+    
 
 }
