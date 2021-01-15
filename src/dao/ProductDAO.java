@@ -3,6 +3,7 @@
  */
 package dao;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -42,9 +43,9 @@ public class ProductDAO extends BaseDAO<Product> {
 	    }
 	
 	public void insert (Product product) throws SQLException {
-        var sql = "INSERT INTO `product` (`productName`) VALUES (?);"; // Don't insert ID, let database auto-increment it.
+        String sql = "INSERT INTO `product` (`productName`) VALUES (?);"; // Don't insert ID, let database auto-increment it.
 
-        var insertProduct = DBConnection.get().prepareStatement(sql);
+        PreparedStatement insertProduct = DBConnection.get().prepareStatement(sql);
      
         insertProduct.setString(2,  product.getProductName());
         

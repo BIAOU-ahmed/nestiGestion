@@ -73,6 +73,8 @@ public class Management extends JFrame {
 
 	private JTable productList;
 	private JTextField libeleTxt;
+	private JTextField textFieldUsernameProfile;
+	private JTextField textFieldPasswordProfile;
 
 	/**
 	 * Launch the application.
@@ -823,6 +825,65 @@ public class Management extends JFrame {
 
 		JPanel panelProfile = new JPanel();
 		tabbedPane.addTab("Profil", null, panelProfile, null);
+		panelProfile.setLayout(null);
+		
+		JLabel lblTitleProfile = new JLabel("Profil");
+		lblTitleProfile.setHorizontalAlignment(SwingConstants.CENTER);
+		lblTitleProfile.setFont(new Font("Tahoma", Font.PLAIN, 24));
+		lblTitleProfile.setBounds(674, 28, 53, 29);
+		panelProfile.add(lblTitleProfile);
+		
+		JLabel lblUsernameProfile = new JLabel("Nom d'utilisateur");
+		lblUsernameProfile.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		lblUsernameProfile.setBounds(457, 192, 120, 14);
+		panelProfile.add(lblUsernameProfile);
+		
+		JLabel lblPasswordProfile = new JLabel("Mot de passe");
+		lblPasswordProfile.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		lblPasswordProfile.setBounds(457, 331, 97, 14);
+		panelProfile.add(lblPasswordProfile);
+		
+		JButton btnEditUsernameProfile = new JButton("Modifier");
+		btnEditUsernameProfile.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		btnEditUsernameProfile.setBounds(713, 229, 115, 29);
+		panelProfile.add(btnEditUsernameProfile);
+		
+		JButton btnCancelUsernameProfile = new JButton("Annuler");
+		btnCancelUsernameProfile.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		btnCancelUsernameProfile.setBounds(838, 229, 115, 29);
+		panelProfile.add(btnCancelUsernameProfile);
+		
+		textFieldUsernameProfile = new JTextField();
+		textFieldUsernameProfile.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		textFieldUsernameProfile.setBounds(457, 229, 247, 29);
+		panelProfile.add(textFieldUsernameProfile);
+		textFieldUsernameProfile.setColumns(10);
+		
+		textFieldPasswordProfile = new JTextField();
+		textFieldPasswordProfile.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		textFieldPasswordProfile.setBounds(457, 369, 247, 29);
+		panelProfile.add(textFieldPasswordProfile);
+		textFieldPasswordProfile.setColumns(10);
+		
+		JButton btnManageAdminProfile = new JButton("Gestion Admin");
+		btnManageAdminProfile.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		btnManageAdminProfile.setBounds(624, 515, 152, 23);
+		panelProfile.add(btnManageAdminProfile);
+		
+		JLabel lblDateProfile = new JLabel("Profil cr\u00E9\u00E9 le 08/01/21");
+		lblDateProfile.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		lblDateProfile.setBounds(612, 659, 164, 14);
+		panelProfile.add(lblDateProfile);
+		
+		JButton btnCancelPasswordProfile = new JButton("Annuler");
+		btnCancelPasswordProfile.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		btnCancelPasswordProfile.setBounds(838, 369, 115, 29);
+		panelProfile.add(btnCancelPasswordProfile);
+		
+		JButton btnEditPasswordProfile = new JButton("Modifier");
+		btnEditPasswordProfile.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		btnEditPasswordProfile.setBounds(713, 369, 115, 29);
+		panelProfile.add(btnEditPasswordProfile);
 		// scrollPane.setColumnHeaderView(table);
 
 	}

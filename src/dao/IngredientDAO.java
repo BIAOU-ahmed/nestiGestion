@@ -3,8 +3,11 @@
  */
 package dao;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
+import com.mysql.cj.xdevapi.PreparableStatement;
 
 import model.*;
 import tools.DBConnection;
@@ -41,9 +44,9 @@ public class IngredientDAO extends BaseDAO<Ingredient> {
 //	    }
 	 
 	public void insert (Ingredient ing) throws SQLException {
-        var sql = "INSERT INTO"+ getTableName() +"(`idProduct`,`idMeasurement`) VALUES (?,?);"; 
+        String sql = "INSERT INTO"+ getTableName() +"(`idProduct`,`idMeasurement`) VALUES (?,?);"; 
 
-        var insertIngredient = DBConnection.get().prepareStatement(sql);
+        PreparedStatement insertIngredient = DBConnection.get().prepareStatement(sql);
      
         insertIngredient.setInt(1, ing.getId());
         insertIngredient.setInt(2, ing.getMeasurement().getId());

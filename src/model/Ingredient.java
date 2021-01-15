@@ -19,7 +19,7 @@ public class Ingredient extends Product {
 
 
     public void setMeasurementFromUnit(String u) {
-    	var m =(new MeasurementDAO()).find("unit",u);
+    	Measurement m =(new MeasurementDAO()).find("unit",u);
     	this.measurementId = m.getId();
     }
 

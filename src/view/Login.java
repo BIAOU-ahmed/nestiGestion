@@ -127,7 +127,7 @@ public class Login extends JFrame {
 	   public boolean logIn(String username, String password) {
 			boolean result = false;
 			
-			var admin = (new  AdministratorDAO()).find("userName","ahmed");
+			Administrator admin = (new  AdministratorDAO()).find("userName","ahmed");
 //			System.out.println(admin.getClass());
 			if(admin == null) {
 				JOptionPane.showMessageDialog(null, "Invalid informations");

@@ -3,6 +3,7 @@
  */
 package dao;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -41,9 +42,9 @@ public class UtensilDAO extends BaseDAO<Utensil> {
 //	    }
 	 
 	public void insert (Utensil ing) throws SQLException {
-        var sql = "INSERT INTO"+ getTableName() +"(`idProduct`) VALUES (?,?);"; // Don't insert ID, let database auto-increment it.
+        String sql = "INSERT INTO"+ getTableName() +"(`idProduct`) VALUES (?,?);"; // Don't insert ID, let database auto-increment it.
 
-        var insertUtensil = DBConnection.get().prepareStatement(sql);
+        PreparedStatement insertUtensil = DBConnection.get().prepareStatement(sql);
      
         insertUtensil.setInt(1, ing.getId());
         

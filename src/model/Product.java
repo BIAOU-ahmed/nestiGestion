@@ -81,11 +81,11 @@ public class Product extends DBConnection{
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-    	 var insertedProduct = (new ProductDAO()).find("productName",newProduct.getProductName());
+    	 Product insertedProduct = (new ProductDAO()).find("productName",newProduct.getProductName());
     	 Product temp;
     	if(typeCombo.getSelectedItem().equals("Ingredients")) {
 //    		newProduct = new Ingredient();
-    		var i = new Ingredient();
+    		Ingredient i = new Ingredient();
     		
     		i.setId(insertedProduct.getId());
     		i.setMeasurementFromUnit(Unity.getSelectedItem().toString());
@@ -97,7 +97,7 @@ public class Product extends DBConnection{
 			}
     	}else {
 //    		newProduct = new Utensil();
-    		var u = new Utensil();
+    		Utensil u = new Utensil();
     		u.setId(insertedProduct.getId());
     		try {
 				(new UtensilDAO()).insert(u);
