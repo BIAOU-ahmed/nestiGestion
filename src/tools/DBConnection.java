@@ -1,10 +1,12 @@
-package model;
+package tools;
 
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.*;
+
+import model.Config;
 
 /**
  * 
@@ -39,6 +41,35 @@ public class DBConnection {
 		}
     }
 
+    
+    /**
+   	 * Connexion à ma base de donnée NESTI
+   	 * 
+   	 * @throws SQLException
+   	 * 
+   	 */
+       public static Connection get() {
+    	   
+    	   if(accessDataBase==null) {
+    		   
+    		   	/* Parametres de connexion */
+    	   		String url = "jdbc:mysql://127.0.0.1/nestigestion";
+    	   		// nesti = nom de ma bdd
+    	   		String utilisateur = Config.USER;
+    	   		String motDePasse = Config.PASSWORD;
+
+    	   		System.out.println("try to connect");
+    	   		// on ajoute nos paramètres
+    	   		try {
+    	   			accessDataBase = DriverManager.getConnection(url, utilisateur, motDePasse);
+    	   		} catch (SQLException e) {
+    	   			
+    	   			e.printStackTrace();
+    	   		}
+    	   }
+    return accessDataBase;
+       }
+       
     /**
      * 
      */
