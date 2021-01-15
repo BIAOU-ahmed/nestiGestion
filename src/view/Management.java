@@ -19,8 +19,11 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.table.DefaultTableModel;
 
-import model.Querys;
+import dao.MeasurementDAO;
+import model.Measurement;
 
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JScrollPane;
 import javax.swing.DefaultComboBoxModel;
 
@@ -183,8 +186,16 @@ public class Management extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (typeCombo.getSelectedItem() == "Ingredients") {
-					Querys querys = new Querys();
-					querys.getUnitys(unityCombo);
+//					Querys querys = new Querys();
+//					querys.getUnitys(unityCombo);
+					
+					List<Measurement> unitys =(new MeasurementDAO()).findALL();//
+					unitys.forEach(m->{
+						
+						unityCombo.addItem(m.getUnit());
+						
+					});
+					unityCombo.setEnabled(true);
 				} else {
 //		  					DefaultComboBoxModel unityModel = new DefaultComboBoxModel();
 //		  					unityCombo.setModel(unityModel);

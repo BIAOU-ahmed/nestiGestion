@@ -38,32 +38,50 @@ public class Measurement {
         // TODO implement here
     }
 
-    /**
-     * 
-     */
-    public void getId() {
-        // TODO implement here
-    }
 
-    /**
-     * 
-     */
-    public void setId() {
-        // TODO implement here
-    }
 
-    /**
-     * 
-     */
-    public void getUnit() {
-        // TODO implement here
-    }
 
-    /**
-     * 
-     */
-    public void setUnit() {
-        // TODO implement here
-    }
+
+	/**
+	 * @return the id
+	 */
+	public int getId() {
+		return id;
+	}
+
+
+
+
+
+	/**
+	 * @param id the id to set
+	 */
+	public void setId(int id) {
+		this.id = id;
+	}
+
+
+
+
+
+	/**
+	 * @return the unit
+	 */
+	public String getUnit() {
+		return unit;
+	}
+
+
+
+
+
+	/**
+	 * @param unit the unit to set
+	 */
+	public void setUnit(String unit) {
+		this.unit = unit;
+	}
+
+
 
 }
