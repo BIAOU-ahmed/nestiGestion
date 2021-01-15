@@ -40,6 +40,11 @@ public class Administrator {
 
 
 
+    public boolean isPassword(String plaintTextPassword) {
+    	
+    	return false;
+    	
+    }
 
     /**
      * 
