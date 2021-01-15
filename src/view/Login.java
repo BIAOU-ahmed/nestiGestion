@@ -7,7 +7,15 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import com.lambdaworks.crypto.SCryptUtil;
+
+
+import dao.AdministratorDAO;
+import dao.ProductDAO;
+import model.Administrator;
 import model.AppConnection;
+import tools.AppSettings;
+
 import java.awt.Color;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -17,6 +25,9 @@ import javax.swing.JTextField;
 import javax.swing.JButton;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+
 import javax.swing.JPasswordField;
 
 public class Login extends JFrame {
@@ -29,6 +40,8 @@ public class Login extends JFrame {
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
+//		var testProduct = (new ProductDAO()).find("idProduct",1);
+//		System.out.println(testProduct.getProductName());
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -86,14 +99,14 @@ public class Login extends JFrame {
 				
 				String username = textFieldUserName.getText();
 				String passwords = String.valueOf(passwordField.getPassword());
-				
-				AppConnection newLogin = new AppConnection();
-				if(newLogin.logIn(username, passwords)) {
-				Management manage = new Management();
-				manage.setVisible(true);
-				}else {
-					JOptionPane.showMessageDialog(null, "Invalid informations");
-				}
+				logIn(username, passwords);
+//				AppConnection newLogin = new AppConnection();
+//				if(logIn(username, passwords)) {
+//				Management manage = new Management();
+//				manage.setVisible(true);
+//				}else {
+//					JOptionPane.showMessageDialog(null, "Invalid informations");
+//				}
 				
 			}
 		});
@@ -110,4 +123,25 @@ public class Login extends JFrame {
 		passwordField.setBounds(85, 293, 271, 44);
 		contentPane.add(passwordField);
 	}
+	
+	   public boolean logIn(String username, String password) {
+			boolean result = false;
+			
+			var admin = (new  AdministratorDAO()).find("userName","ahmed");
+//			System.out.println(admin.getClass());
+			if(admin == null) {
+				JOptionPane.showMessageDialog(null, "Invalid informations");
+				
+			}else {
+				AppSettings.set("loginUser",Integer.toString(admin.getId()));
+				Management m = new Management();
+				m.setVisible(true);
+			}
+			
+//			var adminId = Integer.parseInt(AppSettings.get("loginUser"));
+//			var admin1 = (new  AdministratorDAO()).find("userId",adminId);
+
+			return result;
+	    }
+	   
 }

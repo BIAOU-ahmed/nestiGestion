@@ -13,12 +13,25 @@ import javax.swing.JLabel;
 import javax.swing.JComboBox;
 import javax.swing.JTextField;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.JButton;
 import javax.swing.table.DefaultTableModel;
+
+import dao.MeasurementDAO;
+import model.Measurement;
+
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JScrollPane;
+
 import javax.swing.SwingConstants;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+
+import javax.swing.DefaultComboBoxModel;
+
 
 public class Management extends JFrame {
 
@@ -28,6 +41,7 @@ public class Management extends JFrame {
 	private JTextField textField_1;
 	private JTable table;
 	private JTextField textField_2;
+
 	private JTable table_2;
 	private JTextField textField_3;
 	private JTextField textFieldAmountReceived;
@@ -37,6 +51,10 @@ public class Management extends JFrame {
 	private JTextField textFieldQtyOrder;
 	private JTable tableOrder;
 	private JTextField textField_4;
+
+	private JTable productList;
+	private JTextField libeleTxt;
+
 
 	/**
 	 * Launch the application.
@@ -70,20 +88,31 @@ public class Management extends JFrame {
 		tabbedPane.setMaximumSize(new Dimension(10, 32767));
 		contentPane.add(tabbedPane, BorderLayout.CENTER);
 
+
 		// Onglet Historique Commande
 
 		JPanel panelHistory = new JPanel();
 		tabbedPane.addTab("Historique Commande", null, panelHistory, null);
 		panelHistory.setLayout(null);
 
+		JPanel panel = new JPanel();
+		tabbedPane.addTab("Historique Commande", null, panel, null);
+		panel.setLayout(null);
+
+
 		JLabel lblNewLabel = new JLabel("Historique des commandes");
 		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 24));
 		lblNewLabel.setBounds(181, 11, 290, 34);
+
 		panelHistory.add(lblNewLabel);
+
+		panel.add(lblNewLabel);
+
 
 		JLabel lblNewLabel_1 = new JLabel("Fournisseur");
 		lblNewLabel_1.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		lblNewLabel_1.setBounds(28, 85, 74, 28);
+
 		panelHistory.add(lblNewLabel_1);
 
 		JComboBox comboBox = new JComboBox();
@@ -94,15 +123,34 @@ public class Management extends JFrame {
 		comboBox_1.setBounds(585, 88, 137, 22);
 		panelHistory.add(comboBox_1);
 
+		panel.add(lblNewLabel_1);
+
+		JComboBox comboBox = new JComboBox();
+		comboBox.setBounds(112, 90, 127, 22);
+		panel.add(comboBox);
+
+		JComboBox comboBox_1 = new JComboBox();
+		comboBox_1.setBounds(585, 88, 137, 22);
+		panel.add(comboBox_1);
+
+
 		JLabel lblNewLabel_1_1 = new JLabel("Etat livraison");
 		lblNewLabel_1_1.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		lblNewLabel_1_1.setBounds(608, 49, 84, 28);
+
 		panelHistory.add(lblNewLabel_1_1);
+
+		panel.add(lblNewLabel_1_1);
+
 
 		JLabel lblNewLabel_1_1_1 = new JLabel("Num\u00E9ro de commande");
 		lblNewLabel_1_1_1.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		lblNewLabel_1_1_1.setBounds(255, 85, 137, 28);
+
 		panelHistory.add(lblNewLabel_1_1_1);
+
+		panel.add(lblNewLabel_1_1_1);
+
 
 		textField = new JTextField();
 		textField.setBounds(402, 85, 156, 28);
@@ -111,7 +159,11 @@ public class Management extends JFrame {
 
 		table_1 = new JTable();
 		table_1.setBounds(836, 85, 548, 378);
+
 		panelHistory.add(table_1);
+
+		panel.add(table_1);
+
 
 		textField_1 = new JTextField();
 		textField_1.setBounds(1289, 473, 95, 34);
@@ -120,6 +172,7 @@ public class Management extends JFrame {
 
 		JComboBox comboBox_2 = new JComboBox();
 		comboBox_2.setBounds(836, 562, 127, 34);
+
 		panelHistory.add(comboBox_2);
 
 		JButton btnNewButton = new JButton("Valider");
@@ -130,11 +183,22 @@ public class Management extends JFrame {
 		scrollPane.setBounds(28, 142, 698, 558);
 		panelHistory.add(scrollPane);
 
+		panel.add(comboBox_2);
+
+		JButton btnNewButton = new JButton("Valider");
+		btnNewButton.setBounds(1000, 562, 109, 34);
+		panel.add(btnNewButton);
+
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(28, 142, 698, 558);
+		panel.add(scrollPane);
+
+
 		table = new JTable();
 		table.setFillsViewportHeight(true);
 
-		DefaultTableModel model = new DefaultTableModel(new Object[][] {,}, new String[] { "NumÈro commande",
-				"Fournisseur", "Montant Ä", "Date commande", "Date livraison", "Statut" });
+		DefaultTableModel model = new DefaultTableModel(new Object[][] {,}, new String[] { "Num√©ro commande",
+				"Fournisseur", "Montant ‚Ç¨", "Date commande", "Date livraison", "Statut" });
 
 		table.setModel(model);
 		table.getColumnModel().getColumn(0).setResizable(false);
@@ -144,6 +208,7 @@ public class Management extends JFrame {
 		table.getColumnModel().getColumn(4).setResizable(false);
 		table.getColumnModel().getColumn(5).setResizable(false);
 		scrollPane.setViewportView(table);
+
 
 		// Onglet Gestion Livraison
 
@@ -235,7 +300,7 @@ public class Management extends JFrame {
 		scrollPaneDelivery.setViewportView(tableDelivery);
 
 		DefaultTableModel modelDelivery = new DefaultTableModel(new Object[][] {,},
-				new String[] { "Identifiant", "Produit", "Conditionnement", "QtÈ CommandÈe", "QtÈ reÁue", "Prix Ä",
+				new String[] { "Identifiant", "Produit", "Conditionnement", "Qt√© Command√©e", "Qt√© re√ßue", "Prix ‚Ç¨",
 						"Date commande", "Date livraison" });
 
 		tableDelivery.setModel(modelDelivery);
@@ -344,7 +409,7 @@ public class Management extends JFrame {
 		scrollPaneOrder.setViewportView(tableOrder);
 
 		DefaultTableModel modelOrder = new DefaultTableModel(new Object[][] {,},
-				new String[] { "Identifiant", "Produit", "Conditionnement", "QtÈ CommandÈe", "Prix Ä" });
+				new String[] { "Identifiant", "Produit", "Conditionnement", "Qt√© Command√©e", "Prix ‚Ç¨" });
 
 		tableOrder.setModel(modelOrder);
 		tableOrder.getColumnModel().getColumn(0).setResizable(false);
@@ -381,6 +446,22 @@ public class Management extends JFrame {
 		tabbedPane.addTab("Gestion Produit", null, panelProduct, null);
 		panelProduct.setLayout(null);
 
+//		scrollPane.setColumnHeaderView(table);
+
+		JPanel panel_1 = new JPanel();
+		tabbedPane.addTab("Gestion Livraison", null, panel_1, null);
+
+		JPanel panel_2 = new JPanel();
+		tabbedPane.addTab("Gestion Commande", null, panel_2, null);
+
+		JPanel panel_3 = new JPanel();
+		tabbedPane.addTab("Gestion article", null, panel_3, null);
+
+		JPanel panel_4 = new JPanel();
+		tabbedPane.addTab("Gestion produit", null, panel_4, null);
+		panel_4.setLayout(null);
+
+
 		textField_2 = new JTextField();
 		textField_2.setBounds(809, 70, 571, 20);
 		panelProduct.add(textField_2);
@@ -388,12 +469,13 @@ public class Management extends JFrame {
 
 		JScrollPane scrollPane_1 = new JScrollPane();
 		scrollPane_1.setBounds(809, 132, 571, 492);
+
 		panelProduct.add(scrollPane_1);
 
 		table_2 = new JTable();
 
-		DefaultTableModel model2 = new DefaultTableModel(new Object[][] {,}, new String[] { "NumÈro commande",
-				"Fournisseur", "Montant Ä", "Date commande", "Date livraison", "Statut" });
+		DefaultTableModel model2 = new DefaultTableModel(new Object[][] {,}, new String[] { "Num√©ro commande",
+				"Fournisseur", "Montant ‚Ç¨", "Date commande", "Date livraison", "Statut" });
 		table_2.setModel(model2);
 		scrollPane_1.setViewportView(table_2);
 
@@ -412,6 +494,98 @@ public class Management extends JFrame {
 		JPanel panelProfile = new JPanel();
 		tabbedPane.addTab("Profil", null, panelProfile, null);
 		// scrollPane.setColumnHeaderView(table);
+
+
+		panel_4.add(scrollPane_1);
+
+		productList = new JTable();
+
+		DefaultTableModel productModel = new DefaultTableModel(new Object[][] {,},
+				new String[] { "Identifiant", "Libell√©", "Type", "Unit√©", "Nb d'articles cr√©√©s" });
+		productList.setModel(productModel);
+		scrollPane_1.setViewportView(productList);
+
+		libeleTxt = new JTextField();
+		libeleTxt.setBounds(95, 160, 185, 34);
+		panel_4.add(libeleTxt);
+		libeleTxt.setColumns(10);
+
+		JComboBox typeCombo = new JComboBox();
+		DefaultComboBoxModel productType = new DefaultComboBoxModel(new String[] { "","Ingredients", "Ustensils" });
+		typeCombo.setModel(productType);
+		JComboBox unityCombo = new JComboBox();
+		
+		typeCombo.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (typeCombo.getSelectedItem() == "Ingredients") {
+//					Querys querys = new Querys();
+//					querys.getUnitys(unityCombo);
+					
+					List<Measurement> unitys =(new MeasurementDAO()).findALL();//
+					unitys.forEach(m->{
+						
+						unityCombo.addItem(m.getUnit());
+						
+					});
+					unityCombo.setEnabled(true);
+				} else {
+//		  					DefaultComboBoxModel unityModel = new DefaultComboBoxModel();
+//		  					unityCombo.setModel(unityModel);
+					unityCombo.removeAllItems();
+					unityCombo.setEnabled(false);
+
+				}
+
+			}
+		});
+
+		typeCombo.setBounds(307, 160, 138, 34);
+//		typeCombo.addItem(new ComboItem("Visible String 1", "Value 1"));
+
+		panel_4.add(typeCombo);
+
+		
+
+		unityCombo.setBounds(478, 160, 78, 34);
+		panel_4.add(unityCombo);
+
+		JButton btnAdd = new JButton("Ajouter");
+		btnAdd.setBounds(150, 297, 104, 49);
+		panel_4.add(btnAdd);
+
+		JButton btnUpdate = new JButton("Modifier");
+		btnUpdate.setBounds(308, 297, 104, 49);
+		panel_4.add(btnUpdate);
+
+		JButton btnBlocked = new JButton("Retirer");
+		btnBlocked.setBounds(452, 297, 104, 49);
+		panel_4.add(btnBlocked);
+
+		JButton btnNewButton_1_3 = new JButton("New button");
+		btnNewButton_1_3.setBounds(226, 424, 248, 77);
+		panel_4.add(btnNewButton_1_3);
+
+		JLabel lblNewLabel_2 = new JLabel("Libell\u00E9");
+		lblNewLabel_2.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		lblNewLabel_2.setBounds(95, 132, 78, 27);
+		panel_4.add(lblNewLabel_2);
+
+		JLabel lblNewLabel_2_1 = new JLabel("Type");
+		lblNewLabel_2_1.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		lblNewLabel_2_1.setBounds(338, 132, 78, 27);
+		panel_4.add(lblNewLabel_2_1);
+
+		JLabel lblNewLabel_2_2 = new JLabel("Unit\u00E9");
+		lblNewLabel_2_2.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		lblNewLabel_2_2.setBounds(478, 130, 78, 27);
+		panel_4.add(lblNewLabel_2_2);
+
+		JPanel panel_5 = new JPanel();
+		tabbedPane.addTab("Gestion Fournisseur", null, panel_5, null);
+
+		JPanel panel_6 = new JPanel();
+		tabbedPane.addTab("Profil", null, panel_6, null);
 
 	}
 }

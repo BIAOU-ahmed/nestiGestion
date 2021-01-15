@@ -6,7 +6,7 @@ import java.util.*;
 /**
  * 
  */
-public class Utensil extends Article {
+public class Utensil extends Product {
 
     /**
      * Default constructor
