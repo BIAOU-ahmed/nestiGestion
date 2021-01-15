@@ -117,9 +117,9 @@ public class Management extends JFrame {
 		tabbedPane.addTab("Historique Commande", null, panelHistory, null);
 		panelHistory.setLayout(null);
 
-		JPanel panel = new JPanel();
-		tabbedPane.addTab("Historique Commande", null, panel, null);
-		panel.setLayout(null);
+//		JPanel panel = new JPanel();
+//		tabbedPane.addTab("Historique Commande", null, panel, null);
+//		panel.setLayout(null);
 
 
 		JLabel lblNewLabel = new JLabel("Historique des commandes");
@@ -128,7 +128,7 @@ public class Management extends JFrame {
 
 		panelHistory.add(lblNewLabel);
 
-		panel.add(lblNewLabel);
+//		panel.add(lblNewLabel);
 
 
 		JLabel lblNewLabel_1 = new JLabel("Fournisseur");
@@ -145,15 +145,15 @@ public class Management extends JFrame {
 		comboBox_1.setBounds(585, 88, 137, 22);
 		panelHistory.add(comboBox_1);
 
-		panel.add(lblNewLabel_1);
+//		panel.add(lblNewLabel_1);
 
-		JComboBox comboBox = new JComboBox();
+		JComboBox comboBox1 = new JComboBox();
 		comboBox.setBounds(112, 90, 127, 22);
-		panel.add(comboBox);
+//		panel.add(comboBox);
 
-		JComboBox comboBox_1 = new JComboBox();
+		JComboBox comboBox_11 = new JComboBox();
 		comboBox_1.setBounds(585, 88, 137, 22);
-		panel.add(comboBox_1);
+//		panel.add(comboBox_1);
 
 
 		JLabel lblNewLabel_1_1 = new JLabel("Etat livraison");
@@ -162,7 +162,7 @@ public class Management extends JFrame {
 
 		panelHistory.add(lblNewLabel_1_1);
 
-		panel.add(lblNewLabel_1_1);
+//		panel.add(lblNewLabel_1_1);
 
 
 		JLabel lblNewLabel_1_1_1 = new JLabel("Num\u00E9ro de commande");
@@ -171,7 +171,7 @@ public class Management extends JFrame {
 
 		panelHistory.add(lblNewLabel_1_1_1);
 
-		panel.add(lblNewLabel_1_1_1);
+//		panel.add(lblNewLabel_1_1_1);
 
 
 		textField = new JTextField();
@@ -184,7 +184,7 @@ public class Management extends JFrame {
 
 		panelHistory.add(table_1);
 
-		panel.add(table_1);
+//		panel.add(table_1);
 
 
 		textField_1 = new JTextField();
@@ -205,15 +205,15 @@ public class Management extends JFrame {
 		scrollPane.setBounds(28, 142, 698, 558);
 		panelHistory.add(scrollPane);
 
-		panel.add(comboBox_2);
+//		panel.add(comboBox_2);
 
-		JButton btnNewButton = new JButton("Valider");
+		JButton btnNewButton1 = new JButton("Valider");
 		btnNewButton.setBounds(1000, 562, 109, 34);
-		panel.add(btnNewButton);
+//		panel.add(btnNewButton);
 
-		JScrollPane scrollPane = new JScrollPane();
+		JScrollPane scrollPane1 = new JScrollPane();
 		scrollPane.setBounds(28, 142, 698, 558);
-		panel.add(scrollPane);
+//		panel.add(scrollPane);
 
 
 		table = new JTable();
@@ -618,7 +618,7 @@ public class Management extends JFrame {
 		
 
 
-		JPanel panel_3 = new JPanel();
+		JPanel panel_31 = new JPanel();
 		tabbedPane.addTab("Gestion article", null, panel_3, null);
 
 
