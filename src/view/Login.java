@@ -77,7 +77,7 @@ public class Login extends JFrame {
 		title.setBounds(10, 11, 321, 54);
 		titlePane.add(title);
 		
-		textFieldUserName = new JTextField();
+		textFieldUserName = new JTextField("SuperAdmin");
 		textFieldUserName.setBounds(85, 176, 271, 44);
 		contentPane.add(textFieldUserName);
 		textFieldUserName.setColumns(10);
@@ -119,7 +119,7 @@ public class Login extends JFrame {
 		btnCancel.setBounds(252, 352,122, 51);
 		contentPane.add(btnCancel);
 		
-		passwordField = new JPasswordField();
+		passwordField = new JPasswordField("SUPPERadmin3!");
 		passwordField.setBounds(85, 293, 271, 44);
 		contentPane.add(passwordField);
 	}
@@ -127,15 +127,26 @@ public class Login extends JFrame {
 	   public boolean logIn(String username, String password) {
 			boolean result = false;
 			
-			var admin = (new  AdministratorDAO()).find("userName","ahmed");
+			var admin = (new  AdministratorDAO()).find("userName",username);
 //			System.out.println(admin.getClass());
 			if(admin == null) {
 				JOptionPane.showMessageDialog(null, "Invalid informations");
 				
 			}else {
-				AppSettings.set("loginUser",Integer.toString(admin.getId()));
-				Management m = new Management();
-				m.setVisible(true);
+				if(username.equals("") || password.equals("")) {
+					JOptionPane.showMessageDialog(null, "Please enter a username and a password");
+				}else {
+					if(admin.isPassword(password)) {
+						AppSettings.set("loginUser",Integer.toString(admin.getId()));
+						Management m = new Management();
+						m.setVisible(true);
+						setVisible(false);
+					}else {
+						JOptionPane.showMessageDialog(null, "Invalid informations");
+					}
+				}
+				
+				
 			}
 			
 //			var adminId = Integer.parseInt(AppSettings.get("loginUser"));
