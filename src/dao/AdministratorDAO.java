@@ -33,9 +33,10 @@ public class AdministratorDAO extends BaseDAO<Administrator> {
 	        	
 	        	result = new Administrator();
 	        	result.setId(rs.getInt("idAdministrator"));
-	        	result.setUserName(rs.getString("userName "));
-	        	result.setAdminState(rs.getString("adminState "));
-	        	result.setAdminState(rs.getString("adminState "));
+	        	result.setUserName(rs.getString("userName"));
+	        	result.setAdminState(rs.getString("adminState"));
+	        	result.setCreatedAt(rs.getDate("createAt"));
+	        	result.setPassword(rs.getString("password"));
 		        	
 	        	
 	        }
