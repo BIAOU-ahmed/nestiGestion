@@ -2,6 +2,8 @@ package model;
 
 import java.util.*;
 
+import com.lambdaworks.crypto.SCryptUtil;
+
 /**
  * 
  */
@@ -41,8 +43,8 @@ public class Administrator {
 
 
     public boolean isPassword(String plaintTextPassword) {
-    	
-    	return false;
+    	boolean matched = SCryptUtil.check(plaintTextPassword, this.password);
+    	return matched;
     	
     }
 
