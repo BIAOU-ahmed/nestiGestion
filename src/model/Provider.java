@@ -7,6 +7,7 @@ import java.util.*;
 import javax.swing.JOptionPane;
 
 import dao.ArticleDAO;
+import dao.IngredientDAO;
 import dao.ProviderDAO;
 
 /**
@@ -80,7 +81,23 @@ public class Provider {
      * 
      */
     public void update() {
-        // TODO implement here
+    	Provider updatedProvider = new Provider();
+    	
+    	updatedProvider.setId(id);
+    	updatedProvider.setCompanyName(getCompanyName());
+    	updatedProvider.setContactLastName(getContactLastName());
+    	updatedProvider.setContactFirstName(getContactFirstName());
+		updatedProvider.setProviderState(getProviderState());
+		updatedProvider.setContactPhoneNumber(getContactPhoneNumber());
+		updatedProvider.setIdAdministrator(getIdAdministrator());
+		JOptionPane.showMessageDialog(null, "Provider update succesfully");
+		try {
+			(new ProviderDAO()).update(updatedProvider);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	
     }
 
     /**
@@ -188,7 +205,11 @@ public class Provider {
 		this.idAdministrator = idAdministrator;
 	}
 
-
+	public Object[] toRow() {
+	
+		Object[] product = { getId(), getCompanyName(), getContactLastName(), getContactFirstName(), getContactPhoneNumber(),getProviderState() };
+		return product;
+	}
 	
 
     

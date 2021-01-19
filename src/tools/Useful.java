@@ -9,6 +9,7 @@ import javax.swing.table.DefaultTableModel;
 
 import model.Article;
 import model.Product;
+import model.Provider;
 
 /**
  * @author ahmed
@@ -32,6 +33,19 @@ public  class Useful {
 	//make one function to display all
 	
 	public static void displayArticle(List<Article> products,DefaultTableModel model) {
+//		 = (new ProductDAO()).findALL();//
+		model.setRowCount(0);
+		products.forEach(p -> {
+
+			Object[] row1 = p.toRow();
+			// Ajout d'une rangée
+			model.addRow(row1);
+
+		});
+	}
+	
+	
+	public static void displayProvider(List<Provider> products,DefaultTableModel model) {
 //		 = (new ProductDAO()).findALL();//
 		model.setRowCount(0);
 		products.forEach(p -> {

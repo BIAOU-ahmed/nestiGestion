@@ -73,7 +73,7 @@ public class Administrator {
      * 
      */
     public void updateProvider(Provider provider) {
-    	
+    	provider.update();
     }
 
     /**
