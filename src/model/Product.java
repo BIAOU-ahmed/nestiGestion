@@ -1,6 +1,5 @@
 package model;
 
-
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.*;
@@ -19,28 +18,40 @@ import tools.DBConnection;
 /**
  * 
  */
-public class Product extends DBConnection{
+public class Product extends DBConnection {
 
-    /**
-     * Default constructor
-     */
-    public Product() {
-    }
+	/**
+	 * Default constructor
+	 */
+	public Product() {
+	}
 
-    /**
-     * 
-     */
-    public int id;
+	/**
+	 * 
+	 */
+	public int id;
 
-    /**
-     * 
-     */
-    public String productName;
+	/**
+	 * 
+	 */
+	public String productName;
+	public String type;
 
+	/**
+	 * @return the type
+	 */
+	public String getType() {
+		return type;
+	}
 
+	/**
+	 * @param type the type to set
+	 */
+	public void setType(String type) {
+		this.type = type;
+	}
 
-
-    /**
+	/**
 	 * @return the id
 	 */
 	public int getId() {
@@ -69,49 +80,58 @@ public class Product extends DBConnection{
 	}
 
 	/**
-     * 
-     */
-    public void create(JTextField libeleTxt,JComboBox typeCombo, JComboBox Unity) {
-    	Product newProduct = new Product();
-    	 newProduct.setProductName(libeleTxt.getText());
-    	 
-    	 try {
-			(new ProductDAO()).insert(newProduct);
-		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+	 * 
+	 */
+	public void create(JTextField libeleTxt, JComboBox typeCombo, JComboBox Unity) {
+
+//		System.out.println("not" + libeleTxt.getText());
+		Product newProduct = new Product();
+
+		newProduct.setProductName(libeleTxt.getText());
+		Product productExist = (new ProductDAO()).find("productName", newProduct.getProductName());//
+		if (productExist == null) {
+
+			try {
+
+				(new ProductDAO()).insert(newProduct);
+
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+
+			var insertedProduct = (new ProductDAO()).find("productName", newProduct.getProductName());
+			Product temp;
+			if (typeCombo.getSelectedItem().equals("Ingredients")) {
+//		    		newProduct = new Ingredient();
+				var i = new Ingredient();
+
+				i.setId(insertedProduct.getId());
+				i.setMeasurementFromUnit(Unity.getSelectedItem().toString());
+				try {
+					(new IngredientDAO()).insert(i);
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			} else {
+//		    		newProduct = new Utensil();
+				var u = new Utensil();
+				u.setId(insertedProduct.getId());
+				try {
+					(new UtensilDAO()).insert(u);
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+
+		} else {
+			JOptionPane.showMessageDialog(null, "Product alrady exist");
+
 		}
-    	 var insertedProduct = (new ProductDAO()).find("productName",newProduct.getProductName());
-    	 Product temp;
-    	if(typeCombo.getSelectedItem().equals("Ingredients")) {
-//    		newProduct = new Ingredient();
-    		var i = new Ingredient();
-    		
-    		i.setId(insertedProduct.getId());
-    		i.setMeasurementFromUnit(Unity.getSelectedItem().toString());
-    		try {
-				(new IngredientDAO()).insert(i);
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-    	}else {
-//    		newProduct = new Utensil();
-    		var u = new Utensil();
-    		u.setId(insertedProduct.getId());
-    		try {
-				(new UtensilDAO()).insert(u);
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-    	}
-    	
-    	
-    	
-	
-	 
-	 
+		libeleTxt.setText("");
+		typeCombo.setSelectedIndex(0);
 //	 var myIngredient = new Ingredient();
 //	 
 //			try {
@@ -126,30 +146,97 @@ public class Product extends DBConnection{
 //				System.err.println("Erreur d'insertion d'utilisateur: " + e.getMessage());
 //			}
 //			startCo();
-		 
 
 //		return flag;
-    }
+	}
 
-    /**
-     * 
-     */
-    public void update() {
-        // TODO implement here
-    }
+	public Object[] toRow() {
+		String type = "Ustensils";
+		String unity = "";
+		var ing = (new IngredientDAO()).find("idProduct", this.id);
+		if (ing != null) {
+			type = "Ingredients";
+			unity = ing.getMeasurement().getUnit();
+		}
+		Object[] product = { getId(), getProductName(), type, unity, "" };
+		return product;
+	}
 
-    /**
-     * 
-     */
-    public void lock() {
-        // TODO implement here
-    }
+	/**
+	 * 
+	 */
+	public void update(JComboBox Unity) {
 
-    /**
-     * 
-     */
-    public void unlock() {
-        // TODO implement here
-    }
+		Product product = new Product();
+		product.setId(id);
+		product.setProductName(productName);
+		product.setType(type);
+		try {
+			(new ProductDAO()).update(product);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		Utensil u = new Utensil();
+		u.setId(id);
+		Ingredient ig = new Ingredient();
+		ig.setId(id);
+		
+		
+		if (product.getType().equals("Ingredients")) {
+		
+			
+			Ingredient i = (new IngredientDAO()).find("idProduct", id);
+			if(i == null) {
+				
+				
+				ig.setMeasurementFromUnit(Unity.getSelectedItem().toString());
+				try {
+					(new UtensilDAO()).delete(u);
+					(new IngredientDAO()).insert(ig);
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}else {
+				Ingredient ing = new Ingredient();
+				ing.setId(id);
+				ing.setMeasurementFromUnit(Unity.getSelectedItem().toString());
+//				System.out.println("unity"+Unity.getSelectedItem().toString());
+//				System.out.println("value"+ing.getMeasurementId());
+				ing.update();
+			}
+			
+
+//			System.out.println("ingrd");
+		}else {
+			Utensil utensil = (new UtensilDAO()).find("idProduct", id);
+			if(utensil == null) {
+				
+				try {
+					
+					(new UtensilDAO()).insert(u);
+					(new IngredientDAO()).delete(ig);
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+
+	/**
+	 * 
+	 */
+	public void lock() {
+		// TODO implement here
+	}
+
+	/**
+	 * 
+	 */
+	public void unlock() {
+		// TODO implement here
+	}
 
 }

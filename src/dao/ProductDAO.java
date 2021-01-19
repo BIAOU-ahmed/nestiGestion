@@ -46,10 +46,30 @@ public class ProductDAO extends BaseDAO<Product> {
 
         var insertProduct = DBConnection.get().prepareStatement(sql);
      
-        insertProduct.setString(2,  product.getProductName());
+        insertProduct.setString(1,product.getProductName());
         
         insertProduct.executeUpdate();
   
     }
+	
+	public  void update (Product product) throws SQLException {
+        String sql = "UPDATE " + getTableName()
+			+ " SET productName = ?"
+			+ "WHERE idProduct = ?;";
+
+        var updateUser = DBConnection.get().prepareStatement(sql);
+        updateUser.setString(1,  product.getProductName());
+        updateUser.setInt(2,  product.getId());
+//        updateUser.setString(3,  user.getFirstName());
+//        updateUser.setString(4,  user.getLastName());
+//        updateUser.setString(5,  user.getCity());
+//        updateUser.setString(6,  user.getPasswordHash());
+//        updateUser.setString(7,  user.getRegistrationDate());
+//        updateUser.setInt(8,  user.getUserId());
+//        
+        updateUser.executeUpdate();
+
+    }
+	
 	 
 }

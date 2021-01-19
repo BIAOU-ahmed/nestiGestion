@@ -24,14 +24,14 @@ public abstract class BaseDAO<E> {
 	public <T> E find(String fieldName, T fieldValue) {
 		E result = null;
 
-		System.out.println("table " + getTableName());
+//		System.out.println("table " + getTableName());
 		try {
 			var find = DBConnection.get()
 					.prepareStatement("SELECT * FROM " + getTableName() + " WHERE " + fieldName + " = ?");
 
 			find.setObject(1, fieldValue);
-			System.out.println(fieldValue);
-			System.out.println("ee " + fieldName);
+//			System.out.println(fieldValue);
+//			System.out.println("ee " + fieldName);
 
 			result = getFromResultSet(find.executeQuery());
 

@@ -33,32 +33,42 @@ public class Conditioning {
         // TODO implement here
     }
 
-    /**
-     * 
-     */
-    public void getId() {
-        // TODO implement here
-    }
 
-    /**
-     * 
-     */
-    public void setId() {
-        // TODO implement here
-    }
 
-    /**
-     * 
-     */
-    public void getContioningName() {
-        // TODO implement here
-    }
+	/**
+	 * @return the id
+	 */
+	public int getId() {
+		return id;
+	}
 
-    /**
-     * 
-     */
-    public void setConditioningName() {
-        // TODO implement here
-    }
+
+
+	/**
+	 * @param id the id to set
+	 */
+	public void setId(int id) {
+		this.id = id;
+	}
+
+
+
+	/**
+	 * @return the conditioningName
+	 */
+	public String getConditioningName() {
+		return conditioningName;
+	}
+
+
+
+	/**
+	 * @param conditioningName the conditioningName to set
+	 */
+	public void setConditioningName(String conditioningName) {
+		this.conditioningName = conditioningName;
+	}
+
+    
 
 }

@@ -21,8 +21,15 @@ import javax.swing.table.DefaultTableModel;
 
 import javax.swing.table.TableColumnModel;
 
+import component.ArticlePanel;
+import component.ProductPanel;
+import component.ProviderPanel;
+import dao.ConditioningDAO;
 import dao.MeasurementDAO;
+import dao.ProductDAO;
+import model.Conditioning;
 import model.Measurement;
+import model.Product;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +44,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
 import javax.swing.DefaultComboBoxModel;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class Management extends JFrame {
 
@@ -46,9 +55,6 @@ public class Management extends JFrame {
 	private JTextField textField_1;
 	private JTable table;
 	private JTextField textField_2;
-
-	private JTable table_2;
-	private JTextField textField_3;
 
 	private JTextField textFieldCompanyNameProvider;
 	private JTextField textFieldLastNameProvider;
@@ -70,10 +76,11 @@ public class Management extends JFrame {
 	private JTextField textFieldQtyOrder;
 	private JTable tableOrder;
 	private JTextField textField_4;
-
-	private JTable productList;
+	JComboBox comboBoxProductArticle;
+	private JTable productList = new JTable();
 	private JTextField libeleTxt;
-
+	JComboBox typeCombo;
+	JComboBox unityCombo;
 	/**
 	 * Launch the application.
 	 */
@@ -112,10 +119,12 @@ public class Management extends JFrame {
 		tabbedPane.addTab("Historique Commande", null, panelHistory, null);
 		panelHistory.setLayout(null);
 
+
 		JLabel lblNewLabel = new JLabel("Historique des commandes");
 		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 24));
 		lblNewLabel.setBounds(181, 11, 290, 34);
 		panelHistory.add(lblNewLabel);
+
 
 		JLabel lblNewLabel_1 = new JLabel("Fournisseur");
 		lblNewLabel_1.setFont(new Font("Tahoma", Font.PLAIN, 14));
@@ -130,15 +139,18 @@ public class Management extends JFrame {
 		comboBox_1.setBounds(585, 88, 137, 22);
 		panelHistory.add(comboBox_1);
 
+
 		JLabel lblNewLabel_1_1 = new JLabel("Etat livraison");
 		lblNewLabel_1_1.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		lblNewLabel_1_1.setBounds(608, 49, 84, 28);
 		panelHistory.add(lblNewLabel_1_1);
 
+
 		JLabel lblNewLabel_1_1_1 = new JLabel("Num\u00E9ro de commande");
 		lblNewLabel_1_1_1.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		lblNewLabel_1_1_1.setBounds(255, 85, 137, 28);
 		panelHistory.add(lblNewLabel_1_1_1);
+
 
 		textField = new JTextField();
 		textField.setBounds(402, 85, 156, 28);
@@ -148,6 +160,7 @@ public class Management extends JFrame {
 		table_1 = new JTable();
 		table_1.setBounds(836, 85, 548, 378);
 		panelHistory.add(table_1);
+
 
 		textField_1 = new JTextField();
 		textField_1.setBounds(1289, 473, 95, 34);
@@ -165,6 +178,7 @@ public class Management extends JFrame {
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(28, 142, 698, 558);
 		panelHistory.add(scrollPane);
+
 
 		table = new JTable();
 		table.setFillsViewportHeight(true);
@@ -408,416 +422,460 @@ public class Management extends JFrame {
 
 		// Gestion Article
 
-		JPanel panelArticle = new JPanel();
+		ArticlePanel panelArticle = new ArticlePanel(comboBoxProductArticle);
 		tabbedPane.addTab("Gestion Article", null, panelArticle, null);
-		panelArticle.setLayout(null);
+//		panelArticle.setLayout(null);
+//
+//		JLabel lblSearchArticle = new JLabel("Rechercher");
+//		lblSearchArticle.setFont(new Font("Tahoma", Font.PLAIN, 24));
+//		lblSearchArticle.setBounds(947, 23, 120, 29);
+//		panelArticle.add(lblSearchArticle);
+//
+//		textFieldSearchArticle = new JTextField();
+//		textFieldSearchArticle.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//		textFieldSearchArticle.setBounds(643, 63, 726, 40);
+//		panelArticle.add(textFieldSearchArticle);
+//		textFieldSearchArticle.setColumns(10);
+//
+//		JScrollPane scrollPaneArticle = new JScrollPane();
+//		scrollPaneArticle.setBounds(643, 142, 726, 560);
+//		panelArticle.add(scrollPaneArticle);
+//
+//		tableArticle = new JTable();
+//		tableArticle.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//		scrollPaneArticle.setViewportView(tableArticle);
+//
+//		DefaultTableModel articleModel = new DefaultTableModel(new Object[][] {,},
+//				new String[] { "Identifiant", "Produit", "Conditionnement", "Stock", "Poids", "Prix �", "Statut" });
+//
+//		tableArticle.setModel(articleModel);
+//		tableArticle.getColumnModel().getColumn(0).setResizable(false);
+//		tableArticle.getColumnModel().getColumn(1).setResizable(false);
+//		tableArticle.getColumnModel().getColumn(2).setResizable(false);
+//		tableArticle.getColumnModel().getColumn(3).setResizable(false);
+//		tableArticle.getColumnModel().getColumn(4).setResizable(false);
+//		tableArticle.getColumnModel().getColumn(5).setResizable(false);
+//		tableArticle.getColumnModel().getColumn(6).setResizable(false);
+//		scrollPane.setViewportView(table);
+////		scrollPane.setColumnHeaderView(table);
+//
+//		JLabel lblWeightArticle = new JLabel("Poids");
+//		lblWeightArticle.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//		lblWeightArticle.setBounds(291, 189, 46, 14);
+//		panelArticle.add(lblWeightArticle);
+//
+//		JLabel lblQtyArticle = new JLabel("Nombre");
+//		lblQtyArticle.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//		lblQtyArticle.setBounds(87, 189, 57, 14);
+//		panelArticle.add(lblQtyArticle);
+//
+//		JLabel lblProductsArticle = new JLabel("Produits");
+//		lblProductsArticle.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//		lblProductsArticle.setBounds(118, 64, 64, 14);
+//		panelArticle.add(lblProductsArticle);
+//
+//		JLabel lblConditioningArticle = new JLabel("Conditionnement");
+//		lblConditioningArticle.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//		lblConditioningArticle.setBounds(397, 64, 126, 14);
+//		panelArticle.add(lblConditioningArticle);
+//
+//		JLabel lblStatusArticle = new JLabel("Statut");
+//		lblStatusArticle.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//		lblStatusArticle.setBounds(487, 189, 46, 14);
+//		panelArticle.add(lblStatusArticle);
+//
+//		textFieldWeightArticle = new JTextField();
+//		textFieldWeightArticle.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//		textFieldWeightArticle.setBounds(246, 215, 131, 42);
+//		panelArticle.add(textFieldWeightArticle);
+//		textFieldWeightArticle.setColumns(10);
+//
+//		textFieldQtyArticle = new JTextField();
+//		textFieldQtyArticle.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//		textFieldQtyArticle.setBounds(39, 214, 152, 43);
+//		panelArticle.add(textFieldQtyArticle);
+//		textFieldQtyArticle.setColumns(10);
+//
+//		JComboBox comboBoxProductArticle = new JComboBox();
+//		comboBoxProductArticle.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//		comboBoxProductArticle.setBounds(39, 103, 219, 44);
+//		panelArticle.add(comboBoxProductArticle);
+//
+//		JComboBox comboBoxConditioningArticle = new JComboBox();
+//		comboBoxConditioningArticle.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//		comboBoxConditioningArticle.setBounds(326, 103, 255, 44);
+//		panelArticle.add(comboBoxConditioningArticle);
+//
+//		JComboBox comboBoxStatutArticle = new JComboBox();
+//		comboBoxStatutArticle.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//		comboBoxStatutArticle.setBounds(436, 215, 145, 40);
+//		panelArticle.add(comboBoxStatutArticle);
+//
+//		JButton btnAddArticle = new JButton("Ajouter");
+//		btnAddArticle.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//		btnAddArticle.setBounds(79, 286, 111, 40);
+//		panelArticle.add(btnAddArticle);
+//
+//		JButton btnEditArticle = new JButton("Modfifier");
+//		btnEditArticle.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//		btnEditArticle.setBounds(200, 286, 111, 40);
+//		panelArticle.add(btnEditArticle);
+//
+//		JButton btnAvailableArticle = new JButton("Disponible");
+//		btnAvailableArticle.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//		btnAvailableArticle.setBounds(321, 286, 111, 40);
+//		panelArticle.add(btnAvailableArticle);
+//
+//		JButton btnRemoveArticle = new JButton("Retirer");
+//		btnRemoveArticle.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//		btnRemoveArticle.setBounds(442, 286, 111, 40);
+//		panelArticle.add(btnRemoveArticle);
+//
+//		JLabel lblProviderListArticle = new JLabel("Liste Fournisseurs");
+//		lblProviderListArticle.setFont(new Font("Tahoma", Font.PLAIN, 24));
+//		lblProviderListArticle.setBounds(200, 341, 191, 40);
+//		panelArticle.add(lblProviderListArticle);
+//
+//		JScrollPane scrollPaneProviderListArticle = new JScrollPane();
+//		scrollPaneProviderListArticle.setBounds(39, 392, 544, 275);
+//		panelArticle.add(scrollPaneProviderListArticle);
+//
+//		tableProviderListArticle = new JTable();
+//		tableProviderListArticle.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//		scrollPaneProviderListArticle.setViewportView(tableProviderListArticle);
+//
+//		DefaultTableModel providerListArticleModel = new DefaultTableModel(new Object[][] {,},
+//				new String[] { "Entreprise", "Qt� command�e", "Qt� re�ue", "Stock", "Prix �" });
+//
+//		tableProviderListArticle.setModel(providerListArticleModel);
+//		tableProviderListArticle.getColumnModel().getColumn(0).setResizable(false);
+//		tableProviderListArticle.getColumnModel().getColumn(1).setResizable(false);
+//		tableProviderListArticle.getColumnModel().getColumn(2).setResizable(false);
+//		tableProviderListArticle.getColumnModel().getColumn(3).setResizable(false);
+//		tableProviderListArticle.getColumnModel().getColumn(4).setResizable(false);
+//		scrollPane.setViewportView(table);
+////		scrollPane.setColumnHeaderView(table);
+//
+//		JButton btnOrderArticle = new JButton("Passer une commande");
+//		btnOrderArticle.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//		btnOrderArticle.setBounds(214, 687, 203, 35);
 
-		JLabel lblSearchArticle = new JLabel("Rechercher");
-		lblSearchArticle.setFont(new Font("Tahoma", Font.PLAIN, 24));
-		lblSearchArticle.setBounds(947, 23, 120, 29);
-		panelArticle.add(lblSearchArticle);
-
-		textFieldSearchArticle = new JTextField();
-		textFieldSearchArticle.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		textFieldSearchArticle.setBounds(643, 63, 726, 40);
-		panelArticle.add(textFieldSearchArticle);
-		textFieldSearchArticle.setColumns(10);
-
-		JScrollPane scrollPaneArticle = new JScrollPane();
-		scrollPaneArticle.setBounds(643, 142, 726, 560);
-		panelArticle.add(scrollPaneArticle);
-
-		tableArticle = new JTable();
-		tableArticle.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		scrollPaneArticle.setViewportView(tableArticle);
-
-		DefaultTableModel articleModel = new DefaultTableModel(new Object[][] {,},
-				new String[] { "Identifiant", "Produit", "Conditionnement", "Stock", "Poids", "Prix �", "Statut" });
-
-		tableArticle.setModel(articleModel);
-		tableArticle.getColumnModel().getColumn(0).setResizable(false);
-		tableArticle.getColumnModel().getColumn(1).setResizable(false);
-		tableArticle.getColumnModel().getColumn(2).setResizable(false);
-		tableArticle.getColumnModel().getColumn(3).setResizable(false);
-		tableArticle.getColumnModel().getColumn(4).setResizable(false);
-		tableArticle.getColumnModel().getColumn(5).setResizable(false);
-		tableArticle.getColumnModel().getColumn(6).setResizable(false);
-		scrollPane.setViewportView(table);
-//		scrollPane.setColumnHeaderView(table);
-
-		JLabel lblWeightArticle = new JLabel("Poids");
-		lblWeightArticle.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lblWeightArticle.setBounds(291, 189, 46, 14);
-		panelArticle.add(lblWeightArticle);
-
-		JLabel lblQtyArticle = new JLabel("Nombre");
-		lblQtyArticle.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lblQtyArticle.setBounds(87, 189, 57, 14);
-		panelArticle.add(lblQtyArticle);
-
-		JLabel lblProductsArticle = new JLabel("Produits");
-		lblProductsArticle.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lblProductsArticle.setBounds(118, 64, 64, 14);
-		panelArticle.add(lblProductsArticle);
-
-		JLabel lblConditioningArticle = new JLabel("Conditionnement");
-		lblConditioningArticle.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lblConditioningArticle.setBounds(397, 64, 126, 14);
-		panelArticle.add(lblConditioningArticle);
-
-		JLabel lblStatusArticle = new JLabel("Statut");
-		lblStatusArticle.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lblStatusArticle.setBounds(487, 189, 46, 14);
-		panelArticle.add(lblStatusArticle);
-
-		textFieldWeightArticle = new JTextField();
-		textFieldWeightArticle.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		textFieldWeightArticle.setBounds(246, 215, 131, 42);
-		panelArticle.add(textFieldWeightArticle);
-		textFieldWeightArticle.setColumns(10);
-
-		textFieldQtyArticle = new JTextField();
-		textFieldQtyArticle.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		textFieldQtyArticle.setBounds(39, 214, 152, 43);
-		panelArticle.add(textFieldQtyArticle);
-		textFieldQtyArticle.setColumns(10);
-
-		JComboBox comboBoxProductArticle = new JComboBox();
-		comboBoxProductArticle.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		comboBoxProductArticle.setBounds(39, 103, 219, 44);
-		panelArticle.add(comboBoxProductArticle);
-
-		JComboBox comboBoxConditioningArticle = new JComboBox();
-		comboBoxConditioningArticle.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		comboBoxConditioningArticle.setBounds(326, 103, 255, 44);
-		panelArticle.add(comboBoxConditioningArticle);
-
-		JComboBox comboBoxStatutArticle = new JComboBox();
-		comboBoxStatutArticle.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		comboBoxStatutArticle.setBounds(436, 215, 145, 40);
-		panelArticle.add(comboBoxStatutArticle);
-
-		JButton btnAddArticle = new JButton("Ajouter");
-		btnAddArticle.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		btnAddArticle.setBounds(79, 286, 111, 40);
-		panelArticle.add(btnAddArticle);
-
-		JButton btnEditArticle = new JButton("Modfifier");
-		btnEditArticle.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		btnEditArticle.setBounds(200, 286, 111, 40);
-		panelArticle.add(btnEditArticle);
-
-		JButton btnAvailableArticle = new JButton("Disponible");
-		btnAvailableArticle.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		btnAvailableArticle.setBounds(321, 286, 111, 40);
-		panelArticle.add(btnAvailableArticle);
-
-		JButton btnRemoveArticle = new JButton("Retirer");
-		btnRemoveArticle.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		btnRemoveArticle.setBounds(442, 286, 111, 40);
-		panelArticle.add(btnRemoveArticle);
-
-		JLabel lblProviderListArticle = new JLabel("Liste Fournisseurs");
-		lblProviderListArticle.setFont(new Font("Tahoma", Font.PLAIN, 24));
-		lblProviderListArticle.setBounds(200, 341, 191, 40);
-		panelArticle.add(lblProviderListArticle);
-
-		JScrollPane scrollPaneProviderListArticle = new JScrollPane();
-		scrollPaneProviderListArticle.setBounds(39, 392, 544, 275);
-		panelArticle.add(scrollPaneProviderListArticle);
-
-		tableProviderListArticle = new JTable();
-		tableProviderListArticle.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		scrollPaneProviderListArticle.setViewportView(tableProviderListArticle);
-
-		DefaultTableModel providerListArticleModel = new DefaultTableModel(new Object[][] {,},
-				new String[] { "Entreprise", "Qt� command�e", "Qt� re�ue", "Stock", "Prix �" });
-
-		tableProviderListArticle.setModel(providerListArticleModel);
-		tableProviderListArticle.getColumnModel().getColumn(0).setResizable(false);
-		tableProviderListArticle.getColumnModel().getColumn(1).setResizable(false);
-		tableProviderListArticle.getColumnModel().getColumn(2).setResizable(false);
-		tableProviderListArticle.getColumnModel().getColumn(3).setResizable(false);
-		tableProviderListArticle.getColumnModel().getColumn(4).setResizable(false);
-		scrollPane.setViewportView(table);
-//		scrollPane.setColumnHeaderView(table);
-
-		JButton btnOrderArticle = new JButton("Passer une commande");
-		btnOrderArticle.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		btnOrderArticle.setBounds(214, 687, 203, 35);
-		panelArticle.add(btnOrderArticle);
-
+//		DefaultTableModel productModel = new DefaultTableModel();
+//		// Gestion Produit
+//		JButton creatArticlebtn = new JButton();
+//		JPanel panelProduct = new JPanel();
+		
 		// Gestion Produit
-
-		JPanel panelProduct = new JPanel();
+		ProductPanel panelProduct = new ProductPanel(tabbedPane,panelArticle.getComboBoxProductArticle());
 		tabbedPane.addTab("Gestion Produit", null, panelProduct, null);
 		panelProduct.setLayout(null);
+		
+//		creatArticlebtn.addActionListener(new ActionListener() {
+//			public void actionPerformed(ActionEvent e) {
+//				if (!productList.getSelectionModel().isSelectionEmpty()) {
+////					System.out.println("oui in the dd");
+//					
+//					int row = productList.getSelectedRow();
+////					libeleTxt.setText((String) productModel.getValueAt(row, 1));
+//////					String t = ((String) productModel.getValueAt(row, 1));
+//					String p = (String) productModel.getValueAt(row, 1);
+//					System.out.println(p);
+//					comboBoxProductArticle.setSelectedItem(p);
+//					tabbedPane.setSelectedIndex(3);
+//				}
+//				
+//				
+//			}
+//		});
+//
+//		textField_2 = new JTextField();
+//		textField_2.setBounds(809, 70, 571, 20);
+//		panelProduct.add(textField_2);
+//		textField_2.setColumns(10);
+//
+//		JScrollPane scrollPane_1 = new JScrollPane();
+//		
+//		scrollPane_1.setBounds(809, 132, 571, 492);
+//
+//		panelProduct.add(scrollPane_1);
+//
+//		DefaultTableModel model2 = new DefaultTableModel(new Object[][] {,}, new String[] { "Numéro commande",
+//				"Fournisseur", "Montant €", "Date commande", "Date livraison", "Statut" });
+//
+//		panelProduct.add(scrollPane_1);
+//
+//		productList = new JTable();
+//
+//		DefaultTableModel productModel = new DefaultTableModel(new Object[][] {,},
+//				new String[] { "Identifiant", "Libellé", "Type", "Unité", "Nb d'articles créés" });
+//		productList.setModel(productModel);
+//		scrollPane_1.setViewportView(productList);
+//
+//		libeleTxt = new JTextField();
+//		libeleTxt.setBounds(95, 160, 185, 34);
+//		panelProduct.add(libeleTxt);
+//		libeleTxt.setColumns(10);
+//
+//		typeCombo = new JComboBox();
+//		DefaultComboBoxModel productType = new DefaultComboBoxModel(new String[] { "", "Ingredients", "Ustensils" });
+//		typeCombo.setModel(productType);
+//		unityCombo = new JComboBox();
 
-		textField_2 = new JTextField();
-		textField_2.setBounds(809, 70, 571, 20);
-		panelProduct.add(textField_2);
-		textField_2.setColumns(10);
+//		typeCombo.addActionListener(new ActionListener() {
+//			@Override
+//			public void actionPerformed(ActionEvent e) {
+//				if (typeCombo.getSelectedItem() == "Ingredients") {
+////					Querys querys = new Querys();
+////					querys.getUnitys(unityCombo);
+//
+//					List<Measurement> unitys = (new MeasurementDAO()).findALL();//
+//					unitys.forEach(m -> {
+//
+//						unityCombo.addItem(m.getUnit());
+//
+//					});
+//					unityCombo.setEnabled(true);
+//				} else {
+////		  					DefaultComboBoxModel unityModel = new DefaultComboBoxModel();
+////		  					unityCombo.setModel(unityModel);
+//					unityCombo.removeAllItems();
+//					unityCombo.setEnabled(false);
+//
+//				}
+//
+//			}
+//		});
 
-		JScrollPane scrollPane_1 = new JScrollPane();
-		scrollPane_1.setBounds(809, 132, 571, 492);
-
-		panelProduct.add(scrollPane_1);
-
-		table_2 = new JTable();
-
-		DefaultTableModel model2 = new DefaultTableModel(new Object[][] {,}, new String[] { "Numéro commande",
-				"Fournisseur", "Montant €", "Date commande", "Date livraison", "Statut" });
-		table_2.setModel(model2);
-		scrollPane_1.setViewportView(table_2);
-
-		textField_3 = new JTextField();
-		textField_3.setBounds(95, 160, 167, 20);
-		panelProduct.add(textField_3);
-		textField_3.setColumns(10);
-
-		panelProduct.add(scrollPane_1);
-
-		productList = new JTable();
-
-		DefaultTableModel productModel = new DefaultTableModel(new Object[][] {,},
-				new String[] { "Identifiant", "Libellé", "Type", "Unité", "Nb d'articles créés" });
-		productList.setModel(productModel);
-		scrollPane_1.setViewportView(productList);
-
-		libeleTxt = new JTextField();
-		libeleTxt.setBounds(95, 160, 185, 34);
-		panelProduct.add(libeleTxt);
-		libeleTxt.setColumns(10);
-
-		JComboBox typeCombo = new JComboBox();
-		DefaultComboBoxModel productType = new DefaultComboBoxModel(new String[] { "", "Ingredients", "Ustensils" });
-		typeCombo.setModel(productType);
-		JComboBox unityCombo = new JComboBox();
-
-		typeCombo.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if (typeCombo.getSelectedItem() == "Ingredients") {
-//					Querys querys = new Querys();
-//					querys.getUnitys(unityCombo);
-
-					List<Measurement> unitys = (new MeasurementDAO()).findALL();//
-					unitys.forEach(m -> {
-
-						unityCombo.addItem(m.getUnit());
-
-					});
-					unityCombo.setEnabled(true);
-				} else {
-//		  					DefaultComboBoxModel unityModel = new DefaultComboBoxModel();
-//		  					unityCombo.setModel(unityModel);
-					unityCombo.removeAllItems();
-					unityCombo.setEnabled(false);
-
-				}
-
-			}
-		});
-
-		typeCombo.setBounds(307, 160, 138, 34);
-//		typeCombo.addItem(new ComboItem("Visible String 1", "Value 1"));
-
-		panelProduct.add(typeCombo);
-
-		unityCombo.setBounds(478, 160, 78, 34);
-		panelProduct.add(unityCombo);
-
-		JButton btnAdd = new JButton("Ajouter");
-		btnAdd.setBounds(150, 297, 104, 49);
-		panelProduct.add(btnAdd);
-
-		JButton btnUpdate = new JButton("Modifier");
-		btnUpdate.setBounds(308, 297, 104, 49);
-		panelProduct.add(btnUpdate);
-
-		JButton btnBlocked = new JButton("Retirer");
-		btnBlocked.setBounds(452, 297, 104, 49);
-		panelProduct.add(btnBlocked);
-
-		JButton btnNewButton_1_3 = new JButton("New button");
-		btnNewButton_1_3.setBounds(226, 424, 248, 77);
-		panelProduct.add(btnNewButton_1_3);
-
-		JLabel lblNewLabel_2 = new JLabel("Libell\u00E9");
-		lblNewLabel_2.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		lblNewLabel_2.setBounds(95, 132, 78, 27);
-		panelProduct.add(lblNewLabel_2);
-
-		JLabel lblNewLabel_2_1 = new JLabel("Type");
-		lblNewLabel_2_1.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		lblNewLabel_2_1.setBounds(338, 132, 78, 27);
-		panelProduct.add(lblNewLabel_2_1);
-
-		JLabel lblNewLabel_2_2 = new JLabel("Unit\u00E9");
-		lblNewLabel_2_2.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		lblNewLabel_2_2.setBounds(478, 130, 78, 27);
-		panelProduct.add(lblNewLabel_2_2);
+//		List<Product> products = (new ProductDAO()).findALL();//
+//		display(products,productModel);
+		
+//		typeCombo.setBounds(307, 160, 138, 34);
+////		typeCombo.addItem(new ComboItem("Visible String 1", "Value 1"));
+//
+//		panelProduct.add(typeCombo);
+//
+//		unityCombo.setBounds(478, 160, 78, 34);
+//		panelProduct.add(unityCombo);
+//
+//		JButton btnAdd = new JButton("Ajouter");
+//		btnAdd.addActionListener(new ActionListener() {
+//			public void actionPerformed(ActionEvent e) {
+//				if(libeleTxt.getText().isEmpty()) {
+//					
+//				}else {
+//					var myProduct = new Product();
+//					myProduct.create(libeleTxt, typeCombo, unityCombo);
+//					List<Product> updateProducts = (new ProductDAO()).findALL();//
+//					display(updateProducts, productModel);
+//				}
+//			}
+//		});
+//		btnAdd.setBounds(150, 297, 104, 49);
+//		panelProduct.add(btnAdd);
+//
+//		JButton btnUpdate = new JButton("Modifier");
+//		btnUpdate.setBounds(308, 297, 104, 49);
+//		panelProduct.add(btnUpdate);
+//
+//		JButton btnBlocked = new JButton("Retirer");
+//		btnBlocked.setBounds(452, 297, 104, 49);
+//		panelProduct.add(btnBlocked);
+//
+//		JButton btnNewButton_1_3 = new JButton("New button");
+//		btnNewButton_1_3.setBounds(226, 424, 248, 77);
+//		panelProduct.add(btnNewButton_1_3);
+//
+//		JLabel lblNewLabel_2 = new JLabel("Libell\u00E9");
+//		lblNewLabel_2.setFont(new Font("Tahoma", Font.PLAIN, 18));
+//		lblNewLabel_2.setBounds(95, 132, 78, 27);
+//		panelProduct.add(lblNewLabel_2);
+//
+//		JLabel lblNewLabel_2_1 = new JLabel("Type");
+//		lblNewLabel_2_1.setFont(new Font("Tahoma", Font.PLAIN, 18));
+//		lblNewLabel_2_1.setBounds(338, 132, 78, 27);
+//		panelProduct.add(lblNewLabel_2_1);
+//
+//		JLabel lblNewLabel_2_2 = new JLabel("Unit\u00E9");
+//		lblNewLabel_2_2.setFont(new Font("Tahoma", Font.PLAIN, 18));
+//		lblNewLabel_2_2.setBounds(478, 130, 78, 27);
+//		panelProduct.add(lblNewLabel_2_2);
 
 		// Gestion Fournisseur
 
-		JPanel panelProvider = new JPanel();
+		
+//		List<Conditioning> conditioning = (new ConditioningDAO()).findALL();//
+//		conditioning.forEach(c -> {
+//
+//			comboBoxConditioningArticle.addItem(c.getConditioningName());
+//
+//		});
+//		
+//		List<Product> productList = (new ProductDAO()).findALL();//
+//		productList.forEach(p -> {
+//
+//			comboBoxProductArticle.addItem(p.getProductName());
+//
+//		});
+		
+		
+		ProviderPanel panelProvider = new ProviderPanel();
 		tabbedPane.addTab("Gestion Fournisseur", null, panelProvider, null);
-		panelProvider.setLayout(null);
+//		panelProvider.setLayout(null);
 
-		JLabel lblCompanyNameProvider = new JLabel("Nom d'entreprise");
-		lblCompanyNameProvider.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lblCompanyNameProvider.setBounds(143, 59, 129, 23);
-		panelProvider.add(lblCompanyNameProvider);
-
-		JLabel lblProviderTitleProvider = new JLabel("Fournisseur");
-		lblProviderTitleProvider.setFont(new Font("Tahoma", Font.PLAIN, 24));
-		lblProviderTitleProvider.setBounds(279, 17, 129, 23);
-		panelProvider.add(lblProviderTitleProvider);
-
-		textFieldCompanyNameProvider = new JTextField();
-		textFieldCompanyNameProvider.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		textFieldCompanyNameProvider.setBounds(109, 103, 192, 35);
-		panelProvider.add(textFieldCompanyNameProvider);
-		textFieldCompanyNameProvider.setColumns(10);
-
-		JLabel lblStatusProvider = new JLabel("Statut");
-		lblStatusProvider.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lblStatusProvider.setBounds(458, 62, 47, 20);
-		panelProvider.add(lblStatusProvider);
-
-		JComboBox comboBoxStatusProvider = new JComboBox();
-		comboBoxStatusProvider.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		comboBoxStatusProvider.setBounds(425, 103, 123, 35);
-		panelProvider.add(comboBoxStatusProvider);
-
-		JLabel lblContactProvider = new JLabel("Contact");
-		lblContactProvider.setFont(new Font("Tahoma", Font.PLAIN, 24));
-		lblContactProvider.setBounds(305, 162, 85, 35);
-		panelProvider.add(lblContactProvider);
-
-		JLabel lblLastNameProvider = new JLabel("Nom");
-		lblLastNameProvider.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lblLastNameProvider.setBounds(109, 224, 41, 14);
-		panelProvider.add(lblLastNameProvider);
-
-		JLabel lblFirstNameProvider = new JLabel("Pr\u00E9nom");
-		lblFirstNameProvider.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lblFirstNameProvider.setBounds(331, 224, 59, 14);
-		panelProvider.add(lblFirstNameProvider);
-
-		JLabel lblPhoneNumberProvider = new JLabel("Num\u00E9ro de t\u00E9l\u00E9phone");
-		lblPhoneNumberProvider.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lblPhoneNumberProvider.setBounds(519, 224, 165, 14);
-		panelProvider.add(lblPhoneNumberProvider);
-
-		textFieldLastNameProvider = new JTextField();
-		textFieldLastNameProvider.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		textFieldLastNameProvider.setBounds(57, 261, 147, 35);
-		panelProvider.add(textFieldLastNameProvider);
-		textFieldLastNameProvider.setColumns(10);
-
-		textFieldFirstNameProvider = new JTextField();
-		textFieldFirstNameProvider.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		textFieldFirstNameProvider.setBounds(278, 261, 164, 35);
-		panelProvider.add(textFieldFirstNameProvider);
-		textFieldFirstNameProvider.setColumns(10);
-
-		textFieldPhoneNumberProvider = new JTextField();
-		textFieldPhoneNumberProvider.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		textFieldPhoneNumberProvider.setBounds(508, 261, 176, 35);
-		panelProvider.add(textFieldPhoneNumberProvider);
-		textFieldPhoneNumberProvider.setColumns(10);
-
-		JButton btnAddProvider = new JButton("Ajouter");
-		btnAddProvider.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		btnAddProvider.setBounds(193, 329, 104, 35);
-		panelProvider.add(btnAddProvider);
-
-		JButton btnEditProvider = new JButton("Modifier");
-		btnEditProvider.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		btnEditProvider.setBounds(425, 329, 104, 35);
-		panelProvider.add(btnEditProvider);
-
-		JLabel lblSelectedCompanyNameProvider = new JLabel("L\u00E9gumes.fr");
-		lblSelectedCompanyNameProvider.setFont(new Font("Tahoma", Font.PLAIN, 24));
-		lblSelectedCompanyNameProvider.setBounds(305, 388, 126, 35);
-		panelProvider.add(lblSelectedCompanyNameProvider);
-
-		JScrollPane scrollPaneSelectedProvider = new JScrollPane();
-		scrollPaneSelectedProvider.setBounds(57, 427, 627, 249);
-		panelProvider.add(scrollPaneSelectedProvider);
-
-		tableSelectedProvider = new JTable();
-		tableSelectedProvider.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		scrollPaneSelectedProvider.setViewportView(tableSelectedProvider);
-
-		DefaultTableModel selectedCompanyModel = new DefaultTableModel(new Object[][] {,},
-				new String[] { "Produit", "Conditionnement", "Poids", "Prix fournisseur �" });
-
-		tableSelectedProvider.setModel(selectedCompanyModel);
-		tableSelectedProvider.getColumnModel().getColumn(0).setResizable(false);
-		tableSelectedProvider.getColumnModel().getColumn(1).setResizable(false);
-		tableSelectedProvider.getColumnModel().getColumn(2).setResizable(false);
-		tableSelectedProvider.getColumnModel().getColumn(3).setResizable(false);
-		scrollPane.setViewportView(table);
-//		scrollPane.setColumnHeaderView(table);
-
-		JLabel ProviderSearchLabel = new JLabel("Rechercher");
-		ProviderSearchLabel.setFont(new Font("Tahoma", Font.PLAIN, 24));
-		ProviderSearchLabel.setBounds(1010, 11, 129, 35);
-		panelProvider.add(ProviderSearchLabel);
-
-		ProviderSearchBarField = new JTextField();
-		ProviderSearchBarField.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		ProviderSearchBarField.setBounds(771, 62, 595, 35);
-		panelProvider.add(ProviderSearchBarField);
-		ProviderSearchBarField.setColumns(10);
-
-		JRadioButton LastNameRadio = new JRadioButton("Nom");
-		LastNameRadio.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		LastNameRadio.setBounds(992, 109, 73, 23);
-		panelProvider.add(LastNameRadio);
-
-		JRadioButton FirstNameRadio = new JRadioButton("Pr\u00E9nom");
-		FirstNameRadio.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		FirstNameRadio.setBounds(1067, 109, 85, 23);
-		panelProvider.add(FirstNameRadio);
-
-		JRadioButton StatusRadio = new JRadioButton("Statut");
-		StatusRadio.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		StatusRadio.setBounds(1154, 109, 73, 23);
-		panelProvider.add(StatusRadio);
-
-		JRadioButton CompanyRadio = new JRadioButton("Entreprise");
-		CompanyRadio.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		CompanyRadio.setBounds(886, 109, 104, 23);
-		panelProvider.add(CompanyRadio);
-
-		JScrollPane ProviderScrollPanel = new JScrollPane();
-		ProviderScrollPanel.setBounds(771, 146, 595, 565);
-		panelProvider.add(ProviderScrollPanel);
-
-		ProviderTable = new JTable();
-		ProviderTable.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		ProviderScrollPanel.setViewportView(ProviderTable);
-
-		DefaultTableModel providerModel = new DefaultTableModel(new Object[][] {,},
-				new String[] { "Identifiant", "Entreprise", "Nom", "Pr�nom", "T�l�phone", "Statut" });
-
-		ProviderTable.setModel(providerModel);
-		ProviderTable.getColumnModel().getColumn(0).setResizable(false);
-		ProviderTable.getColumnModel().getColumn(1).setResizable(false);
-		ProviderTable.getColumnModel().getColumn(2).setResizable(false);
-		ProviderTable.getColumnModel().getColumn(3).setResizable(false);
-		ProviderTable.getColumnModel().getColumn(4).setResizable(false);
-		ProviderTable.getColumnModel().getColumn(5).setResizable(false);
-		scrollPane.setViewportView(table);
-//		scrollPane.setColumnHeaderView(table);
-
-		JButton OrderButton = new JButton("Passer une commande");
-		OrderButton.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		OrderButton.setBounds(279, 688, 192, 34);
-		panelProvider.add(OrderButton);
+//		JLabel lblCompanyNameProvider = new JLabel("Nom d'entreprise");
+//		lblCompanyNameProvider.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//		lblCompanyNameProvider.setBounds(143, 59, 129, 23);
+//		panelProvider.add(lblCompanyNameProvider);
+//
+//		JLabel lblProviderTitleProvider = new JLabel("Fournisseur");
+//		lblProviderTitleProvider.setFont(new Font("Tahoma", Font.PLAIN, 24));
+//		lblProviderTitleProvider.setBounds(279, 17, 129, 23);
+//		panelProvider.add(lblProviderTitleProvider);
+//
+//		textFieldCompanyNameProvider = new JTextField();
+//		textFieldCompanyNameProvider.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//		textFieldCompanyNameProvider.setBounds(109, 103, 192, 35);
+//		panelProvider.add(textFieldCompanyNameProvider);
+//		textFieldCompanyNameProvider.setColumns(10);
+//
+//		JLabel lblStatusProvider = new JLabel("Statut");
+//		lblStatusProvider.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//		lblStatusProvider.setBounds(458, 62, 47, 20);
+//		panelProvider.add(lblStatusProvider);
+//
+//		JComboBox comboBoxStatusProvider = new JComboBox();
+//		comboBoxStatusProvider.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//		comboBoxStatusProvider.setBounds(425, 103, 123, 35);
+//		panelProvider.add(comboBoxStatusProvider);
+//
+//		JLabel lblContactProvider = new JLabel("Contact");
+//		lblContactProvider.setFont(new Font("Tahoma", Font.PLAIN, 24));
+//		lblContactProvider.setBounds(305, 162, 85, 35);
+//		panelProvider.add(lblContactProvider);
+//
+//		JLabel lblLastNameProvider = new JLabel("Nom");
+//		lblLastNameProvider.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//		lblLastNameProvider.setBounds(109, 224, 41, 14);
+//		panelProvider.add(lblLastNameProvider);
+//
+//		JLabel lblFirstNameProvider = new JLabel("Pr\u00E9nom");
+//		lblFirstNameProvider.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//		lblFirstNameProvider.setBounds(331, 224, 59, 14);
+//		panelProvider.add(lblFirstNameProvider);
+//
+//		JLabel lblPhoneNumberProvider = new JLabel("Num\u00E9ro de t\u00E9l\u00E9phone");
+//		lblPhoneNumberProvider.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//		lblPhoneNumberProvider.setBounds(519, 224, 165, 14);
+//		panelProvider.add(lblPhoneNumberProvider);
+//
+//		textFieldLastNameProvider = new JTextField();
+//		textFieldLastNameProvider.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//		textFieldLastNameProvider.setBounds(57, 261, 147, 35);
+//		panelProvider.add(textFieldLastNameProvider);
+//		textFieldLastNameProvider.setColumns(10);
+//
+//		textFieldFirstNameProvider = new JTextField();
+//		textFieldFirstNameProvider.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//		textFieldFirstNameProvider.setBounds(278, 261, 164, 35);
+//		panelProvider.add(textFieldFirstNameProvider);
+//		textFieldFirstNameProvider.setColumns(10);
+//
+//		textFieldPhoneNumberProvider = new JTextField();
+//		textFieldPhoneNumberProvider.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//		textFieldPhoneNumberProvider.setBounds(508, 261, 176, 35);
+//		panelProvider.add(textFieldPhoneNumberProvider);
+//		textFieldPhoneNumberProvider.setColumns(10);
+//
+//		JButton btnAddProvider = new JButton("Ajouter");
+//		btnAddProvider.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//		btnAddProvider.setBounds(193, 329, 104, 35);
+//		panelProvider.add(btnAddProvider);
+//
+//		JButton btnEditProvider = new JButton("Modifier");
+//		btnEditProvider.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//		btnEditProvider.setBounds(425, 329, 104, 35);
+//		panelProvider.add(btnEditProvider);
+//
+//		JLabel lblSelectedCompanyNameProvider = new JLabel("L\u00E9gumes.fr");
+//		lblSelectedCompanyNameProvider.setFont(new Font("Tahoma", Font.PLAIN, 24));
+//		lblSelectedCompanyNameProvider.setBounds(305, 388, 126, 35);
+//		panelProvider.add(lblSelectedCompanyNameProvider);
+//
+//		JScrollPane scrollPaneSelectedProvider = new JScrollPane();
+//		scrollPaneSelectedProvider.setBounds(57, 427, 627, 249);
+//		panelProvider.add(scrollPaneSelectedProvider);
+//
+//		tableSelectedProvider = new JTable();
+//		tableSelectedProvider.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//		scrollPaneSelectedProvider.setViewportView(tableSelectedProvider);
+//
+//		DefaultTableModel selectedCompanyModel = new DefaultTableModel(new Object[][] {,},
+//				new String[] { "Produit", "Conditionnement", "Poids", "Prix fournisseur �" });
+//
+//		tableSelectedProvider.setModel(selectedCompanyModel);
+//		tableSelectedProvider.getColumnModel().getColumn(0).setResizable(false);
+//		tableSelectedProvider.getColumnModel().getColumn(1).setResizable(false);
+//		tableSelectedProvider.getColumnModel().getColumn(2).setResizable(false);
+//		tableSelectedProvider.getColumnModel().getColumn(3).setResizable(false);
+//		scrollPane.setViewportView(table);
+////		scrollPane.setColumnHeaderView(table);
+//
+//		JLabel ProviderSearchLabel = new JLabel("Rechercher");
+//		ProviderSearchLabel.setFont(new Font("Tahoma", Font.PLAIN, 24));
+//		ProviderSearchLabel.setBounds(1010, 11, 129, 35);
+//		panelProvider.add(ProviderSearchLabel);
+//
+//		ProviderSearchBarField = new JTextField();
+//		ProviderSearchBarField.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//		ProviderSearchBarField.setBounds(771, 62, 595, 35);
+//		panelProvider.add(ProviderSearchBarField);
+//		ProviderSearchBarField.setColumns(10);
+//
+//		JRadioButton LastNameRadio = new JRadioButton("Nom");
+//		LastNameRadio.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//		LastNameRadio.setBounds(992, 109, 73, 23);
+//		panelProvider.add(LastNameRadio);
+//
+//		JRadioButton FirstNameRadio = new JRadioButton("Pr\u00E9nom");
+//		FirstNameRadio.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//		FirstNameRadio.setBounds(1067, 109, 85, 23);
+//		panelProvider.add(FirstNameRadio);
+//
+//		JRadioButton StatusRadio = new JRadioButton("Statut");
+//		StatusRadio.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//		StatusRadio.setBounds(1154, 109, 73, 23);
+//		panelProvider.add(StatusRadio);
+//
+//		JRadioButton CompanyRadio = new JRadioButton("Entreprise");
+//		CompanyRadio.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//		CompanyRadio.setBounds(886, 109, 104, 23);
+//		panelProvider.add(CompanyRadio);
+//
+//		JScrollPane ProviderScrollPanel = new JScrollPane();
+//		ProviderScrollPanel.setBounds(771, 146, 595, 565);
+//		panelProvider.add(ProviderScrollPanel);
+//
+//		ProviderTable = new JTable();
+//		ProviderTable.setFont(new Font("Tahoma", Font.PLAIN, 14));
+//		ProviderScrollPanel.setViewportView(ProviderTable);
+//
+//		DefaultTableModel providerModel = new DefaultTableModel(new Object[][] {,},
+//				new String[] { "Identifiant", "Entreprise", "Nom", "Pr�nom", "T�l�phone", "Statut" });
+//
+//		ProviderTable.setModel(providerModel);
+//		ProviderTable.getColumnModel().getColumn(0).setResizable(false);
+//		ProviderTable.getColumnModel().getColumn(1).setResizable(false);
+//		ProviderTable.getColumnModel().getColumn(2).setResizable(false);
+//		ProviderTable.getColumnModel().getColumn(3).setResizable(false);
+//		ProviderTable.getColumnModel().getColumn(4).setResizable(false);
+//		ProviderTable.getColumnModel().getColumn(5).setResizable(false);
+//		scrollPane.setViewportView(table);
+////		scrollPane.setColumnHeaderView(table);
+//
+//		JButton OrderButton = new JButton("Passer une commande");
+//		OrderButton.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//		OrderButton.setBounds(279, 688, 192, 34);
+//		panelProvider.add(OrderButton);
 
 		// Gestion Profil
 
@@ -825,5 +883,26 @@ public class Management extends JFrame {
 		tabbedPane.addTab("Profil", null, panelProfile, null);
 		// scrollPane.setColumnHeaderView(table);
 
+//		productList.addMouseListener(new MouseAdapter() {
+//			@Override
+//			public void mouseClicked(MouseEvent e) {
+//				if (!productList.getSelectionModel().isSelectionEmpty()) {
+//					int row = productList.getSelectedRow();
+//					libeleTxt.setText((String) productModel.getValueAt(row, 1));
+////					String t = ((String) productModel.getValueAt(row, 1));
+////					System.out.println(t);
+////					if(((String) productModel.getValueAt(row, 2)).equals("Ingredient")) {
+////						typeCombo.setSelectedItem("Ingredients");
+////					}else {
+////						typeCombo.setSelectedItem("Ustensils");
+////					}
+//					typeCombo.setSelectedItem((String) productModel.getValueAt(row, 2));
+//					unityCombo.setSelectedItem((String) productModel.getValueAt(row, 3));
+//				}
+//				
+//			}
+//		});
 	}
+	
+
 }
