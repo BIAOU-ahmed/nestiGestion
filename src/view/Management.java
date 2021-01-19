@@ -23,6 +23,7 @@ import javax.swing.table.TableColumnModel;
 
 import component.ArticlePanel;
 import component.ProductPanel;
+import component.ProfilePanel;
 import component.ProviderPanel;
 import dao.ConditioningDAO;
 import dao.MeasurementDAO;
@@ -81,6 +82,8 @@ public class Management extends JFrame {
 	private JTextField libeleTxt;
 	JComboBox typeCombo;
 	JComboBox unityCombo;
+	private JTextField textFieldUsernameProfile;
+	private JTextField textFieldPasswordProfile;
 	/**
 	 * Launch the application.
 	 */
@@ -879,8 +882,66 @@ public class Management extends JFrame {
 
 		// Gestion Profil
 
-		JPanel panelProfile = new JPanel();
+		ProfilePanel panelProfile = new ProfilePanel();
 		tabbedPane.addTab("Profil", null, panelProfile, null);
+//		panelProfile.setLayout(null);
+//		
+//		JLabel lblTitleProfile = new JLabel("Profil");
+//		lblTitleProfile.setFont(new Font("Tahoma", Font.PLAIN, 24));
+//		lblTitleProfile.setBounds(681, 96, 59, 29);
+//		panelProfile.add(lblTitleProfile);
+//		
+//		JLabel lblUsernameProfile = new JLabel("Nom d'utilisateur");
+//		lblUsernameProfile.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//		lblUsernameProfile.setBounds(395, 202, 127, 20);
+//		panelProfile.add(lblUsernameProfile);
+//		
+//		JLabel lblPasswordProfile = new JLabel("Mot de passe");
+//		lblPasswordProfile.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//		lblPasswordProfile.setBounds(395, 361, 92, 20);
+//		panelProfile.add(lblPasswordProfile);
+//		
+//		JLabel lblDateProfile = new JLabel("Profil cr\u00E9\u00E9 le 08/01/21");
+//		lblDateProfile.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//		lblDateProfile.setBounds(622, 609, 159, 14);
+//		panelProfile.add(lblDateProfile);
+//		
+//		textFieldUsernameProfile = new JTextField();
+//		textFieldUsernameProfile.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//		textFieldUsernameProfile.setBounds(395, 233, 280, 36);
+//		panelProfile.add(textFieldUsernameProfile);
+//		textFieldUsernameProfile.setColumns(10);
+//		
+//		textFieldPasswordProfile = new JTextField();
+//		textFieldPasswordProfile.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//		textFieldPasswordProfile.setColumns(10);
+//		textFieldPasswordProfile.setBounds(395, 392, 280, 36);
+//		panelProfile.add(textFieldPasswordProfile);
+//		
+//		JButton btnAdminProfile = new JButton("Gestion Admin");
+//		btnAdminProfile.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//		btnAdminProfile.setBounds(622, 508, 148, 36);
+//		panelProfile.add(btnAdminProfile);
+//		
+//		JButton btnEditUsernameProfile = new JButton("Modifier");
+//		btnEditUsernameProfile.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//		btnEditUsernameProfile.setBounds(726, 233, 148, 36);
+//		panelProfile.add(btnEditUsernameProfile);
+//		
+//		JButton btnEditPasswordProfile = new JButton("Modifier");
+//		btnEditPasswordProfile.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//		btnEditPasswordProfile.setBounds(726, 392, 148, 36);
+//		panelProfile.add(btnEditPasswordProfile);
+//		
+//		JButton btnCancelUsernameProfile = new JButton("Annuler");
+//		btnCancelUsernameProfile.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//		btnCancelUsernameProfile.setBounds(897, 233, 148, 36);
+//		panelProfile.add(btnCancelUsernameProfile);
+//		
+//		JButton btnCancelPasswordProfile = new JButton("Annuler");
+//		btnCancelPasswordProfile.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//		btnCancelPasswordProfile.setBounds(897, 392, 148, 36);
+//		panelProfile.add(btnCancelPasswordProfile);
 		// scrollPane.setColumnHeaderView(table);
 
 //		productList.addMouseListener(new MouseAdapter() {
@@ -903,6 +964,4 @@ public class Management extends JFrame {
 //			}
 //		});
 	}
-	
-
 }
