@@ -58,22 +58,22 @@ public class Administrator {
     /**
      * 
      */
-    public void createArticle() {
-        // TODO implement here
+    public void createArticle(Article article) {
+        article.create();
     }
 
     /**
      * 
      */
-    public void createProvider() {
-        // TODO implement here
+    public void createProvider(Provider provider) {
+    	provider.create();
     }
 
     /**
      * 
      */
-    public void updateProvider() {
-        // TODO implement here
+    public void updateProvider(Provider provider) {
+    	
     }
 
     /**
