@@ -4,6 +4,7 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Date;
+import java.util.List;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -17,9 +18,15 @@ import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 import dao.AdministratorDAO;
+import dao.ProductDAO;
+import dao.ProviderDAO;
 import model.Article;
+import model.Product;
 import model.Provider;
 import tools.AppSettings;
+import tools.Useful;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class ProviderPanel extends JPanel {
 
@@ -96,23 +103,7 @@ public class ProviderPanel extends JPanel {
 		textFieldPhoneNumberProvider.setColumns(10);
 
 		JButton btnAddProvider = new JButton("Ajouter");
-		btnAddProvider.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				Provider newProvider = new Provider();
-				var adminId = Integer.parseInt(AppSettings.get("loginUser"));
-				var admin = (new AdministratorDAO()).find(" 	idAdministrator", adminId);
-				
-				newProvider.setCompanyName(textFieldCompanyNameProvider.getText());
-				newProvider.setContactLastName(textFieldLastNameProvider.getText());
-				newProvider.setContactFirstName(textFieldFirstNameProvider.getText());
-				newProvider.setProviderState(comboBoxStatusProvider.getSelectedItem().toString());
-				newProvider.setContactPhoneNumber(textFieldPhoneNumberProvider.getText());
-				newProvider.setIdAdministrator(adminId);
-				admin.createProvider(newProvider);
 
-			}
-		});
 		btnAddProvider.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		btnAddProvider.setBounds(193, 329, 104, 35);
 		this.add(btnAddProvider);
@@ -178,6 +169,7 @@ public class ProviderPanel extends JPanel {
 		this.add(CompanyRadio);
 
 		JScrollPane ProviderScrollPanel = new JScrollPane();
+
 		ProviderScrollPanel.setBounds(771, 146, 595, 565);
 		this.add(ProviderScrollPanel);
 
@@ -202,7 +194,70 @@ public class ProviderPanel extends JPanel {
 		OrderButton.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		OrderButton.setBounds(279, 688, 192, 34);
 		this.add(OrderButton);
-		
+
+		btnAddProvider.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Provider newProvider = new Provider();
+				var adminId = Integer.parseInt(AppSettings.get("loginUser"));
+				var admin = (new AdministratorDAO()).find(" 	idAdministrator", adminId);
+
+				newProvider.setCompanyName(textFieldCompanyNameProvider.getText());
+				newProvider.setContactLastName(textFieldLastNameProvider.getText());
+				newProvider.setContactFirstName(textFieldFirstNameProvider.getText());
+				newProvider.setProviderState(comboBoxStatusProvider.getSelectedItem().toString());
+				newProvider.setContactPhoneNumber(textFieldPhoneNumberProvider.getText());
+				newProvider.setIdAdministrator(adminId);
+				admin.createProvider(newProvider);
+				List<Provider> updateProvider = (new ProviderDAO()).findALL();//
+				Useful.displayProvider(updateProvider, providerModel);
+
+			}
+		});
+
+		btnEditProvider.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Provider newProvider = new Provider();
+				var adminId = Integer.parseInt(AppSettings.get("loginUser"));
+				var admin = (new AdministratorDAO()).find("idAdministrator", adminId);
+				int row = ProviderTable.getSelectedRow();
+
+			
+				
+
+				newProvider.setId((Integer) providerModel.getValueAt(row, 0));
+				newProvider.setCompanyName(textFieldCompanyNameProvider.getText());
+				newProvider.setContactLastName(textFieldLastNameProvider.getText());
+				newProvider.setContactFirstName(textFieldFirstNameProvider.getText());
+				newProvider.setProviderState(comboBoxStatusProvider.getSelectedItem().toString());
+				newProvider.setContactPhoneNumber(textFieldPhoneNumberProvider.getText());
+				newProvider.setIdAdministrator(adminId);
+				admin.updateProvider(newProvider);
+				List<Provider> updateProvider = (new ProviderDAO()).findALL();//
+				Useful.displayProvider(updateProvider, providerModel);
+
+			}
+		});
+
+		ProviderTable.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (!ProviderTable.getSelectionModel().isSelectionEmpty()) {
+					int row = ProviderTable.getSelectedRow();
+					textFieldLastNameProvider.setText((String) providerModel.getValueAt(row, 2));
+					textFieldFirstNameProvider.setText((String) providerModel.getValueAt(row, 3));
+					textFieldPhoneNumberProvider.setText((String) providerModel.getValueAt(row, 4));
+					textFieldCompanyNameProvider.setText((String) providerModel.getValueAt(row, 1));
+					comboBoxStatusProvider.setSelectedItem((String) providerModel.getValueAt(row, 5));
+
+				}
+			}
+		});
+
+		List<Provider> updateProvider = (new ProviderDAO()).findALL();//
+		Useful.displayProvider(updateProvider, providerModel);
+
 	}
 
 }
