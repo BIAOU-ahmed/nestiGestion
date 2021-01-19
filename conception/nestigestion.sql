@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le :  jeu. 14 jan. 2021 à 11:12
+-- Généré le :  mar. 19 jan. 2021 à 13:05
 -- Version du serveur :  10.4.10-MariaDB
 -- Version de PHP :  7.3.12
 
@@ -35,16 +35,16 @@ CREATE TABLE IF NOT EXISTS `administrator` (
   `adminState` enum('a','w','b') DEFAULT NULL,
   `createAt` datetime DEFAULT NULL,
   `password` varchar(150) NOT NULL,
-  PRIMARY KEY (`idAdministrator`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
+  PRIMARY KEY (`idAdministrator`),
+  UNIQUE KEY `userName` (`userName`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Déchargement des données de la table `administrator`
 --
 
 INSERT INTO `administrator` (`idAdministrator`, `userName`, `adminState`, `createAt`, `password`) VALUES
-(1, 'ahmed', 'a', '2021-01-14 00:00:00', 'test'),
-(2, 'SuperAdmin', 'a', '2021-01-14 00:00:00', '$s0$41010$izD53VNaQsTFOKI5vIHYKg==$w9sYbzpTuswOKn7WwvQiWEddWHE/ED6cTLcFravXvRA=');
+(1, 'SuperAdmin', 'a', '2021-01-17 00:00:00', '$s0$41010$CuTXrR1KkxCDuks4r3VbCA==$OLjKChfb0mwx8ndOS+krYFLZ8/fyGXOqNX0qYcnIDjc=');
 
 -- --------------------------------------------------------
 
@@ -58,7 +58,7 @@ CREATE TABLE IF NOT EXISTS `article` (
   `weight` decimal(15,2) DEFAULT NULL,
   `amount` int(11) DEFAULT NULL,
   `articleState` enum('a','w','b') DEFAULT NULL,
-  `createdAt` varchar(50) DEFAULT NULL,
+  `createdAt` datetime DEFAULT NULL,
   `idAdministrator` int(11) NOT NULL,
   `idProduct` int(11) NOT NULL,
   `idConditioning` int(11) NOT NULL,
@@ -66,7 +66,15 @@ CREATE TABLE IF NOT EXISTS `article` (
   KEY `idAdministrator` (`idAdministrator`),
   KEY `idProduct` (`idProduct`),
   KEY `idConditioning` (`idConditioning`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
+
+--
+-- Déchargement des données de la table `article`
+--
+
+INSERT INTO `article` (`idArticle`, `weight`, `amount`, `articleState`, `createdAt`, `idAdministrator`, `idProduct`, `idConditioning`) VALUES
+(1, '0.20', 5, 'a', '2021-01-17 00:00:00', 1, 1, 1),
+(2, '1.00', 5, 'a', '2021-01-17 00:00:00', 1, 2, 1);
 
 -- --------------------------------------------------------
 
@@ -77,9 +85,18 @@ CREATE TABLE IF NOT EXISTS `article` (
 DROP TABLE IF EXISTS `conditioning`;
 CREATE TABLE IF NOT EXISTS `conditioning` (
   `idConditioning` int(11) NOT NULL AUTO_INCREMENT,
-  `conditionningName` varchar(150) NOT NULL,
-  PRIMARY KEY (`idConditioning`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `conditioningName` varchar(50) NOT NULL,
+  PRIMARY KEY (`idConditioning`),
+  UNIQUE KEY `conditioningName` (`conditioningName`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
+
+--
+-- Déchargement des données de la table `conditioning`
+--
+
+INSERT INTO `conditioning` (`idConditioning`, `conditioningName`) VALUES
+(1, 'lot'),
+(2, 'paquet');
 
 -- --------------------------------------------------------
 
@@ -95,6 +112,13 @@ CREATE TABLE IF NOT EXISTS `ingredient` (
   KEY `idMeasurement` (`idMeasurement`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Déchargement des données de la table `ingredient`
+--
+
+INSERT INTO `ingredient` (`idProduct`, `idMeasurement`) VALUES
+(1, 1);
+
 -- --------------------------------------------------------
 
 --
@@ -103,10 +127,20 @@ CREATE TABLE IF NOT EXISTS `ingredient` (
 
 DROP TABLE IF EXISTS `measurement`;
 CREATE TABLE IF NOT EXISTS `measurement` (
-  `idMeasurement` int(11) NOT NULL,
-  `unit` varchar(50) DEFAULT NULL,
-  PRIMARY KEY (`idMeasurement`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `idMeasurement` int(11) NOT NULL AUTO_INCREMENT,
+  `unit` varchar(50) NOT NULL,
+  PRIMARY KEY (`idMeasurement`),
+  UNIQUE KEY `unit` (`unit`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
+
+--
+-- Déchargement des données de la table `measurement`
+--
+
+INSERT INTO `measurement` (`idMeasurement`, `unit`) VALUES
+(1, 'kg'),
+(2, 'L'),
+(3, 'piece');
 
 -- --------------------------------------------------------
 
@@ -118,9 +152,11 @@ DROP TABLE IF EXISTS `orders`;
 CREATE TABLE IF NOT EXISTS `orders` (
   `idOrders` int(11) NOT NULL AUTO_INCREMENT,
   `orderDate` datetime NOT NULL,
-  `state` enum('act','w','bloqued') DEFAULT NULL,
+  `state` enum('act','w','bl') DEFAULT NULL,
+  `idProvider` int(11) NOT NULL,
   `idAdministrator` int(11) NOT NULL,
   PRIMARY KEY (`idOrders`),
+  KEY `idProvider` (`idProvider`),
   KEY `idAdministrator` (`idAdministrator`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -150,9 +186,18 @@ CREATE TABLE IF NOT EXISTS `order_line` (
 DROP TABLE IF EXISTS `product`;
 CREATE TABLE IF NOT EXISTS `product` (
   `idProduct` int(11) NOT NULL AUTO_INCREMENT,
-  `procuctName` varchar(150) NOT NULL,
-  PRIMARY KEY (`idProduct`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `productName` varchar(150) NOT NULL,
+  PRIMARY KEY (`idProduct`),
+  UNIQUE KEY `productName` (`productName`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
+
+--
+-- Déchargement des données de la table `product`
+--
+
+INSERT INTO `product` (`idProduct`, `productName`) VALUES
+(1, 'banane'),
+(2, 'fouet');
 
 -- --------------------------------------------------------
 
@@ -170,8 +215,16 @@ CREATE TABLE IF NOT EXISTS `provider` (
   `contactPhoneNumber` varchar(100) NOT NULL,
   `idAdministrator` int(11) NOT NULL,
   PRIMARY KEY (`idProvider`),
+  UNIQUE KEY `compagnyName` (`compagnyName`),
   KEY `idAdministrator` (`idAdministrator`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
+
+--
+-- Déchargement des données de la table `provider`
+--
+
+INSERT INTO `provider` (`idProvider`, `compagnyName`, `contactLastName`, `contactFirstName`, `providerState`, `contactPhoneNumber`, `idAdministrator`) VALUES
+(1, 'Légumes.fr', 'test', 'test1', 'a', '01.02.54.12.36', 1);
 
 -- --------------------------------------------------------
 
@@ -214,6 +267,13 @@ CREATE TABLE IF NOT EXISTS `utensil` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
+-- Déchargement des données de la table `utensil`
+--
+
+INSERT INTO `utensil` (`idProduct`) VALUES
+(2);
+
+--
 -- Contraintes pour les tables déchargées
 --
 
@@ -236,7 +296,8 @@ ALTER TABLE `ingredient`
 -- Contraintes pour la table `orders`
 --
 ALTER TABLE `orders`
-  ADD CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`idAdministrator`) REFERENCES `administrator` (`idAdministrator`);
+  ADD CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`idProvider`) REFERENCES `provider` (`idProvider`),
+  ADD CONSTRAINT `orders_ibfk_2` FOREIGN KEY (`idAdministrator`) REFERENCES `administrator` (`idAdministrator`);
 
 --
 -- Contraintes pour la table `order_line`
