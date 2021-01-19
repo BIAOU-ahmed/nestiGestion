@@ -29,6 +29,8 @@ public  class Useful {
 		});
 	}
 	
+	//make one function to display all
+	
 	public static void displayArticle(List<Article> products,DefaultTableModel model) {
 //		 = (new ProductDAO()).findALL();//
 		model.setRowCount(0);
