@@ -3,6 +3,7 @@
  */
 package dao;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -26,7 +27,7 @@ public abstract class BaseDAO<E> {
 
 //		System.out.println("table " + getTableName());
 		try {
-			var find = DBConnection.get()
+			PreparedStatement find = DBConnection.get()
 					.prepareStatement("SELECT * FROM " + getTableName() + " WHERE " + fieldName + " = ?");
 
 			find.setObject(1, fieldValue);
@@ -51,7 +52,7 @@ public abstract class BaseDAO<E> {
 		ArrayList<E> result = null;
 
 		try {
-			var allUsersRs = DBConnection.get().createStatement().executeQuery("SELECT * FROM " + getTableName() + ";");
+			ResultSet allUsersRs = DBConnection.get().createStatement().executeQuery("SELECT * FROM " + getTableName() + ";");
 			result = getAllFromResultSet(allUsersRs);
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -62,7 +63,7 @@ public abstract class BaseDAO<E> {
 
 	private ArrayList<E> getAllFromResultSet(ResultSet rs) throws SQLException {
 		ArrayList<E> resultList = new ArrayList<>();
-		var result = getFromResultSet(rs);
+		E result = getFromResultSet(rs);
 
 		while (result != null) {
 			resultList.add(result);
