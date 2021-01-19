@@ -51,9 +51,9 @@ import java.awt.event.MouseEvent;
 public class Management extends JFrame {
 
 	private JPanel contentPane;
-	private JTextField textField;
-	private JTable table_1;
-	private JTextField textField_1;
+	private JTextField textFieldOrderNumberHistory;
+	private JTable tableRecap;
+	private JTextField textFieldTotalPriceHistory;
 	private JTable table;
 	private JTextField textField_2;
 
@@ -76,14 +76,22 @@ public class Management extends JFrame {
 	private JTable tableDelivery;
 	private JTextField textFieldQtyOrder;
 	private JTable tableOrder;
-	private JTextField textField_4;
+	private JTextField textFieldTotalPrice;
 	JComboBox comboBoxProductArticle;
 	private JTable productList = new JTable();
 	private JTextField libeleTxt;
 	JComboBox typeCombo;
 	JComboBox unityCombo;
+
+	private JTextField textFieldUnit;
+	private JTextField textFieldCond;
+	private JTable tableUnit;
+	private JTable tableCond;
+
+
 	private JTextField textFieldUsernameProfile;
 	private JTextField textFieldPasswordProfile;
+
 	/**
 	 * Launch the application.
 	 */
@@ -120,308 +128,318 @@ public class Management extends JFrame {
 
 		JPanel panelHistory = new JPanel();
 		tabbedPane.addTab("Historique Commande", null, panelHistory, null);
-		panelHistory.setLayout(null);
-
-
-		JLabel lblNewLabel = new JLabel("Historique des commandes");
-		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 24));
-		lblNewLabel.setBounds(181, 11, 290, 34);
-		panelHistory.add(lblNewLabel);
-
-
-		JLabel lblNewLabel_1 = new JLabel("Fournisseur");
-		lblNewLabel_1.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblNewLabel_1.setBounds(28, 85, 74, 28);
-		panelHistory.add(lblNewLabel_1);
-
-		JComboBox comboBox = new JComboBox();
-		comboBox.setBounds(112, 90, 127, 22);
-		panelHistory.add(comboBox);
-
-		JComboBox comboBox_1 = new JComboBox();
-		comboBox_1.setBounds(585, 88, 137, 22);
-		panelHistory.add(comboBox_1);
-
-
-		JLabel lblNewLabel_1_1 = new JLabel("Etat livraison");
-		lblNewLabel_1_1.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblNewLabel_1_1.setBounds(608, 49, 84, 28);
-		panelHistory.add(lblNewLabel_1_1);
-
-
-		JLabel lblNewLabel_1_1_1 = new JLabel("Num\u00E9ro de commande");
-		lblNewLabel_1_1_1.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		lblNewLabel_1_1_1.setBounds(255, 85, 137, 28);
-		panelHistory.add(lblNewLabel_1_1_1);
-
-
-		textField = new JTextField();
-		textField.setBounds(402, 85, 156, 28);
-		panelHistory.add(textField);
-		textField.setColumns(10);
-
-		table_1 = new JTable();
-		table_1.setBounds(836, 85, 548, 378);
-		panelHistory.add(table_1);
-
-
-		textField_1 = new JTextField();
-		textField_1.setBounds(1289, 473, 95, 34);
-		panelHistory.add(textField_1);
-		textField_1.setColumns(10);
-
-		JComboBox comboBox_2 = new JComboBox();
-		comboBox_2.setBounds(836, 562, 127, 34);
-		panelHistory.add(comboBox_2);
-
-		JButton btnNewButton = new JButton("Valider");
-		btnNewButton.setBounds(1000, 562, 109, 34);
-		panelHistory.add(btnNewButton);
-
-		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(28, 142, 698, 558);
-		panelHistory.add(scrollPane);
-
-
-		table = new JTable();
-		table.setFillsViewportHeight(true);
-
-		DefaultTableModel model = new DefaultTableModel(new Object[][] {,}, new String[] { "Numéro commande",
-				"Fournisseur", "Montant €", "Date commande", "Date livraison", "Statut" });
-
-		table.setModel(model);
-		table.getColumnModel().getColumn(0).setResizable(false);
-		table.getColumnModel().getColumn(1).setResizable(false);
-		table.getColumnModel().getColumn(2).setResizable(false);
-		table.getColumnModel().getColumn(3).setResizable(false);
-		table.getColumnModel().getColumn(4).setResizable(false);
-		table.getColumnModel().getColumn(5).setResizable(false);
-		scrollPane.setViewportView(table);
+//		panelHistory.setLayout(null);
+//
+//		JLabel lblTitleHistory = new JLabel("Historique des commandes");
+//		lblTitleHistory.setHorizontalAlignment(SwingConstants.CENTER);
+//		lblTitleHistory.setFont(new Font("Tahoma", Font.PLAIN, 24));
+//		lblTitleHistory.setBounds(100, 20, 490, 30);
+//		panelHistory.add(lblTitleHistory);
+//
+//		JLabel lblProviderHistory = new JLabel("Fournisseur");
+//		lblProviderHistory.setHorizontalAlignment(SwingConstants.CENTER);
+//		lblProviderHistory.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//		lblProviderHistory.setBounds(20, 70, 200, 30);
+//		panelHistory.add(lblProviderHistory);
+//
+//		JComboBox comboBoxProviderHistory = new JComboBox();
+//		comboBoxProviderHistory.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//		comboBoxProviderHistory.setBounds(20, 100, 200, 40);
+//		panelHistory.add(comboBoxProviderHistory);
+//
+//		JComboBox comboBoxStateHistory = new JComboBox();
+//		comboBoxStateHistory.setBounds(520, 100, 150, 40);
+//		panelHistory.add(comboBoxStateHistory);
+//
+//		JLabel lblStateHistory = new JLabel("Etat livraison");
+//		lblStateHistory.setHorizontalAlignment(SwingConstants.CENTER);
+//		lblStateHistory.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//		lblStateHistory.setBounds(520, 70, 150, 30);
+//		panelHistory.add(lblStateHistory);
+//
+//		JLabel lblOrderNumberHistory = new JLabel("Num\u00E9ro de commande");
+//		lblOrderNumberHistory.setHorizontalAlignment(SwingConstants.CENTER);
+//		lblOrderNumberHistory.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//		lblOrderNumberHistory.setBounds(270, 70, 200, 30);
+//		panelHistory.add(lblOrderNumberHistory);
+//
+//		textFieldOrderNumberHistory = new JTextField();
+//		textFieldOrderNumberHistory.setBounds(270, 100, 200, 40);
+//		panelHistory.add(textFieldOrderNumberHistory);
+//		textFieldOrderNumberHistory.setColumns(10);
+//
+//		tableRecap = new JTable();
+//		tableRecap.setBounds(750, 50, 600, 500);
+//		panelHistory.add(tableRecap);
+//
+//		textFieldTotalPriceHistory = new JTextField();
+//		textFieldTotalPriceHistory.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//		textFieldTotalPriceHistory.setHorizontalAlignment(SwingConstants.CENTER);
+//		textFieldTotalPriceHistory.setBounds(1200, 550, 150, 40);
+//		panelHistory.add(textFieldTotalPriceHistory);
+//		textFieldTotalPriceHistory.setColumns(10);
+//
+//		JComboBox comboBoxFinalStateHistory = new JComboBox();
+//		comboBoxFinalStateHistory.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//		comboBoxFinalStateHistory.setBounds(800, 650, 150, 40);
+//		panelHistory.add(comboBoxFinalStateHistory);
+//
+//		JButton btnSaveStateHistory = new JButton("Valider");
+//		btnSaveStateHistory.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//		btnSaveStateHistory.setBounds(1000, 650, 150, 40);
+//		panelHistory.add(btnSaveStateHistory);
+//
+//		JScrollPane scrollPane = new JScrollPane();
+//		scrollPane.setBounds(20, 170, 650, 550);
+//		panelHistory.add(scrollPane);
+//
+//		table = new JTable();
+//		table.setFillsViewportHeight(true);
+//
+//		DefaultTableModel model = new DefaultTableModel(new Object[][] {,}, new String[] { "Numéro commande",
+//				"Fournisseur", "Montant €", "Date commande", "Date livraison", "Statut" });
+//
+//		table.setModel(model);
+//		table.getColumnModel().getColumn(0).setResizable(false);
+//		table.getColumnModel().getColumn(1).setResizable(false);
+//		table.getColumnModel().getColumn(2).setResizable(false);
+//		table.getColumnModel().getColumn(3).setResizable(false);
+//		table.getColumnModel().getColumn(4).setResizable(false);
+//		table.getColumnModel().getColumn(5).setResizable(false);
+//		scrollPane.setViewportView(table);
+//		
+//		JLabel lblSaveState = new JLabel("Statut Livraison");
+//		lblSaveState.setHorizontalAlignment(SwingConstants.CENTER);
+//		lblSaveState.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//		lblSaveState.setBounds(800, 620, 150, 30);
+//		panelHistory.add(lblSaveState);
 
 		// Onglet Gestion Livraison
 
 		JPanel panelDelivery = new JPanel();
 		tabbedPane.addTab("Gestion Livraison", null, panelDelivery, null);
-		panelDelivery.setLayout(null);
-
-		JLabel lblTitleDelivery = new JLabel("R\u00E9ception des Articles");
-		lblTitleDelivery.setFont(new Font("Tahoma", Font.PLAIN, 24));
-		lblTitleDelivery.setHorizontalAlignment(SwingConstants.CENTER);
-		lblTitleDelivery.setBounds(0, 50, 500, 70);
-		panelDelivery.add(lblTitleDelivery);
-
-		JComboBox comboBoxArticleDelivery = new JComboBox();
-		comboBoxArticleDelivery.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		comboBoxArticleDelivery.setBounds(25, 320, 250, 40);
-		panelDelivery.add(comboBoxArticleDelivery);
-
-		JComboBox comboBoxOrderNumberDelivery = new JComboBox();
-		comboBoxOrderNumberDelivery.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		comboBoxOrderNumberDelivery.setBounds(900, 30, 250, 40);
-		panelDelivery.add(comboBoxOrderNumberDelivery);
-
-		textFieldAmountReceived = new JTextField();
-		textFieldAmountReceived.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		textFieldAmountReceived.setHorizontalAlignment(SwingConstants.CENTER);
-		textFieldAmountReceived.setBounds(325, 320, 75, 40);
-		panelDelivery.add(textFieldAmountReceived);
-		textFieldAmountReceived.setColumns(10);
-
-		textFieldAmountExpected = new JTextField();
-		textFieldAmountExpected.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		textFieldAmountExpected.setHorizontalAlignment(SwingConstants.CENTER);
-		textFieldAmountExpected.setBounds(400, 320, 75, 40);
-		panelDelivery.add(textFieldAmountExpected);
-		textFieldAmountExpected.setColumns(10);
-
-		textFieldDeliveryDate = new JTextField();
-		textFieldDeliveryDate.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		textFieldDeliveryDate.setBounds(150, 470, 200, 40);
-		panelDelivery.add(textFieldDeliveryDate);
-		textFieldDeliveryDate.setColumns(10);
-
-		JButton btnSaveDelivery = new JButton("Enregistrer");
-		btnSaveDelivery.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		btnSaveDelivery.setBounds(75, 600, 150, 40);
-		panelDelivery.add(btnSaveDelivery);
-
-		JButton btnDeleteDelivery = new JButton("Supprimer");
-		btnDeleteDelivery.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		btnDeleteDelivery.setBounds(275, 600, 150, 40);
-		panelDelivery.add(btnDeleteDelivery);
-
-		JLabel lblProviderDelivery = new JLabel("Fournisseur");
-		lblProviderDelivery.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lblProviderDelivery.setHorizontalAlignment(SwingConstants.CENTER);
-		lblProviderDelivery.setBounds(100, 180, 300, 20);
-		panelDelivery.add(lblProviderDelivery);
-
-		JLabel lblArticleDelivery = new JLabel("Article");
-		lblArticleDelivery.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lblArticleDelivery.setHorizontalAlignment(SwingConstants.CENTER);
-		lblArticleDelivery.setBounds(25, 300, 250, 20);
-		panelDelivery.add(lblArticleDelivery);
-
-		JLabel lblAmountDelivery = new JLabel("Quantit\u00E9 re\u00E7ue/Command\u00E9e");
-		lblAmountDelivery.setHorizontalAlignment(SwingConstants.CENTER);
-		lblAmountDelivery.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		lblAmountDelivery.setBounds(300, 300, 200, 14);
-		panelDelivery.add(lblAmountDelivery);
-
-		JLabel lblDeliveryDate = new JLabel("Date de livraison");
-		lblDeliveryDate.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lblDeliveryDate.setHorizontalAlignment(SwingConstants.CENTER);
-		lblDeliveryDate.setBounds(150, 450, 200, 20);
-		panelDelivery.add(lblDeliveryDate);
-
-		JLabel lblOrderNumberDelivery = new JLabel("Num\u00E9ro de la commande");
-		lblOrderNumberDelivery.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lblOrderNumberDelivery.setHorizontalAlignment(SwingConstants.CENTER);
-		lblOrderNumberDelivery.setBounds(700, 30, 200, 40);
-		panelDelivery.add(lblOrderNumberDelivery);
-
-		JScrollPane scrollPaneDelivery = new JScrollPane();
-		scrollPaneDelivery.setBounds(500, 90, 850, 600);
-		panelDelivery.add(scrollPaneDelivery);
-
-		tableDelivery = new JTable();
-		scrollPaneDelivery.setViewportView(tableDelivery);
-
-		DefaultTableModel modelDelivery = new DefaultTableModel(new Object[][] {,},
-				new String[] { "Identifiant", "Produit", "Conditionnement", "Qté Commandée", "Qté reçue",
-						"Prix €", "Date commande", "Date livraison" });
-
-		tableDelivery.setModel(modelDelivery);
-		tableDelivery.getColumnModel().getColumn(0).setResizable(false);
-		tableDelivery.getColumnModel().getColumn(1).setResizable(false);
-		tableDelivery.getColumnModel().getColumn(2).setResizable(false);
-		tableDelivery.getColumnModel().getColumn(3).setResizable(false);
-		tableDelivery.getColumnModel().getColumn(4).setResizable(false);
-		tableDelivery.getColumnModel().getColumn(5).setResizable(false);
-		tableDelivery.getColumnModel().getColumn(6).setResizable(false);
-		tableDelivery.getColumnModel().getColumn(7).setResizable(false);
-		scrollPaneDelivery.setViewportView(tableDelivery);
-
-		JComboBox comboBoxProviderDelivery = new JComboBox();
-		comboBoxProviderDelivery.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		comboBoxProviderDelivery.setBounds(100, 200, 300, 40);
-		panelDelivery.add(comboBoxProviderDelivery);
+//		panelDelivery.setLayout(null);
+//
+//		JLabel lblTitleDelivery = new JLabel("R\u00E9ception des Articles");
+//		lblTitleDelivery.setFont(new Font("Tahoma", Font.PLAIN, 24));
+//		lblTitleDelivery.setHorizontalAlignment(SwingConstants.CENTER);
+//		lblTitleDelivery.setBounds(0, 50, 500, 70);
+//		panelDelivery.add(lblTitleDelivery);
+//
+//		JComboBox comboBoxArticleDelivery = new JComboBox();
+//		comboBoxArticleDelivery.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//		comboBoxArticleDelivery.setBounds(25, 320, 250, 40);
+//		panelDelivery.add(comboBoxArticleDelivery);
+//
+//		JComboBox comboBoxOrderNumberDelivery = new JComboBox();
+//		comboBoxOrderNumberDelivery.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//		comboBoxOrderNumberDelivery.setBounds(900, 30, 250, 40);
+//		panelDelivery.add(comboBoxOrderNumberDelivery);
+//
+//		textFieldAmountReceived = new JTextField();
+//		textFieldAmountReceived.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//		textFieldAmountReceived.setHorizontalAlignment(SwingConstants.CENTER);
+//		textFieldAmountReceived.setBounds(325, 320, 75, 40);
+//		panelDelivery.add(textFieldAmountReceived);
+//		textFieldAmountReceived.setColumns(10);
+//
+//		textFieldAmountExpected = new JTextField();
+//		textFieldAmountExpected.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//		textFieldAmountExpected.setHorizontalAlignment(SwingConstants.CENTER);
+//		textFieldAmountExpected.setBounds(400, 320, 75, 40);
+//		panelDelivery.add(textFieldAmountExpected);
+//		textFieldAmountExpected.setColumns(10);
+//
+//		textFieldDeliveryDate = new JTextField();
+//		textFieldDeliveryDate.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//		textFieldDeliveryDate.setBounds(150, 470, 200, 40);
+//		panelDelivery.add(textFieldDeliveryDate);
+//		textFieldDeliveryDate.setColumns(10);
+//
+//		JButton btnSaveDelivery = new JButton("Enregistrer");
+//		btnSaveDelivery.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//		btnSaveDelivery.setBounds(75, 600, 150, 40);
+//		panelDelivery.add(btnSaveDelivery);
+//
+//		JButton btnDeleteDelivery = new JButton("Supprimer");
+//		btnDeleteDelivery.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//		btnDeleteDelivery.setBounds(275, 600, 150, 40);
+//		panelDelivery.add(btnDeleteDelivery);
+//
+//		JLabel lblProviderDelivery = new JLabel("Fournisseur");
+//		lblProviderDelivery.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//		lblProviderDelivery.setHorizontalAlignment(SwingConstants.CENTER);
+//		lblProviderDelivery.setBounds(100, 180, 300, 20);
+//		panelDelivery.add(lblProviderDelivery);
+//
+//		JLabel lblArticleDelivery = new JLabel("Article");
+//		lblArticleDelivery.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//		lblArticleDelivery.setHorizontalAlignment(SwingConstants.CENTER);
+//		lblArticleDelivery.setBounds(25, 300, 250, 20);
+//		panelDelivery.add(lblArticleDelivery);
+//
+//		JLabel lblAmountDelivery = new JLabel("Quantit\u00E9 re\u00E7ue/Command\u00E9e");
+//		lblAmountDelivery.setHorizontalAlignment(SwingConstants.CENTER);
+//		lblAmountDelivery.setFont(new Font("Tahoma", Font.PLAIN, 15));
+//		lblAmountDelivery.setBounds(300, 300, 200, 14);
+//		panelDelivery.add(lblAmountDelivery);
+//
+//		JLabel lblDeliveryDate = new JLabel("Date de livraison");
+//		lblDeliveryDate.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//		lblDeliveryDate.setHorizontalAlignment(SwingConstants.CENTER);
+//		lblDeliveryDate.setBounds(150, 450, 200, 20);
+//		panelDelivery.add(lblDeliveryDate);
+//
+//		JLabel lblOrderNumberDelivery = new JLabel("Num\u00E9ro de la commande");
+//		lblOrderNumberDelivery.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//		lblOrderNumberDelivery.setHorizontalAlignment(SwingConstants.CENTER);
+//		lblOrderNumberDelivery.setBounds(700, 30, 200, 40);
+//		panelDelivery.add(lblOrderNumberDelivery);
+//
+//		JScrollPane scrollPaneDelivery = new JScrollPane();
+//		scrollPaneDelivery.setBounds(500, 90, 850, 600);
+//		panelDelivery.add(scrollPaneDelivery);
+//
+//		tableDelivery = new JTable();
+//		scrollPaneDelivery.setViewportView(tableDelivery);
+//
+//		DefaultTableModel modelDelivery = new DefaultTableModel(new Object[][] {,},
+//				new String[] { "Identifiant", "Produit", "Conditionnement", "Qté Commandée", "Qté reçue",
+//						"Prix €", "Date commande", "Date livraison" });
+//
+//		tableDelivery.setModel(modelDelivery);
+//		tableDelivery.getColumnModel().getColumn(0).setResizable(false);
+//		tableDelivery.getColumnModel().getColumn(1).setResizable(false);
+//		tableDelivery.getColumnModel().getColumn(2).setResizable(false);
+//		tableDelivery.getColumnModel().getColumn(3).setResizable(false);
+//		tableDelivery.getColumnModel().getColumn(4).setResizable(false);
+//		tableDelivery.getColumnModel().getColumn(5).setResizable(false);
+//		tableDelivery.getColumnModel().getColumn(6).setResizable(false);
+//		tableDelivery.getColumnModel().getColumn(7).setResizable(false);
+//		scrollPaneDelivery.setViewportView(tableDelivery);
+//
+//		JComboBox comboBoxProviderDelivery = new JComboBox();
+//		comboBoxProviderDelivery.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//		comboBoxProviderDelivery.setBounds(100, 200, 300, 40);
+//		panelDelivery.add(comboBoxProviderDelivery);
 
 		// Gestion Commande
 
 		JPanel panelOrder = new JPanel();
 		tabbedPane.addTab("Gestion Commande", null, panelOrder, null);
-		panelOrder.setLayout(null);
-
-		JLabel lblTitle1Order = new JLabel("Passer une commande");
-		lblTitle1Order.setHorizontalAlignment(SwingConstants.CENTER);
-		lblTitle1Order.setFont(new Font("Tahoma", Font.PLAIN, 24));
-		lblTitle1Order.setBounds(0, 50, 500, 70);
-		panelOrder.add(lblTitle1Order);
-
-		JLabel lblProviderOrder = new JLabel("Fournisseur");
-		lblProviderOrder.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lblProviderOrder.setHorizontalAlignment(SwingConstants.CENTER);
-		lblProviderOrder.setBounds(100, 180, 300, 20);
-		panelOrder.add(lblProviderOrder);
-
-		JLabel lblQtyOrder = new JLabel("Quantit\u00E9e");
-		lblQtyOrder.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lblQtyOrder.setHorizontalAlignment(SwingConstants.CENTER);
-		lblQtyOrder.setBounds(350, 430, 100, 20);
-		panelOrder.add(lblQtyOrder);
-
-		JLabel lblArticleOrder = new JLabel("Article");
-		lblArticleOrder.setHorizontalAlignment(SwingConstants.CENTER);
-		lblArticleOrder.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lblArticleOrder.setBounds(50, 430, 250, 20);
-		panelOrder.add(lblArticleOrder);
-
-		JLabel lblOrderNumberOrder = new JLabel("Num\u00E9ro de commande en cours");
-		lblOrderNumberOrder.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lblOrderNumberOrder.setHorizontalAlignment(SwingConstants.CENTER);
-		lblOrderNumberOrder.setBounds(650, 30, 250, 40);
-		panelOrder.add(lblOrderNumberOrder);
-
-		JLabel lblTitle2Order = new JLabel("Ligne de Commande");
-		lblTitle2Order.setHorizontalAlignment(SwingConstants.CENTER);
-		lblTitle2Order.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		lblTitle2Order.setBounds(100, 320, 300, 40);
-		panelOrder.add(lblTitle2Order);
-
-		JButton btnAddOrder = new JButton("Ajouter");
-		btnAddOrder.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		btnAddOrder.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-			}
-		});
-		btnAddOrder.setBounds(35, 600, 120, 40);
-		panelOrder.add(btnAddOrder);
-
-		JButton btnUpdateOrder = new JButton("Modifier");
-		btnUpdateOrder.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		btnUpdateOrder.setBounds(190, 600, 120, 40);
-		panelOrder.add(btnUpdateOrder);
-
-		JButton btnDeleteOrder = new JButton("Supprimer");
-		btnDeleteOrder.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		btnDeleteOrder.setBounds(345, 600, 120, 40);
-		panelOrder.add(btnDeleteOrder);
-
-		JComboBox comboBoxOrderNumberOrder = new JComboBox();
-		comboBoxOrderNumberOrder.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		comboBoxOrderNumberOrder.setBounds(900, 30, 250, 40);
-		panelOrder.add(comboBoxOrderNumberOrder);
-
-		JComboBox comboBoxProviderOrder = new JComboBox();
-		comboBoxProviderOrder.setBounds(100, 200, 300, 40);
-		panelOrder.add(comboBoxProviderOrder);
-
-		JComboBox comboBoxArticleOrder = new JComboBox();
-		comboBoxArticleOrder.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		comboBoxArticleOrder.setBounds(50, 450, 250, 40);
-		panelOrder.add(comboBoxArticleOrder);
-
-		textFieldQtyOrder = new JTextField();
-		textFieldQtyOrder.setHorizontalAlignment(SwingConstants.CENTER);
-		textFieldQtyOrder.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		textFieldQtyOrder.setBounds(350, 450, 100, 40);
-		panelOrder.add(textFieldQtyOrder);
-		textFieldQtyOrder.setColumns(10);
-
-		JScrollPane scrollPaneOrder = new JScrollPane();
-		scrollPaneOrder.setBounds(500, 90, 850, 550);
-		panelOrder.add(scrollPaneOrder);
-
-		tableOrder = new JTable();
-		scrollPaneOrder.setViewportView(tableOrder);
-
-		DefaultTableModel modelOrder = new DefaultTableModel(new Object[][] {,},
-				new String[] { "Identifiant", "Produit", "Conditionnement", "Qté Commandée", "Prix €" });
-
-		tableOrder.setModel(modelOrder);
-		tableOrder.getColumnModel().getColumn(0).setResizable(false);
-		tableOrder.getColumnModel().getColumn(1).setResizable(false);
-		tableOrder.getColumnModel().getColumn(2).setResizable(false);
-		tableOrder.getColumnModel().getColumn(3).setResizable(false);
-		tableOrder.getColumnModel().getColumn(4).setResizable(false);
-		scrollPaneOrder.setViewportView(tableOrder);
-
-		JButton btnOrderOrder = new JButton("Commander");
-		btnOrderOrder.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		btnOrderOrder.setBounds(1200, 670, 150, 40);
-		panelOrder.add(btnOrderOrder);
-
-		textField_4 = new JTextField();
-		textField_4.setBounds(1050, 670, 100, 40);
-		panelOrder.add(textField_4);
-		textField_4.setColumns(10);
-
-		JLabel lblTotalPriceOrder = new JLabel("Montant Total");
-		lblTotalPriceOrder.setHorizontalAlignment(SwingConstants.CENTER);
-		lblTotalPriceOrder.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lblTotalPriceOrder.setBounds(900, 670, 150, 40);
-		panelOrder.add(lblTotalPriceOrder);
+//		panelOrder.setLayout(null);
+//
+//		JLabel lblTitle1Order = new JLabel("Passer une commande");
+//		lblTitle1Order.setHorizontalAlignment(SwingConstants.CENTER);
+//		lblTitle1Order.setFont(new Font("Tahoma", Font.PLAIN, 24));
+//		lblTitle1Order.setBounds(0, 50, 500, 70);
+//		panelOrder.add(lblTitle1Order);
+//
+//		JLabel lblProviderOrder = new JLabel("Fournisseur");
+//		lblProviderOrder.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//		lblProviderOrder.setHorizontalAlignment(SwingConstants.CENTER);
+//		lblProviderOrder.setBounds(100, 180, 300, 20);
+//		panelOrder.add(lblProviderOrder);
+//
+//		JLabel lblQtyOrder = new JLabel("Quantit\u00E9e");
+//		lblQtyOrder.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//		lblQtyOrder.setHorizontalAlignment(SwingConstants.CENTER);
+//		lblQtyOrder.setBounds(350, 430, 100, 20);
+//		panelOrder.add(lblQtyOrder);
+//
+//		JLabel lblArticleOrder = new JLabel("Article");
+//		lblArticleOrder.setHorizontalAlignment(SwingConstants.CENTER);
+//		lblArticleOrder.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//		lblArticleOrder.setBounds(50, 430, 250, 20);
+//		panelOrder.add(lblArticleOrder);
+//
+//		JLabel lblOrderNumberOrder = new JLabel("Num\u00E9ro de commande en cours");
+//		lblOrderNumberOrder.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//		lblOrderNumberOrder.setHorizontalAlignment(SwingConstants.CENTER);
+//		lblOrderNumberOrder.setBounds(650, 30, 250, 40);
+//		panelOrder.add(lblOrderNumberOrder);
+//
+//		JLabel lblTitle2Order = new JLabel("Ligne de Commande");
+//		lblTitle2Order.setHorizontalAlignment(SwingConstants.CENTER);
+//		lblTitle2Order.setFont(new Font("Tahoma", Font.PLAIN, 20));
+//		lblTitle2Order.setBounds(100, 320, 300, 40);
+//		panelOrder.add(lblTitle2Order);
+//
+//		JButton btnAddOrder = new JButton("Ajouter");
+//		btnAddOrder.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//		btnAddOrder.addActionListener(new ActionListener() {
+//			public void actionPerformed(ActionEvent arg0) {
+//			}
+//		});
+//		btnAddOrder.setBounds(35, 600, 120, 40);
+//		panelOrder.add(btnAddOrder);
+//
+//		JButton btnUpdateOrder = new JButton("Modifier");
+//		btnUpdateOrder.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//		btnUpdateOrder.setBounds(190, 600, 120, 40);
+//		panelOrder.add(btnUpdateOrder);
+//
+//		JButton btnDeleteOrder = new JButton("Supprimer");
+//		btnDeleteOrder.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//		btnDeleteOrder.setBounds(345, 600, 120, 40);
+//		panelOrder.add(btnDeleteOrder);
+//
+//		JComboBox comboBoxOrderNumberOrder = new JComboBox();
+//		comboBoxOrderNumberOrder.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//		comboBoxOrderNumberOrder.setBounds(900, 30, 250, 40);
+//		panelOrder.add(comboBoxOrderNumberOrder);
+//
+//		JComboBox comboBoxProviderOrder = new JComboBox();
+//		comboBoxProviderOrder.setBounds(100, 200, 300, 40);
+//		panelOrder.add(comboBoxProviderOrder);
+//
+//		JComboBox comboBoxArticleOrder = new JComboBox();
+//		comboBoxArticleOrder.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//		comboBoxArticleOrder.setBounds(50, 450, 250, 40);
+//		panelOrder.add(comboBoxArticleOrder);
+//
+//		textFieldQtyOrder = new JTextField();
+//		textFieldQtyOrder.setHorizontalAlignment(SwingConstants.CENTER);
+//		textFieldQtyOrder.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//		textFieldQtyOrder.setBounds(350, 450, 100, 40);
+//		panelOrder.add(textFieldQtyOrder);
+//		textFieldQtyOrder.setColumns(10);
+//
+//		JScrollPane scrollPaneOrder = new JScrollPane();
+//		scrollPaneOrder.setBounds(500, 90, 850, 550);
+//		panelOrder.add(scrollPaneOrder);
+//
+//		tableOrder = new JTable();
+//		scrollPaneOrder.setViewportView(tableOrder);
+//
+//		DefaultTableModel modelOrder = new DefaultTableModel(new Object[][] {,},
+//				new String[] { "Identifiant", "Produit", "Conditionnement", "Qté Commandée", "Prix €" });
+//
+//		tableOrder.setModel(modelOrder);
+//		tableOrder.getColumnModel().getColumn(0).setResizable(false);
+//		tableOrder.getColumnModel().getColumn(1).setResizable(false);
+//		tableOrder.getColumnModel().getColumn(2).setResizable(false);
+//		tableOrder.getColumnModel().getColumn(3).setResizable(false);
+//		tableOrder.getColumnModel().getColumn(4).setResizable(false);
+//		scrollPaneOrder.setViewportView(tableOrder);
+//
+//		JButton btnOrderOrder = new JButton("Commander");
+//		btnOrderOrder.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//		btnOrderOrder.setBounds(1200, 670, 150, 40);
+//		panelOrder.add(btnOrderOrder);
+//
+//		textFieldTotalPrice = new JTextField();
+//		textFieldTotalPrice.setHorizontalAlignment(SwingConstants.CENTER);
+//		textFieldTotalPrice.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//		textFieldTotalPrice.setBounds(1050, 670, 100, 40);
+//		panelOrder.add(textFieldTotalPrice);
+//		textFieldTotalPrice.setColumns(10);
+//
+//		JLabel lblTotalPriceOrder = new JLabel("Montant Total");
+//		lblTotalPriceOrder.setHorizontalAlignment(SwingConstants.CENTER);
+//		lblTotalPriceOrder.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//		lblTotalPriceOrder.setBounds(900, 670, 150, 40);
+//		panelOrder.add(lblTotalPriceOrder);
 
 		// Gestion Article
 
@@ -567,12 +585,12 @@ public class Management extends JFrame {
 //		// Gestion Produit
 //		JButton creatArticlebtn = new JButton();
 //		JPanel panelProduct = new JPanel();
-		
+
 		// Gestion Produit
-		ProductPanel panelProduct = new ProductPanel(tabbedPane,panelArticle.getComboBoxProductArticle());
+		ProductPanel panelProduct = new ProductPanel(tabbedPane, panelArticle.getComboBoxProductArticle());
 		tabbedPane.addTab("Gestion Produit", null, panelProduct, null);
-		panelProduct.setLayout(null);
-		
+//		panelProduct.setLayout(null);
+
 //		creatArticlebtn.addActionListener(new ActionListener() {
 //			public void actionPerformed(ActionEvent e) {
 //				if (!productList.getSelectionModel().isSelectionEmpty()) {
@@ -651,7 +669,7 @@ public class Management extends JFrame {
 
 //		List<Product> products = (new ProductDAO()).findALL();//
 //		display(products,productModel);
-		
+
 //		typeCombo.setBounds(307, 160, 138, 34);
 ////		typeCombo.addItem(new ComboItem("Visible String 1", "Value 1"));
 //
@@ -705,7 +723,6 @@ public class Management extends JFrame {
 
 		// Gestion Fournisseur
 
-		
 //		List<Conditioning> conditioning = (new ConditioningDAO()).findALL();//
 //		conditioning.forEach(c -> {
 //
@@ -719,8 +736,7 @@ public class Management extends JFrame {
 //			comboBoxProductArticle.addItem(p.getProductName());
 //
 //		});
-		
-		
+
 		ProviderPanel panelProvider = new ProviderPanel();
 		tabbedPane.addTab("Gestion Fournisseur", null, panelProvider, null);
 //		panelProvider.setLayout(null);
@@ -884,6 +900,120 @@ public class Management extends JFrame {
 
 		ProfilePanel panelProfile = new ProfilePanel();
 		tabbedPane.addTab("Profil", null, panelProfile, null);
+
+
+		// Uint� de mesure et Conditionnement
+		
+		JPanel panelUnitAndCond = new JPanel();
+		tabbedPane.addTab("Unit� de mesure et Conditionnement", null, panelUnitAndCond, null);
+		panelUnitAndCond.setLayout(null);
+
+		
+//		JLabel lblTitleUnit = new JLabel("Unit\u00E9 de mesure");
+//		lblTitleUnit.setFont(new Font("Tahoma", Font.PLAIN, 24));
+//		lblTitleUnit.setHorizontalAlignment(SwingConstants.CENTER);
+//		lblTitleUnit.setBounds(0, 50, 705, 40);
+//		panelUnitAndCond.add(lblTitleUnit);
+//
+//		JLabel lblTitleCond = new JLabel("Conditionnement");
+//		lblTitleCond.setFont(new Font("Tahoma", Font.PLAIN, 24));
+//		lblTitleCond.setHorizontalAlignment(SwingConstants.CENTER);
+//		lblTitleCond.setBounds(705, 50, 705, 40);
+//		panelUnitAndCond.add(lblTitleCond);
+//
+//		JLabel lblUnit = new JLabel("Nouvelle unit\u00E9 de mesure :");
+//		lblUnit.setHorizontalAlignment(SwingConstants.CENTER);
+//		lblUnit.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//		lblUnit.setBounds(200, 150, 300, 30);
+//		panelUnitAndCond.add(lblUnit);
+//
+//		JLabel lblCond = new JLabel("Nouveau conditionnement :");
+//		lblCond.setHorizontalAlignment(SwingConstants.CENTER);
+//		lblCond.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//		lblCond.setBounds(905, 150, 300, 30);
+//		panelUnitAndCond.add(lblCond);
+//
+//		textFieldUnit = new JTextField();
+//		textFieldUnit.setHorizontalAlignment(SwingConstants.CENTER);
+//		textFieldUnit.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//		textFieldUnit.setBounds(200, 180, 300, 40);
+//		panelUnitAndCond.add(textFieldUnit);
+//		textFieldUnit.setColumns(10);
+//
+//		textFieldCond = new JTextField();
+//		textFieldCond.setHorizontalAlignment(SwingConstants.CENTER);
+//		textFieldCond.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//		textFieldCond.setBounds(905, 180, 300, 40);
+//		panelUnitAndCond.add(textFieldCond);
+//		textFieldCond.setColumns(10);
+//
+//		JScrollPane scrollPaneUnit = new JScrollPane();
+//		scrollPaneUnit.setBounds(200, 400, 300, 300);
+//		panelUnitAndCond.add(scrollPaneUnit);
+//
+//		tableUnit = new JTable();
+//		scrollPaneUnit.setViewportView(tableUnit);
+//		
+//		DefaultTableModel unitModel = new DefaultTableModel(new Object[][] {,},
+//				new String[] { "Identifiant", "Unite" });
+//
+//		tableUnit.setModel(unitModel);
+//		tableUnit.getColumnModel().getColumn(0).setResizable(false);
+//		tableUnit.getColumnModel().getColumn(1).setResizable(false);
+//		scrollPaneUnit.setViewportView(tableUnit);
+//
+//		JScrollPane scrollPaneCond = new JScrollPane();
+//		scrollPaneCond.setBounds(905, 400, 300, 300);
+//		panelUnitAndCond.add(scrollPaneCond);
+//
+//		tableCond = new JTable();
+//		scrollPaneCond.setViewportView(tableCond);
+//		
+//		DefaultTableModel condModel = new DefaultTableModel(new Object[][] {,},
+//				new String[] { "Identifiant", "Conditionnement" });
+//
+//		tableCond.setModel(condModel);
+//		tableCond.getColumnModel().getColumn(0).setResizable(false);
+//		tableCond.getColumnModel().getColumn(1).setResizable(false);
+//		scrollPaneCond.setViewportView(tableCond);
+//
+//		JButton btnAddUnit = new JButton("Cr\u00E9er");
+//		btnAddUnit.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//		btnAddUnit.setBounds(150, 250, 150, 30);
+//		panelUnitAndCond.add(btnAddUnit);
+//
+//		JButton btnModifyUnit = new JButton("Modifier");
+//		btnModifyUnit.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//		btnModifyUnit.setBounds(400, 250, 150, 30);
+//		panelUnitAndCond.add(btnModifyUnit);
+//
+//		JButton btnAddCond = new JButton("Cr\u00E9er");
+//		btnAddCond.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//		btnAddCond.setBounds(855, 250, 150, 30);
+//		panelUnitAndCond.add(btnAddCond);
+//
+//		JButton btnModifyCond = new JButton("Modifier");
+//		btnModifyCond.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//		btnModifyCond.setBounds(1105, 250, 150, 30);
+//		panelUnitAndCond.add(btnModifyCond);
+//
+//		JLabel lblUnitTable = new JLabel("Liste des unit\u00E9s de mesure");
+//		lblUnitTable.setHorizontalAlignment(SwingConstants.CENTER);
+//		lblUnitTable.setFont(new Font("Tahoma", Font.PLAIN, 18));
+//		lblUnitTable.setBounds(200, 350, 300, 50);
+//		panelUnitAndCond.add(lblUnitTable);
+//
+//		JLabel lblCondTable = new JLabel("Liste des conditionnements");
+//		lblCondTable.setHorizontalAlignment(SwingConstants.CENTER);
+//		lblCondTable.setFont(new Font("Tahoma", Font.PLAIN, 18));
+//		lblCondTable.setBounds(905, 350, 300, 50);
+//		panelUnitAndCond.add(lblCondTable);
+
+	
+
+	
+
+
 //		panelProfile.setLayout(null);
 //		
 //		JLabel lblTitleProfile = new JLabel("Profil");
@@ -942,6 +1072,7 @@ public class Management extends JFrame {
 //		btnCancelPasswordProfile.setFont(new Font("Tahoma", Font.PLAIN, 16));
 //		btnCancelPasswordProfile.setBounds(897, 392, 148, 36);
 //		panelProfile.add(btnCancelPasswordProfile);
+
 		// scrollPane.setColumnHeaderView(table);
 
 //		productList.addMouseListener(new MouseAdapter() {
