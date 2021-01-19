@@ -69,7 +69,7 @@ public class IngredientDAO extends BaseDAO<Ingredient> {
 		updateUser.executeUpdate();
 
 	}
-
+//tttt
 	
 	public void delete (Ingredient ing) throws SQLException {
         var sql = "DELETE FROM `ingredient` WHERE  	idProduct = ?"; // Don't insert ID, let database auto-increment it.
