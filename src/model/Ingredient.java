@@ -67,4 +67,5 @@ public class Ingredient extends Product {
     	
     	
     }
+
 }
