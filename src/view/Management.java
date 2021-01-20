@@ -27,6 +27,7 @@ import component.HistoryPanel;
 import component.OrderPanel;
 import component.ProductPanel;
 import component.ProfilePanel;
+import component.ProviderArticlePanel;
 import component.ProviderPanel;
 import component.UnitAndCondPanel;
 import dao.ConditioningDAO;
@@ -92,9 +93,10 @@ public class Management extends JFrame {
 	private JTable tableUnit;
 	private JTable tableCond;
 
-
 	private JTextField textFieldUsernameProfile;
 	private JTextField textFieldPasswordProfile;
+	private JTextField textFieldPrice;
+	private JTable tableArticleProvider;
 
 	/**
 	 * Launch the application.
@@ -725,14 +727,12 @@ public class Management extends JFrame {
 //		lblNewLabel_2_2.setBounds(478, 130, 78, 27);
 //		panelProduct.add(lblNewLabel_2_2);
 
-
 		// Unite de mesure et Conditionnement
-		
+
 		UnitAndCondPanel panelUnitAndCond = new UnitAndCondPanel();
 		tabbedPane.addTab("Unite de mesure et Conditionnement", null, panelUnitAndCond, null);
 //		panelUnitAndCond.setLayout(null);
 
-		
 //		JLabel lblTitleUnit = new JLabel("Unit\u00E9 de mesure");
 //		lblTitleUnit.setFont(new Font("Tahoma", Font.PLAIN, 24));
 //		lblTitleUnit.setHorizontalAlignment(SwingConstants.CENTER);
@@ -832,7 +832,7 @@ public class Management extends JFrame {
 //		lblCondTable.setFont(new Font("Tahoma", Font.PLAIN, 18));
 //		lblCondTable.setBounds(905, 350, 300, 50);
 //		panelUnitAndCond.add(lblCondTable);
-		
+
 		// Gestion Fournisseur
 
 //		List<Conditioning> conditioning = (new ConditioningDAO()).findALL();//
@@ -849,184 +849,252 @@ public class Management extends JFrame {
 //
 //		});
 
-		JPanel panelProvider = new JPanel();
+		ProviderPanel panelProvider = new ProviderPanel();
 		tabbedPane.addTab("Gestion Fournisseur", null, panelProvider, null);
-		panelProvider.setLayout(null);
+//		panelProvider.setLayout(null);
+//
+//		JLabel lblCompanyNameProvider = new JLabel("Nom d'entreprise");
+//		lblCompanyNameProvider.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//		lblCompanyNameProvider.setBounds(132, 46, 129, 23);
+//		panelProvider.add(lblCompanyNameProvider);
+//
+//		JLabel lblProviderTitleProvider = new JLabel("Gestion Fournisseur");
+//		lblProviderTitleProvider.setHorizontalAlignment(SwingConstants.CENTER);
+//		lblProviderTitleProvider.setFont(new Font("Tahoma", Font.PLAIN, 24));
+//		lblProviderTitleProvider.setBounds(222, 5, 300, 30);
+//		panelProvider.add(lblProviderTitleProvider);
+//
+//		textFieldCompanyNameProvider = new JTextField();
+//		textFieldCompanyNameProvider.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//		textFieldCompanyNameProvider.setBounds(106, 80, 192, 35);
+//		panelProvider.add(textFieldCompanyNameProvider);
+//		textFieldCompanyNameProvider.setColumns(10);
+//
+//		JLabel lblStatusProvider = new JLabel("Statut");
+//		lblStatusProvider.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//		lblStatusProvider.setBounds(497, 47, 47, 20);
+//		panelProvider.add(lblStatusProvider);
+//
+//		JComboBox comboBoxStatusProvider = new JComboBox();
+//		comboBoxStatusProvider.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//		comboBoxStatusProvider.setBounds(457, 80, 123, 35);
+//		panelProvider.add(comboBoxStatusProvider);
+//
+//		JLabel lblContactProvider = new JLabel("Contact");
+//		lblContactProvider.setFont(new Font("Tahoma", Font.PLAIN, 24));
+//		lblContactProvider.setBounds(291, 137, 85, 35);
+//		panelProvider.add(lblContactProvider);
+//
+//		JLabel lblLastNameProvider = new JLabel("Nom");
+//		lblLastNameProvider.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//		lblLastNameProvider.setBounds(106, 186, 41, 14);
+//		panelProvider.add(lblLastNameProvider);
+//
+//		JLabel lblFirstNameProvider = new JLabel("Pr\u00E9nom");
+//		lblFirstNameProvider.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//		lblFirstNameProvider.setBounds(328, 186, 59, 14);
+//		panelProvider.add(lblFirstNameProvider);
+//
+//		JLabel lblPhoneNumberProvider = new JLabel("Num\u00E9ro de t\u00E9l\u00E9phone");
+//		lblPhoneNumberProvider.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//		lblPhoneNumberProvider.setBounds(507, 186, 165, 14);
+//		panelProvider.add(lblPhoneNumberProvider);
+//
+//		textFieldLastNameProvider = new JTextField();
+//		textFieldLastNameProvider.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//		textFieldLastNameProvider.setBounds(57, 225, 147, 35);
+//		panelProvider.add(textFieldLastNameProvider);
+//		textFieldLastNameProvider.setColumns(10);
+//
+//		textFieldFirstNameProvider = new JTextField();
+//		textFieldFirstNameProvider.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//		textFieldFirstNameProvider.setBounds(279, 225, 164, 35);
+//		panelProvider.add(textFieldFirstNameProvider);
+//		textFieldFirstNameProvider.setColumns(10);
+//
+//		textFieldPhoneNumberProvider = new JTextField();
+//		textFieldPhoneNumberProvider.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//		textFieldPhoneNumberProvider.setBounds(497, 225, 176, 35);
+//		panelProvider.add(textFieldPhoneNumberProvider);
+//		textFieldPhoneNumberProvider.setColumns(10);
+//
+//		JButton btnAddProvider = new JButton("Ajouter");
+//		btnAddProvider.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//		btnAddProvider.setBounds(185, 295, 104, 35);
+//		panelProvider.add(btnAddProvider);
+//
+//		JButton btnEditProvider = new JButton("Modifier");
+//		btnEditProvider.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//		btnEditProvider.setBounds(425, 295, 104, 35);
+//		panelProvider.add(btnEditProvider);
+//
+//		JLabel lblSelectedCompanyNameProvider = new JLabel("L\u00E9gumes.fr");
+//		lblSelectedCompanyNameProvider.setFont(new Font("Tahoma", Font.PLAIN, 24));
+//		lblSelectedCompanyNameProvider.setBounds(305, 388, 126, 35);
+//		panelProvider.add(lblSelectedCompanyNameProvider);
+//
+//		JScrollPane scrollPaneSelectedProvider = new JScrollPane();
+//		scrollPaneSelectedProvider.setBounds(57, 427, 627, 249);
+//		panelProvider.add(scrollPaneSelectedProvider);
+//
+//		tableSelectedProvider = new JTable();
+//		tableSelectedProvider.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//		scrollPaneSelectedProvider.setViewportView(tableSelectedProvider);
+//
+//		DefaultTableModel selectedCompanyModel = new DefaultTableModel(new Object[][] {,},
+//				new String[] { "Produit", "Conditionnement", "Poids", "Prix fournisseur �" });
+//
+//		tableSelectedProvider.setModel(selectedCompanyModel);
+//		tableSelectedProvider.getColumnModel().getColumn(0).setResizable(false);
+//		tableSelectedProvider.getColumnModel().getColumn(1).setResizable(false);
+//		tableSelectedProvider.getColumnModel().getColumn(2).setResizable(false);
+//		tableSelectedProvider.getColumnModel().getColumn(3).setResizable(false);
+//		scrollPaneSelectedProvider.setViewportView(tableSelectedProvider);
+//
+//		JLabel ProviderSearchLabel = new JLabel("Rechercher");
+//		ProviderSearchLabel.setFont(new Font("Tahoma", Font.PLAIN, 24));
+//		ProviderSearchLabel.setBounds(1010, 11, 129, 35);
+//		panelProvider.add(ProviderSearchLabel);
+//
+//		ProviderSearchBarField = new JTextField();
+//		ProviderSearchBarField.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//		ProviderSearchBarField.setBounds(771, 62, 595, 35);
+//		panelProvider.add(ProviderSearchBarField);
+//		ProviderSearchBarField.setColumns(10);
+//
+//		JRadioButton LastNameRadio = new JRadioButton("Nom");
+//		LastNameRadio.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//		LastNameRadio.setBounds(992, 109, 73, 23);
+//		panelProvider.add(LastNameRadio);
+//
+//		JRadioButton FirstNameRadio = new JRadioButton("Pr\u00E9nom");
+//		FirstNameRadio.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//		FirstNameRadio.setBounds(1067, 109, 85, 23);
+//		panelProvider.add(FirstNameRadio);
+//
+//		JRadioButton StatusRadio = new JRadioButton("Statut");
+//		StatusRadio.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//		StatusRadio.setBounds(1154, 109, 73, 23);
+//		panelProvider.add(StatusRadio);
+//
+//		JRadioButton CompanyRadio = new JRadioButton("Entreprise");
+//		CompanyRadio.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//		CompanyRadio.setBounds(886, 109, 104, 23);
+//		panelProvider.add(CompanyRadio);
+//
+//		JScrollPane ProviderScrollPanel = new JScrollPane();
+//		ProviderScrollPanel.setBounds(771, 146, 595, 565);
+//		panelProvider.add(ProviderScrollPanel);
+//
+//		ProviderTable = new JTable();
+//		ProviderTable.setFont(new Font("Tahoma", Font.PLAIN, 14));
+//		ProviderScrollPanel.setViewportView(ProviderTable);
+//
+//		DefaultTableModel providerModel = new DefaultTableModel(new Object[][] {,},
+//				new String[] { "Identifiant", "Entreprise", "Nom", "Pr�nom", "T�l�phone", "Statut" });
+//
+//		ProviderTable.setModel(providerModel);
+//		ProviderTable.getColumnModel().getColumn(0).setResizable(false);
+//		ProviderTable.getColumnModel().getColumn(1).setResizable(false);
+//		ProviderTable.getColumnModel().getColumn(2).setResizable(false);
+//		ProviderTable.getColumnModel().getColumn(3).setResizable(false);
+//		ProviderTable.getColumnModel().getColumn(4).setResizable(false);
+//		ProviderTable.getColumnModel().getColumn(5).setResizable(false);
+//		ProviderScrollPanel.setViewportView(ProviderTable);
+//
+//		JButton OrderButton = new JButton("Passer une commande");
+//		OrderButton.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//		OrderButton.setBounds(279, 688, 192, 34);
+//		panelProvider.add(OrderButton);
 
-		JLabel lblCompanyNameProvider = new JLabel("Nom d'entreprise");
-		lblCompanyNameProvider.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lblCompanyNameProvider.setBounds(96, 46, 129, 23);
-		panelProvider.add(lblCompanyNameProvider);
+		// Gestion Articles Fournisseurs
 
-		JLabel lblProviderTitleProvider = new JLabel("Gestion Fournisseur");
-		lblProviderTitleProvider.setHorizontalAlignment(SwingConstants.CENTER);
-		lblProviderTitleProvider.setFont(new Font("Tahoma", Font.PLAIN, 24));
-		lblProviderTitleProvider.setBounds(171, 5, 300, 30);
-		panelProvider.add(lblProviderTitleProvider);
-
-		textFieldCompanyNameProvider = new JTextField();
-		textFieldCompanyNameProvider.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		textFieldCompanyNameProvider.setBounds(57, 80, 192, 35);
-		panelProvider.add(textFieldCompanyNameProvider);
-		textFieldCompanyNameProvider.setColumns(10);
-
-		JLabel lblStatusProvider = new JLabel("Statut");
-		lblStatusProvider.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lblStatusProvider.setBounds(447, 47, 47, 20);
-		panelProvider.add(lblStatusProvider);
-
-		JComboBox comboBoxStatusProvider = new JComboBox();
-		comboBoxStatusProvider.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		comboBoxStatusProvider.setBounds(406, 80, 123, 35);
-		panelProvider.add(comboBoxStatusProvider);
-
-		JLabel lblContactProvider = new JLabel("Contact");
-		lblContactProvider.setFont(new Font("Tahoma", Font.PLAIN, 24));
-		lblContactProvider.setBounds(279, 115, 85, 35);
-		panelProvider.add(lblContactProvider);
-
-		JLabel lblLastNameProvider = new JLabel("Nom");
-		lblLastNameProvider.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lblLastNameProvider.setBounds(107, 151, 41, 14);
-		panelProvider.add(lblLastNameProvider);
-
-		JLabel lblFirstNameProvider = new JLabel("Pr\u00E9nom");
-		lblFirstNameProvider.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lblFirstNameProvider.setBounds(305, 151, 59, 14);
-		panelProvider.add(lblFirstNameProvider);
-
-		JLabel lblPhoneNumberProvider = new JLabel("Num\u00E9ro de t\u00E9l\u00E9phone");
-		lblPhoneNumberProvider.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lblPhoneNumberProvider.setBounds(508, 151, 165, 14);
-		panelProvider.add(lblPhoneNumberProvider);
-
-		textFieldLastNameProvider = new JTextField();
-		textFieldLastNameProvider.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		textFieldLastNameProvider.setBounds(57, 176, 147, 35);
-		panelProvider.add(textFieldLastNameProvider);
-		textFieldLastNameProvider.setColumns(10);
-
-		textFieldFirstNameProvider = new JTextField();
-		textFieldFirstNameProvider.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		textFieldFirstNameProvider.setBounds(279, 176, 164, 35);
-		panelProvider.add(textFieldFirstNameProvider);
-		textFieldFirstNameProvider.setColumns(10);
-
-		textFieldPhoneNumberProvider = new JTextField();
-		textFieldPhoneNumberProvider.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		textFieldPhoneNumberProvider.setBounds(497, 176, 176, 35);
-		panelProvider.add(textFieldPhoneNumberProvider);
-		textFieldPhoneNumberProvider.setColumns(10);
-
-		JButton btnAddProvider = new JButton("Ajouter");
-		btnAddProvider.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		btnAddProvider.setBounds(186, 222, 104, 35);
-		panelProvider.add(btnAddProvider);
-
-		JButton btnEditProvider = new JButton("Modifier");
-		btnEditProvider.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		btnEditProvider.setBounds(425, 222, 104, 35);
-		panelProvider.add(btnEditProvider);
-
-		JLabel lblSelectedCompanyNameProvider = new JLabel("L\u00E9gumes.fr");
-		lblSelectedCompanyNameProvider.setFont(new Font("Tahoma", Font.PLAIN, 24));
-		lblSelectedCompanyNameProvider.setBounds(305, 388, 126, 35);
-		panelProvider.add(lblSelectedCompanyNameProvider);
-
-		JScrollPane scrollPaneSelectedProvider = new JScrollPane();
-		scrollPaneSelectedProvider.setBounds(57, 427, 627, 249);
-		panelProvider.add(scrollPaneSelectedProvider);
-
-		tableSelectedProvider = new JTable();
-		tableSelectedProvider.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		scrollPaneSelectedProvider.setViewportView(tableSelectedProvider);
-
-		DefaultTableModel selectedCompanyModel = new DefaultTableModel(new Object[][] {,},
-				new String[] { "Produit", "Conditionnement", "Poids", "Prix fournisseur �" });
-
-		tableSelectedProvider.setModel(selectedCompanyModel);
-		tableSelectedProvider.getColumnModel().getColumn(0).setResizable(false);
-		tableSelectedProvider.getColumnModel().getColumn(1).setResizable(false);
-		tableSelectedProvider.getColumnModel().getColumn(2).setResizable(false);
-		tableSelectedProvider.getColumnModel().getColumn(3).setResizable(false);
-		scrollPaneSelectedProvider.setViewportView(tableSelectedProvider);
-
-		JLabel ProviderSearchLabel = new JLabel("Rechercher");
-		ProviderSearchLabel.setFont(new Font("Tahoma", Font.PLAIN, 24));
-		ProviderSearchLabel.setBounds(1010, 11, 129, 35);
-		panelProvider.add(ProviderSearchLabel);
-
-		ProviderSearchBarField = new JTextField();
-		ProviderSearchBarField.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		ProviderSearchBarField.setBounds(771, 62, 595, 35);
-		panelProvider.add(ProviderSearchBarField);
-		ProviderSearchBarField.setColumns(10);
-
-		JRadioButton LastNameRadio = new JRadioButton("Nom");
-		LastNameRadio.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		LastNameRadio.setBounds(992, 109, 73, 23);
-		panelProvider.add(LastNameRadio);
-
-		JRadioButton FirstNameRadio = new JRadioButton("Pr\u00E9nom");
-		FirstNameRadio.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		FirstNameRadio.setBounds(1067, 109, 85, 23);
-		panelProvider.add(FirstNameRadio);
-
-		JRadioButton StatusRadio = new JRadioButton("Statut");
-		StatusRadio.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		StatusRadio.setBounds(1154, 109, 73, 23);
-		panelProvider.add(StatusRadio);
-
-		JRadioButton CompanyRadio = new JRadioButton("Entreprise");
-		CompanyRadio.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		CompanyRadio.setBounds(886, 109, 104, 23);
-		panelProvider.add(CompanyRadio);
-
-		JScrollPane ProviderScrollPanel = new JScrollPane();
-		ProviderScrollPanel.setBounds(771, 146, 595, 565);
-		panelProvider.add(ProviderScrollPanel);
-
-		ProviderTable = new JTable();
-		ProviderTable.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		ProviderScrollPanel.setViewportView(ProviderTable);
-
-		DefaultTableModel providerModel = new DefaultTableModel(new Object[][] {,},
-				new String[] { "Identifiant", "Entreprise", "Nom", "Pr�nom", "T�l�phone", "Statut" });
-
-		ProviderTable.setModel(providerModel);
-		ProviderTable.getColumnModel().getColumn(0).setResizable(false);
-		ProviderTable.getColumnModel().getColumn(1).setResizable(false);
-		ProviderTable.getColumnModel().getColumn(2).setResizable(false);
-		ProviderTable.getColumnModel().getColumn(3).setResizable(false);
-		ProviderTable.getColumnModel().getColumn(4).setResizable(false);
-		ProviderTable.getColumnModel().getColumn(5).setResizable(false);
-		ProviderScrollPanel.setViewportView(ProviderTable);
-
-		JButton OrderButton = new JButton("Passer une commande");
-		OrderButton.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		OrderButton.setBounds(279, 688, 192, 34);
-		panelProvider.add(OrderButton);
+		ProviderArticlePanel panelProviderArticle = new ProviderArticlePanel();
+		tabbedPane.addTab("Gestion Articles Fournisseurs", null, panelProviderArticle, null);
 		
-		JLabel lblNewLabel = new JLabel("New label");
-		lblNewLabel.setBounds(319, 290, 46, 14);
-		panelProvider.add(lblNewLabel);
-		
-		JLabel lblNewLabel_1 = new JLabel("New label");
-		lblNewLabel_1.setBounds(126, 333, 46, 14);
-		panelProvider.add(lblNewLabel_1);
+//		panelProviderArticle.setLayout(null);
+//
+//		JLabel lblTitleProviderArticle = new JLabel("Gestion Articles Fournisseurs");
+//		lblTitleProviderArticle.setFont(new Font("Tahoma", Font.PLAIN, 24));
+//		lblTitleProviderArticle.setHorizontalAlignment(SwingConstants.CENTER);
+//		lblTitleProviderArticle.setBounds(100, 50, 500, 50);
+//		panelProviderArticle.add(lblTitleProviderArticle);
+//
+//		JLabel lblProvider = new JLabel("Fournisseur");
+//		lblProvider.setHorizontalAlignment(SwingConstants.CENTER);
+//		lblProvider.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//		lblProvider.setBounds(200, 150, 300, 30);
+//		panelProviderArticle.add(lblProvider);
+//
+//		JLabel lblPrice = new JLabel("Prix (\u20AC)");
+//		lblPrice.setHorizontalAlignment(SwingConstants.CENTER);
+//		lblPrice.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//		lblPrice.setBounds(200, 450, 300, 30);
+//		panelProviderArticle.add(lblPrice);
+//
+//		JComboBox comboBoxProvider = new JComboBox();
+//		comboBoxProvider.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//		comboBoxProvider.setBounds(200, 180, 300, 40);
+//		panelProviderArticle.add(comboBoxProvider);
+//
+//		textFieldPrice = new JTextField();
+//		textFieldPrice.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//		textFieldPrice.setHorizontalAlignment(SwingConstants.CENTER);
+//		textFieldPrice.setBounds(250, 480, 200, 40);
+//		panelProviderArticle.add(textFieldPrice);
+//		textFieldPrice.setColumns(10);
+//
+//		JButton btnAdd = new JButton("Ajouter");
+//		btnAdd.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//		btnAdd.setBounds(100, 600, 200, 40);
+//		panelProviderArticle.add(btnAdd);
+//
+//		JButton btnModify = new JButton("Modifier");
+//		btnModify.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//		btnModify.setBounds(400, 600, 200, 40);
+//		panelProviderArticle.add(btnModify);
+//
+//		DefaultTableModel articleProvierModel = new DefaultTableModel(new Object[][] {,},
+//				new String[] { "Article", "Prix (Euros)" });
+//
+//		JScrollPane scrollPaneArticleProvider = new JScrollPane();
+//		scrollPaneArticleProvider.setBounds(700, 100, 600, 550);
+//		panelProviderArticle.add(scrollPaneArticleProvider);
+//
+//		tableArticleProvider = new JTable();
+//		tableArticleProvider.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//		scrollPaneArticleProvider.setViewportView(tableArticleProvider);
+//
+//		DefaultTableModel providerModel = new DefaultTableModel(new Object[][] {,},
+//				new String[] { "Article", "Prix (en Euros)" });
+//
+//		tableArticleProvider.setModel(providerModel);
+//		tableArticleProvider.getColumnModel().getColumn(0).setResizable(false);
+//		tableArticleProvider.getColumnModel().getColumn(1).setResizable(false);
+//		scrollPaneArticleProvider.setViewportView(tableArticleProvider);
+//
+//		JLabel lblArticle = new JLabel("Article");
+//		lblArticle.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//		lblArticle.setHorizontalAlignment(SwingConstants.CENTER);
+//		lblArticle.setBounds(200, 300, 300, 30);
+//		panelProviderArticle.add(lblArticle);
+//
+//		JComboBox comboBoxArticle = new JComboBox();
+//		comboBoxArticle.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//		comboBoxArticle.setBounds(200, 330, 300, 40);
+//		panelProviderArticle.add(comboBoxArticle);
+//
+//		JLabel lblTableTitle = new JLabel("Liste des articles vendus par le fournisseur");
+//		lblTableTitle.setHorizontalAlignment(SwingConstants.CENTER);
+//		lblTableTitle.setFont(new Font("Tahoma", Font.PLAIN, 20));
+//		lblTableTitle.setBounds(700, 50, 600, 30);
+//		panelProviderArticle.add(lblTableTitle);
 
 		// Gestion Profil
 
 		ProfilePanel panelProfile = new ProfilePanel();
 		tabbedPane.addTab("Profil", null, panelProfile, null);
-
-
-
-	
-
-	
-
-
+		
 //		panelProfile.setLayout(null);
 //		
 //		JLabel lblTitleProfile = new JLabel("Profil");
