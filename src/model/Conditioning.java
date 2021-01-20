@@ -69,6 +69,10 @@ public class Conditioning {
 		this.conditioningName = conditioningName;
 	}
 
-    
+	public Object[] toRow() {
+		Object[] conditioning = { getId(), getConditioningName()};
+		return conditioning;
+		
+	}
 
 }

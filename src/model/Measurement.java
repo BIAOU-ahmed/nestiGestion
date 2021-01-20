@@ -82,6 +82,9 @@ public class Measurement {
 		this.unit = unit;
 	}
 
-
+	public Object[] toRow() {
+		Object[] measurement = { getId(), getUnit()};
+		return measurement;
+	}
 
 }

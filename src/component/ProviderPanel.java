@@ -236,7 +236,12 @@ public class ProviderPanel extends JPanel {
 				admin.updateProvider(newProvider);
 				List<Provider> updateProvider = (new ProviderDAO()).findALL();//
 				Useful.displayProvider(updateProvider, providerModel);
-
+				
+				textFieldCompanyNameProvider.setText("");
+				textFieldLastNameProvider.setText("");
+				textFieldFirstNameProvider.setText("");
+				comboBoxStatusProvider.setSelectedIndex(0);
+				textFieldPhoneNumberProvider.setText("");
 			}
 		});
 

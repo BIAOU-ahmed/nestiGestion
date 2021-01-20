@@ -213,7 +213,10 @@ public class Administrator {
 		this.createdAt = createdAt;
 	}
 
-    
+    public Object[] toRow() {
+    	Object[] administrator = { getId(), getUserName(), "getdroits", getCreatedAt(), getAdminState()};
+    	return administrator;
+    }
     
 
 }

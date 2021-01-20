@@ -96,4 +96,12 @@ public class Order {
 
 
 
+    
+    public Object[] toRow() {
+    	
+    	Object[] order = { "numéro de commande", "fournisseur", "montant", "date commande", "date livraison", "statut"};
+    	return order;
+    }
+
+
 }

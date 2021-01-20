@@ -71,4 +71,16 @@ public class OrderLine {
         // TODO implement here
     }
 
+    
+    public Object[] toRow() {
+    	
+    	Object[] orderLine = {"id", "produit", "conditionnement", "qté commandée", "prix"};
+    	return orderLine;
+    }
+    
+    public Object[] toRow2() {
+    	
+    	Object[] orderLine = {"id", "produit", "conditionnement", "qté commandée", "prix", "date commande", "date livraison"};
+    	return orderLine;
+    }
 }
