@@ -20,11 +20,13 @@ import dao.AdministratorDAO;
 import dao.ArticleDAO;
 import dao.ProductDAO;
 import dao.ProviderDAO;
+import dao.SellDAO;
 import model.Article;
 import model.Product;
 import model.Provider;
 import model.Sell;
 import tools.AppSettings;
+import tools.Useful;
 
 public class ProviderArticlePanel extends JPanel {
 
@@ -129,14 +131,20 @@ public class ProviderArticlePanel extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				var sell = new Sell();
-				var adminId = Integer.parseInt(AppSettings.get("loginUser"));
-				var admin = (new AdministratorDAO()).find(" 	idAdministrator", adminId);
-				
-				
-//				sell.setIdArticle();
+//				var adminId = Integer.parseInt(AppSettings.get("loginUser"));
+//				var admin = (new AdministratorDAO()).find("idAdministrator", adminId);
+				var article = comboBoxArticle.getSelectedItem().toString();
+//				var provider = new Provider();
+//				provider.s
+				sell.setProviderFromName(comboBoxProvider.getSelectedItem().toString());
+				sell.setIdArticle(Integer.parseInt(article.split(" - ")[0]));
 //				sell.setIdProvider();
-//				sell.setPrice();
-//				sell.setUpdateDate();
+				sell.setPrice(Double.parseDouble(textFieldPrice.getText()));
+				
+				java.util.Date sqlDate = new java.util.Date(); 
+				Date createDate = new Date(sqlDate.getTime());
+				
+				sell.setUpdateDate(createDate);
 			
 //				article.setWeight(Double.parseDouble(textFieldWeightArticle.getText()) );
 //				article.setAmount(Integer.parseInt(textFieldQtyArticle.getText()) );
@@ -147,12 +155,17 @@ public class ProviderArticlePanel extends JPanel {
 //				article.setIdAdministrator(adminId);
 //				article.setProductFromName(comboBoxProductArticle.getSelectedItem().toString());
 //				article.setConditioningFromName(comboBoxConditioningArticle.getSelectedItem().toString());
-//				admin.createArticle(article);
+				sell.create();
 
+				List<Sell> sells = (new SellDAO()).findALL();//
+				Useful.displaySell(sells, providerModel);
+				
 			}
 		});
 		
 		
+		List<Sell> sells = (new SellDAO()).findALL();//
+		Useful.displaySell(sells, providerModel);
 		
 	}
 
