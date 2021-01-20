@@ -22,9 +22,13 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 
 import component.ArticlePanel;
+import component.DeliveryPanel;
+import component.HistoryPanel;
+import component.OrderPanel;
 import component.ProductPanel;
 import component.ProfilePanel;
 import component.ProviderPanel;
+import component.UnitAndCondPanel;
 import dao.ConditioningDAO;
 import dao.MeasurementDAO;
 import dao.ProductDAO;
@@ -126,7 +130,7 @@ public class Management extends JFrame {
 
 		// Onglet Historique Commande
 
-		JPanel panelHistory = new JPanel();
+		HistoryPanel panelHistory = new HistoryPanel();
 		tabbedPane.addTab("Historique Commande", null, panelHistory, null);
 //		panelHistory.setLayout(null);
 //
@@ -216,7 +220,7 @@ public class Management extends JFrame {
 
 		// Onglet Gestion Livraison
 
-		JPanel panelDelivery = new JPanel();
+		DeliveryPanel panelDelivery = new DeliveryPanel();
 		tabbedPane.addTab("Gestion Livraison", null, panelDelivery, null);
 //		panelDelivery.setLayout(null);
 //
@@ -325,7 +329,7 @@ public class Management extends JFrame {
 
 		// Gestion Commande
 
-		JPanel panelOrder = new JPanel();
+		OrderPanel panelOrder = new OrderPanel();
 		tabbedPane.addTab("Gestion Commande", null, panelOrder, null);
 //		panelOrder.setLayout(null);
 //
@@ -721,6 +725,114 @@ public class Management extends JFrame {
 //		lblNewLabel_2_2.setBounds(478, 130, 78, 27);
 //		panelProduct.add(lblNewLabel_2_2);
 
+
+		// Unite de mesure et Conditionnement
+		
+		UnitAndCondPanel panelUnitAndCond = new UnitAndCondPanel();
+		tabbedPane.addTab("Unite de mesure et Conditionnement", null, panelUnitAndCond, null);
+//		panelUnitAndCond.setLayout(null);
+
+		
+//		JLabel lblTitleUnit = new JLabel("Unit\u00E9 de mesure");
+//		lblTitleUnit.setFont(new Font("Tahoma", Font.PLAIN, 24));
+//		lblTitleUnit.setHorizontalAlignment(SwingConstants.CENTER);
+//		lblTitleUnit.setBounds(0, 50, 705, 40);
+//		panelUnitAndCond.add(lblTitleUnit);
+//
+//		JLabel lblTitleCond = new JLabel("Conditionnement");
+//		lblTitleCond.setFont(new Font("Tahoma", Font.PLAIN, 24));
+//		lblTitleCond.setHorizontalAlignment(SwingConstants.CENTER);
+//		lblTitleCond.setBounds(705, 50, 705, 40);
+//		panelUnitAndCond.add(lblTitleCond);
+//
+//		JLabel lblUnit = new JLabel("Nouvelle unit\u00E9 de mesure :");
+//		lblUnit.setHorizontalAlignment(SwingConstants.CENTER);
+//		lblUnit.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//		lblUnit.setBounds(200, 150, 300, 30);
+//		panelUnitAndCond.add(lblUnit);
+//
+//		JLabel lblCond = new JLabel("Nouveau conditionnement :");
+//		lblCond.setHorizontalAlignment(SwingConstants.CENTER);
+//		lblCond.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//		lblCond.setBounds(905, 150, 300, 30);
+//		panelUnitAndCond.add(lblCond);
+//
+//		textFieldUnit = new JTextField();
+//		textFieldUnit.setHorizontalAlignment(SwingConstants.CENTER);
+//		textFieldUnit.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//		textFieldUnit.setBounds(200, 180, 300, 40);
+//		panelUnitAndCond.add(textFieldUnit);
+//		textFieldUnit.setColumns(10);
+//
+//		textFieldCond = new JTextField();
+//		textFieldCond.setHorizontalAlignment(SwingConstants.CENTER);
+//		textFieldCond.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//		textFieldCond.setBounds(905, 180, 300, 40);
+//		panelUnitAndCond.add(textFieldCond);
+//		textFieldCond.setColumns(10);
+//
+//		JScrollPane scrollPaneUnit = new JScrollPane();
+//		scrollPaneUnit.setBounds(200, 400, 300, 300);
+//		panelUnitAndCond.add(scrollPaneUnit);
+//
+//		tableUnit = new JTable();
+//		scrollPaneUnit.setViewportView(tableUnit);
+//		
+//		DefaultTableModel unitModel = new DefaultTableModel(new Object[][] {,},
+//				new String[] { "Identifiant", "Unite" });
+//
+//		tableUnit.setModel(unitModel);
+//		tableUnit.getColumnModel().getColumn(0).setResizable(false);
+//		tableUnit.getColumnModel().getColumn(1).setResizable(false);
+//		scrollPaneUnit.setViewportView(tableUnit);
+//
+//		JScrollPane scrollPaneCond = new JScrollPane();
+//		scrollPaneCond.setBounds(905, 400, 300, 300);
+//		panelUnitAndCond.add(scrollPaneCond);
+//
+//		tableCond = new JTable();
+//		scrollPaneCond.setViewportView(tableCond);
+//		
+//		DefaultTableModel condModel = new DefaultTableModel(new Object[][] {,},
+//				new String[] { "Identifiant", "Conditionnement" });
+//
+//		tableCond.setModel(condModel);
+//		tableCond.getColumnModel().getColumn(0).setResizable(false);
+//		tableCond.getColumnModel().getColumn(1).setResizable(false);
+//		scrollPaneCond.setViewportView(tableCond);
+//
+//		JButton btnAddUnit = new JButton("Cr\u00E9er");
+//		btnAddUnit.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//		btnAddUnit.setBounds(150, 250, 150, 30);
+//		panelUnitAndCond.add(btnAddUnit);
+//
+//		JButton btnModifyUnit = new JButton("Modifier");
+//		btnModifyUnit.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//		btnModifyUnit.setBounds(400, 250, 150, 30);
+//		panelUnitAndCond.add(btnModifyUnit);
+//
+//		JButton btnAddCond = new JButton("Cr\u00E9er");
+//		btnAddCond.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//		btnAddCond.setBounds(855, 250, 150, 30);
+//		panelUnitAndCond.add(btnAddCond);
+//
+//		JButton btnModifyCond = new JButton("Modifier");
+//		btnModifyCond.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//		btnModifyCond.setBounds(1105, 250, 150, 30);
+//		panelUnitAndCond.add(btnModifyCond);
+//
+//		JLabel lblUnitTable = new JLabel("Liste des unit\u00E9s de mesure");
+//		lblUnitTable.setHorizontalAlignment(SwingConstants.CENTER);
+//		lblUnitTable.setFont(new Font("Tahoma", Font.PLAIN, 18));
+//		lblUnitTable.setBounds(200, 350, 300, 50);
+//		panelUnitAndCond.add(lblUnitTable);
+//
+//		JLabel lblCondTable = new JLabel("Liste des conditionnements");
+//		lblCondTable.setHorizontalAlignment(SwingConstants.CENTER);
+//		lblCondTable.setFont(new Font("Tahoma", Font.PLAIN, 18));
+//		lblCondTable.setBounds(905, 350, 300, 50);
+//		panelUnitAndCond.add(lblCondTable);
+		
 		// Gestion Fournisseur
 
 //		List<Conditioning> conditioning = (new ConditioningDAO()).findALL();//
@@ -902,112 +1014,6 @@ public class Management extends JFrame {
 		tabbedPane.addTab("Profil", null, panelProfile, null);
 
 
-		// Uint� de mesure et Conditionnement
-		
-		JPanel panelUnitAndCond = new JPanel();
-		tabbedPane.addTab("Unit� de mesure et Conditionnement", null, panelUnitAndCond, null);
-		panelUnitAndCond.setLayout(null);
-
-		
-//		JLabel lblTitleUnit = new JLabel("Unit\u00E9 de mesure");
-//		lblTitleUnit.setFont(new Font("Tahoma", Font.PLAIN, 24));
-//		lblTitleUnit.setHorizontalAlignment(SwingConstants.CENTER);
-//		lblTitleUnit.setBounds(0, 50, 705, 40);
-//		panelUnitAndCond.add(lblTitleUnit);
-//
-//		JLabel lblTitleCond = new JLabel("Conditionnement");
-//		lblTitleCond.setFont(new Font("Tahoma", Font.PLAIN, 24));
-//		lblTitleCond.setHorizontalAlignment(SwingConstants.CENTER);
-//		lblTitleCond.setBounds(705, 50, 705, 40);
-//		panelUnitAndCond.add(lblTitleCond);
-//
-//		JLabel lblUnit = new JLabel("Nouvelle unit\u00E9 de mesure :");
-//		lblUnit.setHorizontalAlignment(SwingConstants.CENTER);
-//		lblUnit.setFont(new Font("Tahoma", Font.PLAIN, 16));
-//		lblUnit.setBounds(200, 150, 300, 30);
-//		panelUnitAndCond.add(lblUnit);
-//
-//		JLabel lblCond = new JLabel("Nouveau conditionnement :");
-//		lblCond.setHorizontalAlignment(SwingConstants.CENTER);
-//		lblCond.setFont(new Font("Tahoma", Font.PLAIN, 16));
-//		lblCond.setBounds(905, 150, 300, 30);
-//		panelUnitAndCond.add(lblCond);
-//
-//		textFieldUnit = new JTextField();
-//		textFieldUnit.setHorizontalAlignment(SwingConstants.CENTER);
-//		textFieldUnit.setFont(new Font("Tahoma", Font.PLAIN, 16));
-//		textFieldUnit.setBounds(200, 180, 300, 40);
-//		panelUnitAndCond.add(textFieldUnit);
-//		textFieldUnit.setColumns(10);
-//
-//		textFieldCond = new JTextField();
-//		textFieldCond.setHorizontalAlignment(SwingConstants.CENTER);
-//		textFieldCond.setFont(new Font("Tahoma", Font.PLAIN, 16));
-//		textFieldCond.setBounds(905, 180, 300, 40);
-//		panelUnitAndCond.add(textFieldCond);
-//		textFieldCond.setColumns(10);
-//
-//		JScrollPane scrollPaneUnit = new JScrollPane();
-//		scrollPaneUnit.setBounds(200, 400, 300, 300);
-//		panelUnitAndCond.add(scrollPaneUnit);
-//
-//		tableUnit = new JTable();
-//		scrollPaneUnit.setViewportView(tableUnit);
-//		
-//		DefaultTableModel unitModel = new DefaultTableModel(new Object[][] {,},
-//				new String[] { "Identifiant", "Unite" });
-//
-//		tableUnit.setModel(unitModel);
-//		tableUnit.getColumnModel().getColumn(0).setResizable(false);
-//		tableUnit.getColumnModel().getColumn(1).setResizable(false);
-//		scrollPaneUnit.setViewportView(tableUnit);
-//
-//		JScrollPane scrollPaneCond = new JScrollPane();
-//		scrollPaneCond.setBounds(905, 400, 300, 300);
-//		panelUnitAndCond.add(scrollPaneCond);
-//
-//		tableCond = new JTable();
-//		scrollPaneCond.setViewportView(tableCond);
-//		
-//		DefaultTableModel condModel = new DefaultTableModel(new Object[][] {,},
-//				new String[] { "Identifiant", "Conditionnement" });
-//
-//		tableCond.setModel(condModel);
-//		tableCond.getColumnModel().getColumn(0).setResizable(false);
-//		tableCond.getColumnModel().getColumn(1).setResizable(false);
-//		scrollPaneCond.setViewportView(tableCond);
-//
-//		JButton btnAddUnit = new JButton("Cr\u00E9er");
-//		btnAddUnit.setFont(new Font("Tahoma", Font.PLAIN, 16));
-//		btnAddUnit.setBounds(150, 250, 150, 30);
-//		panelUnitAndCond.add(btnAddUnit);
-//
-//		JButton btnModifyUnit = new JButton("Modifier");
-//		btnModifyUnit.setFont(new Font("Tahoma", Font.PLAIN, 16));
-//		btnModifyUnit.setBounds(400, 250, 150, 30);
-//		panelUnitAndCond.add(btnModifyUnit);
-//
-//		JButton btnAddCond = new JButton("Cr\u00E9er");
-//		btnAddCond.setFont(new Font("Tahoma", Font.PLAIN, 16));
-//		btnAddCond.setBounds(855, 250, 150, 30);
-//		panelUnitAndCond.add(btnAddCond);
-//
-//		JButton btnModifyCond = new JButton("Modifier");
-//		btnModifyCond.setFont(new Font("Tahoma", Font.PLAIN, 16));
-//		btnModifyCond.setBounds(1105, 250, 150, 30);
-//		panelUnitAndCond.add(btnModifyCond);
-//
-//		JLabel lblUnitTable = new JLabel("Liste des unit\u00E9s de mesure");
-//		lblUnitTable.setHorizontalAlignment(SwingConstants.CENTER);
-//		lblUnitTable.setFont(new Font("Tahoma", Font.PLAIN, 18));
-//		lblUnitTable.setBounds(200, 350, 300, 50);
-//		panelUnitAndCond.add(lblUnitTable);
-//
-//		JLabel lblCondTable = new JLabel("Liste des conditionnements");
-//		lblCondTable.setHorizontalAlignment(SwingConstants.CENTER);
-//		lblCondTable.setFont(new Font("Tahoma", Font.PLAIN, 18));
-//		lblCondTable.setBounds(905, 350, 300, 50);
-//		panelUnitAndCond.add(lblCondTable);
 
 	
 
