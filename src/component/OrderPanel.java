@@ -3,6 +3,7 @@ package component;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Date;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -13,6 +14,10 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
+
+import dao.AdministratorDAO;
+import model.Order;
+import tools.AppSettings;
 
 public class OrderPanel extends JPanel {
 
@@ -59,25 +64,6 @@ public class OrderPanel extends JPanel {
 		lblTitle2Order.setBounds(100, 320, 300, 40);
 		this.add(lblTitle2Order);
 
-		JButton btnAddOrder = new JButton("Ajouter");
-		btnAddOrder.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		btnAddOrder.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-			}
-		});
-		btnAddOrder.setBounds(35, 600, 120, 40);
-		this.add(btnAddOrder);
-
-		JButton btnUpdateOrder = new JButton("Modifier");
-		btnUpdateOrder.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		btnUpdateOrder.setBounds(190, 600, 120, 40);
-		this.add(btnUpdateOrder);
-
-		JButton btnDeleteOrder = new JButton("Supprimer");
-		btnDeleteOrder.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		btnDeleteOrder.setBounds(345, 600, 120, 40);
-		this.add(btnDeleteOrder);
-
 		JComboBox comboBoxOrderNumberOrder = new JComboBox();
 		comboBoxOrderNumberOrder.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		comboBoxOrderNumberOrder.setBounds(900, 30, 250, 40);
@@ -85,6 +71,7 @@ public class OrderPanel extends JPanel {
 
 		JComboBox comboBoxProviderOrder = new JComboBox();
 		comboBoxProviderOrder.setBounds(100, 200, 300, 40);
+		comboBoxProviderOrder.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		this.add(comboBoxProviderOrder);
 
 		JComboBox comboBoxArticleOrder = new JComboBox();
@@ -107,7 +94,7 @@ public class OrderPanel extends JPanel {
 		scrollPaneOrder.setViewportView(tableOrder);
 
 		DefaultTableModel modelOrder = new DefaultTableModel(new Object[][] {,},
-				new String[] { "Identifiant", "Produit", "Conditionnement", "Qté Commandée", "Prix €" });
+				new String[] { "Identifiant", "Produit", "Conditionnement", "Quantite Commande", "Prix (en Euros)" });
 
 		tableOrder.setModel(modelOrder);
 		tableOrder.getColumnModel().getColumn(0).setResizable(false);
@@ -134,6 +121,36 @@ public class OrderPanel extends JPanel {
 		lblTotalPriceOrder.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		lblTotalPriceOrder.setBounds(900, 670, 150, 40);
 		this.add(lblTotalPriceOrder);
+		
+		JButton btnAddOrder = new JButton("Ajouter");
+		btnAddOrder.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		btnAddOrder.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				Order order = new Order();
+				var adminId = Integer.parseInt(AppSettings.get("loginUser"));
+				var admin=(new AdministratorDAO()).find("idAdministrator",adminId);
+				
+				java.util.Date sqlDate = new java.util.Date(); 
+				Date orderDate = new Date(sqlDate.getTime());
+				order.setOrderDate(orderDate);
+				order.setIdAdministrator(adminId);
+				//TODO 	order.setIdProvider(comboBoxProviderOrder.getSelectedItem().toString());
+				order.setState("w");
+				admin.createOrder(order);
+			}
+		});
+		btnAddOrder.setBounds(35, 600, 120, 40);
+		this.add(btnAddOrder);
+		
+		JButton btnUpdateOrder = new JButton("Modifier");
+		btnUpdateOrder.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		btnUpdateOrder.setBounds(190, 600, 120, 40);
+		this.add(btnUpdateOrder);
+
+		JButton btnDeleteOrder = new JButton("Supprimer");
+		btnDeleteOrder.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		btnDeleteOrder.setBounds(345, 600, 120, 40);
+		this.add(btnDeleteOrder);
 		
 	}
 
