@@ -1,6 +1,10 @@
 package component;
 
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.Date;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -11,6 +15,16 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
+
+import dao.AdministratorDAO;
+import dao.ArticleDAO;
+import dao.ProductDAO;
+import dao.ProviderDAO;
+import model.Article;
+import model.Product;
+import model.Provider;
+import model.Sell;
+import tools.AppSettings;
 
 public class ProviderArticlePanel extends JPanel {
 
@@ -96,6 +110,50 @@ public class ProviderArticlePanel extends JPanel {
 		lblTableTitle.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		lblTableTitle.setBounds(700, 50, 600, 30);
 		this.add(lblTableTitle);
+		
+		List<Provider> providertList = (new ProviderDAO()).findALL();//
+		providertList.forEach(p -> {
+
+			comboBoxProvider.addItem(p.getCompanyName());
+
+		});
+		
+		List<Article> articleList = (new ArticleDAO()).findALL();//
+		articleList.forEach(a -> {
+
+			comboBoxArticle.addItem(a.getId() +" - "+a.getProduct().getProductName() + " "+ a.getConditioning().getConditioningName()+" "+a.getAmount());
+
+		});
+		
+		btnAdd.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				var sell = new Sell();
+				var adminId = Integer.parseInt(AppSettings.get("loginUser"));
+				var admin = (new AdministratorDAO()).find(" 	idAdministrator", adminId);
+				
+				
+//				sell.setIdArticle();
+//				sell.setIdProvider();
+//				sell.setPrice();
+//				sell.setUpdateDate();
+			
+//				article.setWeight(Double.parseDouble(textFieldWeightArticle.getText()) );
+//				article.setAmount(Integer.parseInt(textFieldQtyArticle.getText()) );
+//				article.setArticleState(comboBoxStatutArticle.getSelectedItem().toString());
+//				java.util.Date sqlDate = new java.util.Date(); 
+//				Date createDate = new Date(sqlDate.getTime());
+//				article.setCreatedAt(createDate);
+//				article.setIdAdministrator(adminId);
+//				article.setProductFromName(comboBoxProductArticle.getSelectedItem().toString());
+//				article.setConditioningFromName(comboBoxConditioningArticle.getSelectedItem().toString());
+//				admin.createArticle(article);
+
+			}
+		});
+		
+		
+		
 	}
 
 }
