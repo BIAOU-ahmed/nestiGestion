@@ -69,6 +69,7 @@ public class Administrator {
     	provider.create();
     }
 
+    
     /**
      * 
      */
@@ -76,6 +77,14 @@ public class Administrator {
     	provider.update();
     }
 
+    
+    /**
+     * 
+     */
+    public void createOrder(Order order) {
+    	order.create();
+    }
+    
     /**
      * 
      */
@@ -86,42 +95,21 @@ public class Administrator {
     /**
      * 
      */
-    public void addIngredient() {
+    public void addProduct() {
         // TODO implement here
     }
 
     /**
      * 
      */
-    public void updateIngredient() {
+    public void updateProduct() {
         // TODO implement here
     }
 
     /**
      * 
      */
-    public void deleteIngredient() {
-        // TODO implement here
-    }
-
-    /**
-     * 
-     */
-    public void addUtensil() {
-        // TODO implement here
-    }
-
-    /**
-     * 
-     */
-    public void updateUtensil() {
-        // TODO implement here
-    }
-
-    /**
-     * 
-     */
-    public void deleteUtensil() {
+    public void deleteProduct() {
         // TODO implement here
     }
 
