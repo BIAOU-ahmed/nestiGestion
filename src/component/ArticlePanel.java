@@ -3,6 +3,8 @@ package component;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.sql.Date;
 import java.util.List;
 
@@ -133,7 +135,7 @@ public class ArticlePanel extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				Article article = new Article();
 				var adminId = Integer.parseInt(AppSettings.get("loginUser"));
-				var admin = (new AdministratorDAO()).find(" 	idAdministrator", adminId);
+				var admin = (new AdministratorDAO()).find("idAdministrator", adminId);
 				
 				article.setWeight(Double.parseDouble(textFieldWeightArticle.getText()) );
 				article.setAmount(Integer.parseInt(textFieldQtyArticle.getText()) );
@@ -212,6 +214,26 @@ public class ArticlePanel extends JPanel {
 		List<Article> updateProducts = (new ArticleDAO()).findALL();//
 		Useful.displayArticle(updateProducts, articleModel);
 		
+		
+		tableArticle.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				System.out.println("testttt");
+				if (!tableArticle.getSelectionModel().isSelectionEmpty()) {
+					int row = tableArticle.getSelectedRow();
+					
+					comboBoxStatutArticle.setSelectedItem((String) articleModel.getValueAt(row, 6));
+//					textFieldWeightArticle.setText((String) articleModel.getValueAt(row, 4));
+					comboBoxProductArticle.setSelectedItem((String) articleModel.getValueAt(row, 1));
+					
+					comboBoxConditioningArticle.setSelectedItem((String) articleModel.getValueAt(row, 2));
+					textFieldQtyArticle.setText((String) articleModel.getValueAt(row, 3));
+					textFieldWeightArticle.setText( Double.toString((Double) articleModel.getValueAt(row, 4)));
+					
+				}
+			}
+		});
+		
 
 	}
 
@@ -228,6 +250,8 @@ public class ArticlePanel extends JPanel {
 	public void setComboBoxProductArticle(JComboBox comboBoxProductArticle) {
 		this.comboBoxProductArticle = comboBoxProductArticle;
 	}
+	
+	
 	
 	
 

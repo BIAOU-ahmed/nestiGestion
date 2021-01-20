@@ -73,7 +73,7 @@ public class ProviderDAO extends BaseDAO<Provider> {
 
 	public void update(Provider provider) throws SQLException {
 		String sql = "UPDATE "+ getTableName() +" SET `compagnyName` = ?, `contactLastName` = ?, `contactFirstName` = ?, `providerState` = ?, `contactPhoneNumber` = ? WHERE `provider`.`idProvider` = ?; ";
-		System.out.println("update provider");
+//		System.out.println("update provider");
 		var updateProvider = DBConnection.get().prepareStatement(sql);
 		updateProvider.setString(1, provider.getCompanyName());
 		updateProvider.setString(2, provider.getContactLastName());
