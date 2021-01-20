@@ -200,7 +200,7 @@ public class ProviderPanel extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				Provider newProvider = new Provider();
 				var adminId = Integer.parseInt(AppSettings.get("loginUser"));
-				var admin = (new AdministratorDAO()).find(" 	idAdministrator", adminId);
+				var admin = (new AdministratorDAO()).find("idAdministrator", adminId);
 
 				newProvider.setCompanyName(textFieldCompanyNameProvider.getText());
 				newProvider.setContactLastName(textFieldLastNameProvider.getText());

@@ -49,11 +49,11 @@ public class SellDAO extends BaseDAO<Sell> {
 
 		var insertArticle = DBConnection.get().prepareStatement(sql);
 
-		
+		System.out.println("provi"+ sell.getIdProvider() +"articl"+sell.getIdArticle());
 		insertArticle.setInt(2, sell.getIdArticle());
-		insertArticle.setInt(3, sell.getIdProvider());
-		insertArticle.setDouble(4, sell.getPrice());
-		insertArticle.setDate(5, (Date) sell.getUpdateDate());
+		insertArticle.setInt(1, sell.getIdProvider());
+		insertArticle.setDouble(3, sell.getPrice());
+		insertArticle.setDate(4, (Date) sell.getUpdateDate());
 
 		insertArticle.executeUpdate();
 
