@@ -74,13 +74,13 @@ public class OrderLine {
     
     public Object[] toRow() {
     	
-    	Object[] orderLine = {"id", "produit", "conditionnement", "qté commandée", "prix"};
+    	Object[] orderLine = {"id", "produit", "conditionnement", "qtÃ© commandÃ©e", "prix"};
     	return orderLine;
     }
     
     public Object[] toRow2() {
     	
-    	Object[] orderLine = {"id", "produit", "conditionnement", "qté commandée", "prix", "date commande", "date livraison"};
+    	Object[] orderLine = {"id", "produit", "conditionnement", "qtÃ© commandÃ©e", "prix", "date commande", "date livraison"};
     	return orderLine;
     }
 }
