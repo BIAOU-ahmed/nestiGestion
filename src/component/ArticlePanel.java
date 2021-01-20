@@ -40,8 +40,7 @@ public class ArticlePanel extends JPanel {
 
 		comboBoxProductArticle = comboBoxProductArticles;
 //		tabbedPane.addTab("Gestion Article", null, this, null);
-//		this.setLayout(null);
-		setLayout(null);
+		this.setLayout(null);
 		JLabel lblSearchArticle = new JLabel("Rechercher");
 		lblSearchArticle.setFont(new Font("Tahoma", Font.PLAIN, 24));
 		lblSearchArticle.setBounds(947, 23, 120, 29);
