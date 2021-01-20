@@ -133,7 +133,7 @@ public class ArticlePanel extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				Article article = new Article();
 				var adminId = Integer.parseInt(AppSettings.get("loginUser"));
-				var admin = (new AdministratorDAO()).find(" 	idAdministrator", adminId);
+				var admin = (new AdministratorDAO()).find("idAdministrator", adminId);
 				
 				article.setWeight(Double.parseDouble(textFieldWeightArticle.getText()) );
 				article.setAmount(Integer.parseInt(textFieldQtyArticle.getText()) );
