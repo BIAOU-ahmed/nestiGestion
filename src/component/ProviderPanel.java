@@ -133,13 +133,14 @@ public class ProviderPanel extends JPanel {
 		scrollPaneSelectedProvider.setViewportView(tableSelectedProvider);
 
 		DefaultTableModel selectedCompanyModel = new DefaultTableModel(new Object[][] {,},
-				new String[] { "Produit", "Conditionnement", "Poids", "Prix fournisseur �" });
+				new String[] { "Identifiant", "Produit", "Conditionnement", "Poids", "Prix fournisseur �" });
 
 		tableSelectedProvider.setModel(selectedCompanyModel);
 		tableSelectedProvider.getColumnModel().getColumn(0).setResizable(false);
 		tableSelectedProvider.getColumnModel().getColumn(1).setResizable(false);
 		tableSelectedProvider.getColumnModel().getColumn(2).setResizable(false);
 		tableSelectedProvider.getColumnModel().getColumn(3).setResizable(false);
+		tableSelectedProvider.getColumnModel().getColumn(4).setResizable(false);
 //		scrollPane.setViewportView(table);
 //		scrollPane.setColumnHeaderView(table);
 

@@ -111,9 +111,16 @@ public class ProfilePanel extends JPanel {
 
 			public void mouseClicked(MouseEvent e) {
 
-				textFieldUsernameProfile.setEditable(true);
-				btnCancelUsernameProfile.setVisible(true);
-				btnEditUsernameProfile.setText("Enregistrer");
+				if (btnEditUsernameProfile.getText().equals("Modifier")) {
+					textFieldUsernameProfile.setEditable(true);
+					btnCancelUsernameProfile.setVisible(true);
+					btnEditUsernameProfile.setText("Enregistrer");
+					
+				}else if (btnEditUsernameProfile.getText().equals("Enregistrer")){
+					textFieldUsernameProfile.setEditable(false);
+					btnCancelUsernameProfile.setVisible(false);
+					btnEditUsernameProfile.setText("Modifier");
+				}
 				// TODO
 				// Appel fonction BDD
 			}
@@ -122,11 +129,21 @@ public class ProfilePanel extends JPanel {
 		
 		btnEditPasswordProfile.addMouseListener(new MouseAdapter() {
 
+			
 			public void mouseClicked(MouseEvent e) {
 
-				passwordField.setEditable(true);
-				btnCancelPasswordProfile.setVisible(true);
-				btnEditPasswordProfile.setText("Enregistrer");
+				if (btnEditPasswordProfile.getText().equals("Modifier")) {
+					passwordField.setEditable(true);
+					btnCancelPasswordProfile.setVisible(true);
+					btnEditPasswordProfile.setText("Enregistrer");
+					
+				}else if (btnEditPasswordProfile.getText().equals("Enregistrer")){
+					passwordField.setEditable(false);
+					btnCancelPasswordProfile.setVisible(false);
+					btnEditPasswordProfile.setText("Modifier");
+				}
+				
+				
 				// TODO
 				// Appel fonction BDD
 			}
