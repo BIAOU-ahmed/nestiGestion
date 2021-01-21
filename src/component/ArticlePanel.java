@@ -37,6 +37,7 @@ public class ArticlePanel extends JPanel {
 	protected JComboBox comboBoxConditioningArticle;
 	Management mainController;
 
+	
 	/**
 	 * Create the panel.
 	 */
@@ -156,6 +157,9 @@ public class ArticlePanel extends JPanel {
 				article.setProductFromName(comboBoxProductArticle.getSelectedItem().toString());
 				article.setConditioningFromName(comboBoxConditioningArticle.getSelectedItem().toString());
 				admin.createArticle(article);
+				
+				List<Article> updateProducts = (new ArticleDAO()).findALL();//
+				Useful.displayArticle(updateProducts, articleModel);
 
 			}
 		});

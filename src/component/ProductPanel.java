@@ -52,7 +52,7 @@ public class ProductPanel extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public ProductPanel(Management mainController, JTabbedPane tabbedPane, JComboBox comboBoxProductArticle) {
+	public ProductPanel(Management mainController) {
 		setLayout(null);
 
 		JTextField textFieldSearch = new JTextField();
@@ -217,8 +217,8 @@ public class ProductPanel extends JPanel {
 ////					String t = ((String) productModel.getValueAt(row, 1));
 					String p = (String) productModel.getValueAt(row, 1);
 //					System.out.println(p);
-					comboBoxProductArticle.setSelectedItem(p);
-					tabbedPane.setSelectedIndex(3);
+					mainController.getPanelArticle().getComboBoxProductArticle().setSelectedItem(p);
+					mainController.getTabbedPane().setSelectedIndex(3);
 				} else {
 					JOptionPane.showMessageDialog(null, "Select product first");
 				}

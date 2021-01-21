@@ -20,9 +20,11 @@ import javax.swing.table.DefaultTableModel;
 import dao.AdministratorDAO;
 import dao.ProductDAO;
 import dao.ProviderDAO;
+import dao.SellDAO;
 import model.Article;
 import model.Product;
 import model.Provider;
+import model.Sell;
 import tools.AppSettings;
 import tools.Useful;
 import java.awt.event.MouseAdapter;
@@ -113,7 +115,7 @@ public class ProviderPanel extends JPanel {
 		btnEditProvider.setBounds(425, 329, 104, 35);
 		this.add(btnEditProvider);
 
-		JLabel lblSelectedCompanyNameProvider = new JLabel("L\u00E9gumes.fr");
+		JLabel lblSelectedCompanyNameProvider = new JLabel("Légumes.fr");
 		lblSelectedCompanyNameProvider.setFont(new Font("Tahoma", Font.PLAIN, 24));
 		lblSelectedCompanyNameProvider.setBounds(305, 388, 126, 35);
 		this.add(lblSelectedCompanyNameProvider);
@@ -131,13 +133,16 @@ public class ProviderPanel extends JPanel {
 		scrollPaneSelectedProvider.setViewportView(tableSelectedProvider);
 
 		DefaultTableModel selectedCompanyModel = new DefaultTableModel(new Object[][] {,},
-				new String[] { "Produit", "Conditionnement", "Poids", "Prix fournisseur €" });
+
+				new String[] { "Identifiant", "Produit", "Conditionnement", "Poids", "Prix fournisseur €" });
+
 
 		tableSelectedProvider.setModel(selectedCompanyModel);
 		tableSelectedProvider.getColumnModel().getColumn(0).setResizable(false);
 		tableSelectedProvider.getColumnModel().getColumn(1).setResizable(false);
 		tableSelectedProvider.getColumnModel().getColumn(2).setResizable(false);
 		tableSelectedProvider.getColumnModel().getColumn(3).setResizable(false);
+		tableSelectedProvider.getColumnModel().getColumn(4).setResizable(false);
 //		scrollPane.setViewportView(table);
 //		scrollPane.setColumnHeaderView(table);
 
@@ -263,6 +268,10 @@ public class ProviderPanel extends JPanel {
 					textFieldPhoneNumberProvider.setText((String) providerModel.getValueAt(row, 4));
 					textFieldCompanyNameProvider.setText((String) providerModel.getValueAt(row, 1));
 					comboBoxStatusProvider.setSelectedItem((String) providerModel.getValueAt(row, 5));
+					
+					lblSelectedCompanyNameProvider.setText((String) providerModel.getValueAt(row, 1));
+					List<Sell> acticleSells = (new SellDAO()).findALLBy("idProvider",((Integer) providerModel.getValueAt(row, 0)));//
+					Useful.displayProviderSell(acticleSells, selectedCompanyModel);
 
 				}
 			}
