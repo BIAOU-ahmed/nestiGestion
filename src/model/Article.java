@@ -3,6 +3,8 @@ package model;
 import java.sql.SQLException;
 import java.util.*;
 
+import javax.swing.JOptionPane;
+
 import dao.AdministratorDAO;
 import dao.ArticleDAO;
 import dao.ConditioningDAO;
@@ -49,8 +51,6 @@ public class Article {
 
 	private int idConditioning;
 
-	
-	
 	public void setProductFromName(String productName) {
 		var product = (new ProductDAO()).find("productName", productName);
 		this.idProduct = product.getId();
@@ -76,8 +76,6 @@ public class Article {
 		return (new AdministratorDAO()).find("idAdministrator", this.idAdministrator);
 	}
 
-	
-	
 	/**
 	 * @return the idAdministrator
 	 */
@@ -128,25 +126,51 @@ public class Article {
 		article.setWeight(getWeight());
 		article.setAmount(getAmount());
 		article.setArticleState(getArticleState());
-		
+
 		article.setCreatedAt(getCreatedAt());
 		article.setIdAdministrator(getIdAdministrator());
 		article.setIdProduct(getIdProduct());
 		article.setIdConditioning(getIdConditioning());
-		
-		try {
-			(new ArticleDAO()).insert(article);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+
+		if ((new ArticleDAO()).find(article) == null) {
+			try {
+				(new ArticleDAO()).insert(article);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		} else {
+			JOptionPane.showMessageDialog(null, "Article alrady exist");
 		}
+
 	}
 
 	/**
 	 * 
 	 */
 	public void update() {
-		// TODO implement here
+		Article article = new Article();
+		article.setWeight(getWeight());
+		article.setAmount(getAmount());
+		article.setArticleState(getArticleState());
+		article.setId(id);
+		article.setCreatedAt(getCreatedAt());
+		article.setIdAdministrator(getIdAdministrator());
+		article.setIdProduct(getIdProduct());
+		article.setIdConditioning(getIdConditioning());
+		var art = (new ArticleDAO()).find(article);
+		System.out.println("exist id "+ art.getId() );
+		System.out.println("actual id "+ article.getId() );
+		if (art != null && art.getId() == article.getId()) {
+			try {
+				(new ArticleDAO()).update(article);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		} else {
+			JOptionPane.showMessageDialog(null, "other Article alrady exist");
+		}
 	}
 
 	/**
@@ -227,9 +251,10 @@ public class Article {
 	}
 
 	public Object[] toRow() {
-		Object[] article = { getId(), getProduct().getProductName(), "Qté", getConditioning().getConditioningName(), "54", getWeight(),"12",getArticleState() };
+		Object[] article = { getId(), getProduct().getProductName(), getAmount(),
+				getConditioning().getConditioningName(), getWeight(), "12 €", "54", getArticleState() };
 		return article;
-		
+
 	}
 
 }

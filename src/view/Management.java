@@ -152,7 +152,10 @@ public class Management extends JFrame {
 
 		// Gestion Fournisseur
 
-		panelProvider = new ProviderPanel();
+
+
+		panelProvider = new ProviderPanel(this);
+
 		tabbedPane.addTab("Gestion Fournisseur", null, panelProvider, null);
 
 		// Gestion Articles Fournisseurs

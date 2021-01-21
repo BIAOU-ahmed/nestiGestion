@@ -198,4 +198,19 @@ public class OrderPanel extends JPanel {
 		});
 	}
 
+	/**
+	 * @return the comboBoxProviderOrder
+	 */
+	public JComboBox getComboBoxProviderOrder() {
+		return comboBoxProviderOrder;
+	}
+
+	/**
+	 * @return the comboBoxArticleOrder
+	 */
+	public JComboBox getComboBoxArticleOrder() {
+		return comboBoxArticleOrder;
+	}
+
+	
 }

@@ -10,6 +10,7 @@ import javax.swing.JTextField;
 
 import com.lambdaworks.crypto.SCryptUtil;
 
+import dao.ArticleDAO;
 import dao.IngredientDAO;
 import dao.ProductDAO;
 import dao.UtensilDAO;
@@ -158,7 +159,8 @@ public class Product extends DBConnection {
 			type = "Ingredients";
 			unity = ing.getMeasurement().getUnit();
 		}
-		Object[] product = { getId(), getProductName(), type, unity, "" };
+		List<Article> nbArticle = (new ArticleDAO()).findALLBy("idProduct",getId());
+		Object[] product = { getId(), getProductName(), type, unity, nbArticle.size() };
 		return product;
 	}
 

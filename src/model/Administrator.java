@@ -61,6 +61,12 @@ public class Administrator {
     public void createArticle(Article article) {
         article.create();
     }
+    /**
+     * 
+     */
+    public void updateArticle(Article article) {
+    	article.update();
+    }
 
     /**
      * 
