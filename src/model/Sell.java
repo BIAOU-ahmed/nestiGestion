@@ -4,6 +4,8 @@ import java.sql.Date;
 import java.sql.SQLException;
 import java.util.*;
 
+import javax.swing.JOptionPane;
+
 import dao.AdministratorDAO;
 import dao.ArticleDAO;
 import dao.ConditioningDAO;
@@ -36,6 +38,8 @@ public class Sell {
 //		var article = (new ArticleDAO()).find("compagnyName", compagnyName);
 //		this.idProvider = article.getId();
 //	}
+
+	
 
 	public Date updateDate;
 
@@ -114,8 +118,26 @@ public class Sell {
 		}
 	}
 	
+	public void update() {
+  	var updatesell = new Sell();
+    	
+//    	updatedProvider.setId(id);
+//    	updatedProvider.setCompanyName(getCompanyName());
+//    	updatedProvider.setContactLastName(getContactLastName());
+//    	updatedProvider.setContactFirstName(getContactFirstName());
+//		updatedProvider.setProviderState(getProviderState());
+//		updatedProvider.setContactPhoneNumber(getContactPhoneNumber());
+//		updatedProvider.setIdAdministrator(getIdAdministrator());
+//		JOptionPane.showMessageDialog(null, "Provider update succesfully");
+//		try {
+//			(new ProviderDAO()).update(updatedProvider);
+//		} catch (SQLException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+	}
 	public Object[] toRow() {
-		Object[] sell = { getArticle().getProduct().getProductName(), getPrice() };
+		Object[] sell = { getIdArticle() +" - "+getArticle().getProduct().getProductName() + " "+ getArticle().getConditioning().getConditioningName()+" "+getArticle().getAmount(), getPrice() };
 		return sell;
 		
 	}

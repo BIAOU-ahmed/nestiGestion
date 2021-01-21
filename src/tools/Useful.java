@@ -25,7 +25,7 @@ public  class Useful {
 		products.forEach(p -> {
 
 			Object[] row1 = p.toRow();
-			// Ajout d'une rangée
+			// Ajout d'une rangï¿½e
 			model.addRow(row1);
 
 		});
@@ -37,9 +37,9 @@ public  class Useful {
 //		 = (new ProductDAO()).findALL();//
 		model.setRowCount(0);
 		products.forEach(p -> {
-
+			
 			Object[] row1 = p.toRow();
-			// Ajout d'une rangée
+			// Ajout d'une rangï¿½e
 			model.addRow(row1);
 
 		});
@@ -52,7 +52,7 @@ public  class Useful {
 		products.forEach(p -> {
 
 			Object[] row1 = p.toRow();
-			// Ajout d'une rangée
+			// Ajout d'une rangï¿½e
 			model.addRow(row1);
 
 		});
@@ -65,7 +65,7 @@ public  class Useful {
 		sells.forEach(s -> {
 
 			Object[] row1 = s.toRow();
-			// Ajout d'une rangée
+			// Ajout d'une rangï¿½e
 			model.addRow(row1);
 
 		});

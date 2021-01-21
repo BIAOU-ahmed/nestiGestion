@@ -25,13 +25,32 @@ import listener.ProductListListener;
 import model.Measurement;
 import model.Product;
 import tools.Useful;
+import view.Management;
 
 public class ProductPanel extends JPanel {
+
+	protected JTable productList;
+	Management mainController;
+
+	/**
+	 * @return the mainController
+	 */
+
+	public Management getMainController() {
+		return mainController;
+	}
+
+	/**
+	 * @param mainController the mainController to set
+	 */
+	public void setMainController(Management mainController) {
+		this.mainController = mainController;
+	}
 
 	/**
 	 * Create the panel.
 	 */
-	public ProductPanel(JTabbedPane tabbedPane, JComboBox comboBoxProductArticle) {
+	public ProductPanel(Management mainController, JTabbedPane tabbedPane, JComboBox comboBoxProductArticle) {
 		setLayout(null);
 
 		JTextField textField_2 = new JTextField();
@@ -52,10 +71,16 @@ public class ProductPanel extends JPanel {
 
 		DefaultTableModel productModel = new DefaultTableModel(new Object[][] {,},
 				new String[] { "Identifiant", "Libellé", "Type", "Unité", "Nb d'articles créés" });
-		JTable productList = new JTable();
+		productList = new JTable();
 
 		productList.setModel(productModel);
 		scrollPane_1.setViewportView(productList);
+		var conbo = mainController.getPanelArticle().getComboBoxProductArticle();
+//		productModel.addTableModelListener(e->refreshProduct(productList));
+		productModel.addTableModelListener(e->{
+				// mon code a executer quand table change
+			mainController.getPanelArticle().refreshProduct();
+		});
 
 		JTextField libeleTxt = new JTextField();
 		libeleTxt.setBounds(95, 160, 185, 34);
@@ -88,7 +113,7 @@ public class ProductPanel extends JPanel {
 		btnBlocked.setBounds(452, 297, 104, 49);
 		this.add(btnBlocked);
 
-		JButton creatArticlebtn = new JButton("Cr�er un article � partir de ce produit");
+		JButton creatArticlebtn = new JButton("Cr�er un article � partir de ce produit");
 		creatArticlebtn.setBounds(226, 424, 248, 77);
 		this.add(creatArticlebtn);
 
@@ -138,11 +163,11 @@ public class ProductPanel extends JPanel {
 		btnUpdate.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
+
 				if (!productList.getSelectionModel().isSelectionEmpty()) {
 //					System.out.println("oui in the dd");
 					int row = productList.getSelectedRow();
-					
+
 					Product updateProduct = new Product();
 					updateProduct.setId((Integer) productModel.getValueAt(row, 0));
 					updateProduct.setProductName(libeleTxt.getText());
@@ -156,11 +181,9 @@ public class ProductPanel extends JPanel {
 //					System.out.println(p);
 //					comboBoxProductArticle.setSelectedItem(p);
 //					tabbedPane.setSelectedIndex(3);
-				}else {
+				} else {
 					JOptionPane.showMessageDialog(null, "Select product first");
 				}
-				
-			
 
 			}
 		});
@@ -177,7 +200,7 @@ public class ProductPanel extends JPanel {
 //					System.out.println(p);
 					comboBoxProductArticle.setSelectedItem(p);
 					tabbedPane.setSelectedIndex(3);
-				}else {
+				} else {
 					JOptionPane.showMessageDialog(null, "Select product first");
 				}
 
@@ -186,6 +209,20 @@ public class ProductPanel extends JPanel {
 
 		List<Product> updateProducts = (new ProductDAO()).findALL();//
 		Useful.display(updateProducts, productModel);
+	}
+
+	/**
+	 * @return the productList
+	 */
+	public JTable getProductList() {
+		return productList;
+	}
+
+	/**
+	 * @param productList the productList to set
+	 */
+	public void setProductList(JTable productList) {
+		this.productList = productList;
 	}
 
 }

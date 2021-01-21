@@ -96,8 +96,8 @@ public class Management extends JFrame {
 	private JTextField textFieldUsernameProfile;
 	private JTextField textFieldPasswordProfile;
 	private JTextField textFieldPrice;
-	private JTable tableArticleProvider;
-
+	private ArticlePanel panelArticle;
+	private ProductPanel panelProduct ;
 	/**
 	 * Launch the application.
 	 */
@@ -114,11 +114,37 @@ public class Management extends JFrame {
 		});
 	}
 
+	
+	
+	
+	/**
+	 * @return the panelProduct
+	 */
+	public ProductPanel getPanelProduct() {
+		return panelProduct;
+	}
+
+
+
+
+
+
+	/**
+	 * @return the comboBoxProductArticle
+	 */
+	public ArticlePanel getPanelArticle() {
+		return panelArticle;
+	}
+
+
+
+
 	/**
 	 * Create the frame.
 	 */
 	public Management() {
 
+		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1440, 810);
 		contentPane = new JPanel();
@@ -449,7 +475,7 @@ public class Management extends JFrame {
 
 		// Gestion Article
 
-		ArticlePanel panelArticle = new ArticlePanel(comboBoxProductArticle);
+		panelArticle = new ArticlePanel(this);
 		tabbedPane.addTab("Gestion Article", null, panelArticle, null);
 //		panelArticle.setLayout(null);
 //
@@ -593,7 +619,7 @@ public class Management extends JFrame {
 //		JPanel panelProduct = new JPanel();
 
 		// Gestion Produit
-		ProductPanel panelProduct = new ProductPanel(tabbedPane, panelArticle.getComboBoxProductArticle());
+		panelProduct = new ProductPanel(this,tabbedPane, panelArticle.getComboBoxProductArticle());
 		tabbedPane.addTab("Gestion Produit", null, panelProduct, null);
 //		panelProduct.setLayout(null);
 
