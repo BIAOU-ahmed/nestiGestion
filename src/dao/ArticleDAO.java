@@ -4,6 +4,7 @@
 package dao;
 
 import java.sql.Date;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -68,21 +69,41 @@ public class ArticleDAO extends BaseDAO<Article> {
 
 	}
 
-//	public void update(Product product) throws SQLException {
-//		String sql = "UPDATE " + getTableName() + " SET productName = ?" + "WHERE idProduct = ?;";
-//
-//		var updateUser = DBConnection.get().prepareStatement(sql);
-//		updateUser.setString(1, product.getProductName());
-//		updateUser.setInt(2, product.getId());
-////        updateUser.setString(3,  user.getFirstName());
-////        updateUser.setString(4,  user.getLastName());
-////        updateUser.setString(5,  user.getCity());
-////        updateUser.setString(6,  user.getPasswordHash());
-////        updateUser.setString(7,  user.getRegistrationDate());
-////        updateUser.setInt(8,  user.getUserId());
-////        
-//		updateUser.executeUpdate();
-//
-//	}
+	public Article find(Article article) {
+		
+		Article result = null;
+
+//		System.out.println("table " + getTableName());
+		try {
+			PreparedStatement find = DBConnection.get()
+					.prepareStatement("SELECT * FROM " + getTableName() + " WHERE idProduct = ? AND idConditioning =? AND amount = ?");
+
+			find.setObject(1, article.getIdProduct());
+			find.setObject(2, article.getIdConditioning());
+			find.setObject(3, article.getAmount());
+//			System.out.println(fieldValue);
+//			System.out.println("ee " + fieldName);
+
+			result = getFromResultSet(find.executeQuery());
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+
+	public void update(Article article) throws SQLException {
+		String sql = "UPDATE " + getTableName() + " SET idConditioning = ?, amount =?, articleState =?, weight=? WHERE idArticle = ?;";
+
+		var updateUser = DBConnection.get().prepareStatement(sql);
+		updateUser.setInt(1, article.getIdConditioning());
+		updateUser.setInt(2, article.getAmount());
+		updateUser.setString(3, article.getArticleState());
+		updateUser.setDouble(4, article.getWeight());
+		updateUser.setInt(5, article.getId());
+        
+		updateUser.executeUpdate();
+
+	}
 
 }

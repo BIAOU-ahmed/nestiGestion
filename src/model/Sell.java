@@ -159,7 +159,7 @@ public class Sell {
 
 	}
 	public Object[] toRowForProvider() {
-		Object[] sell = {
+		Object[] sell = {getIdArticle(),
 				getArticle().getProduct().getProductName() ,getArticle().getConditioning().getConditioningName(),getArticle().getWeight(),
 						getPrice() };
 		return sell;
