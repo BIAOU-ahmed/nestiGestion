@@ -70,5 +70,16 @@ public  class Useful {
 
 		});
 	}
+	public static void displayProviderSell(List<Sell> sells,DefaultTableModel model) {
+//		 = (new ProductDAO()).findALL();//
+		model.setRowCount(0);
+		sells.forEach(s -> {
+			
+			Object[] row1 = s.toRowForProvider();
+			// Ajout d'une rang�e
+			model.addRow(row1);
+			
+		});
+	}
 	
 }

@@ -67,15 +67,21 @@ public class SellDAO extends BaseDAO<Sell> {
 		updateUser.setDate(2, sell.getUpdateDate());
 		updateUser.setInt(3, sell.getIdProvider());
 		updateUser.setInt(4, sell.getIdArticle());
-//        updateUser.setString(3,  user.getFirstName());
-//        updateUser.setString(4,  user.getLastName());
-//        updateUser.setString(5,  user.getCity());
-//        updateUser.setString(6,  user.getPasswordHash());
-//        updateUser.setString(7,  user.getRegistrationDate());
-//        updateUser.setInt(8,  user.getUserId());
-//        
+        
 		updateUser.executeUpdate();
 
 	}
+	
+	public void delete (Sell sell) throws SQLException {
+        var sql = "DELETE FROM " +getTableName() +" WHERE  	idProvider = ? AND idArticle = ?"; // Don't insert ID, let database auto-increment it.
+
+        var deleteSell = DBConnection.get().prepareStatement(sql);
+     
+        deleteSell.setInt(1, sell.getIdProvider());
+        deleteSell.setInt(2, sell.getIdArticle());
+        
+        deleteSell.executeUpdate();
+  
+    }
 
 }
