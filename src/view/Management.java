@@ -61,7 +61,6 @@ public class Management extends JFrame {
 	private JTextField textFieldTotalPriceHistory;
 	private JTable table;
 	private JTextField textField_2;
-
 	private JTextField textFieldCompanyNameProvider;
 	private JTextField textFieldLastNameProvider;
 	private JTextField textFieldFirstNameProvider;
@@ -74,7 +73,6 @@ public class Management extends JFrame {
 	private JTextField textFieldWeightArticle;
 	private JTextField textFieldQtyArticle;
 	private JTable tableProviderListArticle;
-
 	private JTextField textFieldAmountReceived;
 	private JTextField textFieldAmountExpected;
 	private JTextField textFieldDeliveryDate;
@@ -87,17 +85,28 @@ public class Management extends JFrame {
 	private JTextField libeleTxt;
 	JComboBox typeCombo;
 	JComboBox unityCombo;
-
 	private JTextField textFieldUnit;
 	private JTextField textFieldCond;
 	private JTable tableUnit;
 	private JTable tableCond;
-
 	private JTextField textFieldUsernameProfile;
 	private JTextField textFieldPasswordProfile;
 	private JTextField textFieldPrice;
+	
+
+	private HistoryPanel panelHistory;
+	private DeliveryPanel panelDelivery;
+	private OrderPanel panelOrder;
+	private UnitAndCondPanel panelUnitAndCond;
+
 	private ArticlePanel panelArticle;
 	private ProductPanel panelProduct ;
+	private ProviderPanel panelProvider;
+	private ProviderArticlePanel panelProviderArticle;
+	private ProfilePanel panelProfile;
+	
+	
+
 	/**
 	 * Launch the application.
 	 */
@@ -115,7 +124,37 @@ public class Management extends JFrame {
 	}
 
 	
-	
+
+	public HistoryPanel getPanelHistory() {
+		return panelHistory;
+	}
+
+	public DeliveryPanel getPanelDelivery() {
+		return panelDelivery;
+	}
+
+	public OrderPanel getPanelOrder() {
+		return panelOrder;
+	}
+
+	public UnitAndCondPanel getPanelUnitAndCond() {
+		return panelUnitAndCond;
+	}
+
+
+	public ProviderPanel getPanelProvider() {
+		return panelProvider;
+	}
+
+	public ProviderArticlePanel getPanelProviderArticle() {
+		return panelProviderArticle;
+	}
+
+
+	public ProfilePanel getPanelProfile() {
+		return panelProfile;
+	}
+
 	
 	/**
 	 * @return the panelProduct
@@ -123,10 +162,6 @@ public class Management extends JFrame {
 	public ProductPanel getPanelProduct() {
 		return panelProduct;
 	}
-
-
-
-
 
 
 	/**
@@ -155,12 +190,16 @@ public class Management extends JFrame {
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		tabbedPane.setMaximumSize(new Dimension(10, 32767));
 		contentPane.add(tabbedPane, BorderLayout.CENTER);
+
+
+		// Onglet Historique Commande
+
+		panelHistory = new HistoryPanel();
+		tabbedPane.addTab("Historique Commande", null, panelHistory, null);
+
 //		panelHistory.setLayout(null);
 //
 		
-		
-		HistoryPanel panelHistory = new HistoryPanel();
-		tabbedPane.addTab("Historique Commande", null, panelHistory, null);
 //		JLabel lblTitleHistory = new JLabel("Historique des commandes");
 //		lblTitleHistory.setHorizontalAlignment(SwingConstants.CENTER);
 //		lblTitleHistory.setFont(new Font("Tahoma", Font.PLAIN, 24));
@@ -227,8 +266,8 @@ public class Management extends JFrame {
 //		table = new JTable();
 //		table.setFillsViewportHeight(true);
 //
-//		DefaultTableModel model = new DefaultTableModel(new Object[][] {,}, new String[] { "Numéro commande",
-//				"Fournisseur", "Montant €", "Date commande", "Date livraison", "Statut" });
+//		DefaultTableModel model = new DefaultTableModel(new Object[][] {,}, new String[] { "NumÃ©ro commande",
+//				"Fournisseur", "Montant â‚¬", "Date commande", "Date livraison", "Statut" });
 //
 //		table.setModel(model);
 //		table.getColumnModel().getColumn(0).setResizable(false);
@@ -247,7 +286,7 @@ public class Management extends JFrame {
 
 		// Onglet Gestion Livraison
 
-		DeliveryPanel panelDelivery = new DeliveryPanel();
+		panelDelivery = new DeliveryPanel();
 		tabbedPane.addTab("Gestion Livraison", null, panelDelivery, null);
 //		panelDelivery.setLayout(null);
 //
@@ -335,8 +374,8 @@ public class Management extends JFrame {
 //		scrollPaneDelivery.setViewportView(tableDelivery);
 //
 //		DefaultTableModel modelDelivery = new DefaultTableModel(new Object[][] {,},
-//				new String[] { "Identifiant", "Produit", "Conditionnement", "Qté Commandée", "Qté reçue",
-//						"Prix €", "Date commande", "Date livraison" });
+//				new String[] { "Identifiant", "Produit", "Conditionnement", "QtÃ© CommandÃ©e", "QtÃ© reÃ§ue",
+//						"Prix â‚¬", "Date commande", "Date livraison" });
 //
 //		tableDelivery.setModel(modelDelivery);
 //		tableDelivery.getColumnModel().getColumn(0).setResizable(false);
@@ -356,7 +395,7 @@ public class Management extends JFrame {
 
 		// Gestion Commande
 
-		OrderPanel panelOrder = new OrderPanel();
+		panelOrder = new OrderPanel();
 		tabbedPane.addTab("Gestion Commande", null, panelOrder, null);
 //		panelOrder.setLayout(null);
 //
@@ -444,7 +483,7 @@ public class Management extends JFrame {
 //		scrollPaneOrder.setViewportView(tableOrder);
 //
 //		DefaultTableModel modelOrder = new DefaultTableModel(new Object[][] {,},
-//				new String[] { "Identifiant", "Produit", "Conditionnement", "Qté Commandée", "Prix €" });
+//				new String[] { "Identifiant", "Produit", "Conditionnement", "QtÃ© CommandÃ©e", "Prix â‚¬" });
 //
 //		tableOrder.setModel(modelOrder);
 //		tableOrder.getColumnModel().getColumn(0).setResizable(false);
@@ -498,7 +537,7 @@ public class Management extends JFrame {
 //		scrollPaneArticle.setViewportView(tableArticle);
 //
 //		DefaultTableModel articleModel = new DefaultTableModel(new Object[][] {,},
-//				new String[] { "Identifiant", "Produit", "Conditionnement", "Stock", "Poids", "Prix �", "Statut" });
+//				new String[] { "Identifiant", "Produit", "Conditionnement", "Stock", "Poids", "Prix ï¿½", "Statut" });
 //
 //		tableArticle.setModel(articleModel);
 //		tableArticle.getColumnModel().getColumn(0).setResizable(false);
@@ -597,7 +636,7 @@ public class Management extends JFrame {
 //		scrollPaneProviderListArticle.setViewportView(tableProviderListArticle);
 //
 //		DefaultTableModel providerListArticleModel = new DefaultTableModel(new Object[][] {,},
-//				new String[] { "Entreprise", "Qt� command�e", "Qt� re�ue", "Stock", "Prix �" });
+//				new String[] { "Entreprise", "Qtï¿½ commandï¿½e", "Qtï¿½ reï¿½ue", "Stock", "Prix ï¿½" });
 //
 //		tableProviderListArticle.setModel(providerListArticleModel);
 //		tableProviderListArticle.getColumnModel().getColumn(0).setResizable(false);
@@ -654,15 +693,15 @@ public class Management extends JFrame {
 //
 //		panelProduct.add(scrollPane_1);
 //
-//		DefaultTableModel model2 = new DefaultTableModel(new Object[][] {,}, new String[] { "Numéro commande",
-//				"Fournisseur", "Montant €", "Date commande", "Date livraison", "Statut" });
+//		DefaultTableModel model2 = new DefaultTableModel(new Object[][] {,}, new String[] { "NumÃ©ro commande",
+//				"Fournisseur", "Montant â‚¬", "Date commande", "Date livraison", "Statut" });
 //
 //		panelProduct.add(scrollPane_1);
 //
 //		productList = new JTable();
 //
 //		DefaultTableModel productModel = new DefaultTableModel(new Object[][] {,},
-//				new String[] { "Identifiant", "Libellé", "Type", "Unité", "Nb d'articles créés" });
+//				new String[] { "Identifiant", "LibellÃ©", "Type", "UnitÃ©", "Nb d'articles crÃ©Ã©s" });
 //		productList.setModel(productModel);
 //		scrollPane_1.setViewportView(productList);
 //
@@ -757,7 +796,7 @@ public class Management extends JFrame {
 
 		// Unite de mesure et Conditionnement
 
-		UnitAndCondPanel panelUnitAndCond = new UnitAndCondPanel();
+		panelUnitAndCond = new UnitAndCondPanel();
 		tabbedPane.addTab("Unite de mesure et Conditionnement", null, panelUnitAndCond, null);
 //		panelUnitAndCond.setLayout(null);
 
@@ -877,7 +916,7 @@ public class Management extends JFrame {
 //
 //		});
 
-		ProviderPanel panelProvider = new ProviderPanel();
+		panelProvider = new ProviderPanel();
 		tabbedPane.addTab("Gestion Fournisseur", null, panelProvider, null);
 //		panelProvider.setLayout(null);
 //
@@ -970,7 +1009,7 @@ public class Management extends JFrame {
 //		scrollPaneSelectedProvider.setViewportView(tableSelectedProvider);
 //
 //		DefaultTableModel selectedCompanyModel = new DefaultTableModel(new Object[][] {,},
-//				new String[] { "Produit", "Conditionnement", "Poids", "Prix fournisseur �" });
+//				new String[] { "Produit", "Conditionnement", "Poids", "Prix fournisseur ï¿½" });
 //
 //		tableSelectedProvider.setModel(selectedCompanyModel);
 //		tableSelectedProvider.getColumnModel().getColumn(0).setResizable(false);
@@ -1019,7 +1058,7 @@ public class Management extends JFrame {
 //		ProviderScrollPanel.setViewportView(ProviderTable);
 //
 //		DefaultTableModel providerModel = new DefaultTableModel(new Object[][] {,},
-//				new String[] { "Identifiant", "Entreprise", "Nom", "Pr�nom", "T�l�phone", "Statut" });
+//				new String[] { "Identifiant", "Entreprise", "Nom", "Prï¿½nom", "Tï¿½lï¿½phone", "Statut" });
 //
 //		ProviderTable.setModel(providerModel);
 //		ProviderTable.getColumnModel().getColumn(0).setResizable(false);
@@ -1037,7 +1076,7 @@ public class Management extends JFrame {
 
 		// Gestion Articles Fournisseurs
 
-		ProviderArticlePanel panelProviderArticle = new ProviderArticlePanel();
+		panelProviderArticle = new ProviderArticlePanel();
 		tabbedPane.addTab("Gestion Articles Fournisseurs", null, panelProviderArticle, null);
 		
 //		panelProviderArticle.setLayout(null);
@@ -1120,7 +1159,7 @@ public class Management extends JFrame {
 
 		// Gestion Profil
 
-		ProfilePanel panelProfile = new ProfilePanel();
+		panelProfile = new ProfilePanel();
 		tabbedPane.addTab("Profil", null, panelProfile, null);
 		
 //		panelProfile.setLayout(null);
