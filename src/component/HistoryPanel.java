@@ -13,6 +13,7 @@ import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 
 public class HistoryPanel extends JPanel {
+	private JTable tableSelectedOrder;
 
 	/**
 	 * Create the panel.
@@ -39,6 +40,7 @@ public class HistoryPanel extends JPanel {
 		this.add(comboBoxProviderHistory);
 
 		JComboBox comboBoxStateHistory = new JComboBox();
+		comboBoxStateHistory.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		comboBoxStateHistory.setBounds(520, 100, 150, 40);
 		this.add(comboBoxStateHistory);
 
@@ -55,13 +57,10 @@ public class HistoryPanel extends JPanel {
 		this.add(lblOrderNumberHistory);
 
 		JTextField textFieldOrderNumberHistory = new JTextField();
+		textFieldOrderNumberHistory.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		textFieldOrderNumberHistory.setBounds(270, 100, 200, 40);
 		this.add(textFieldOrderNumberHistory);
 		textFieldOrderNumberHistory.setColumns(10);
-
-		JTable tableRecap = new JTable();
-		tableRecap.setBounds(750, 50, 600, 500);
-		this.add(tableRecap);
 
 		JTextField textFieldTotalPriceHistory = new JTextField();
 		textFieldTotalPriceHistory.setFont(new Font("Tahoma", Font.PLAIN, 16));
@@ -69,6 +68,7 @@ public class HistoryPanel extends JPanel {
 		textFieldTotalPriceHistory.setBounds(1200, 550, 150, 40);
 		this.add(textFieldTotalPriceHistory);
 		textFieldTotalPriceHistory.setColumns(10);
+		textFieldTotalPriceHistory.setEditable(false);
 
 		JComboBox comboBoxFinalStateHistory = new JComboBox();
 		comboBoxFinalStateHistory.setFont(new Font("Tahoma", Font.PLAIN, 16));
@@ -80,24 +80,29 @@ public class HistoryPanel extends JPanel {
 		btnSaveStateHistory.setBounds(1000, 650, 150, 40);
 		this.add(btnSaveStateHistory);
 
-		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(20, 170, 650, 550);
-		this.add(scrollPane);
+		JScrollPane scrollPaneOrder = new JScrollPane();
+		scrollPaneOrder.setBounds(20, 170, 650, 550);
+		this.add(scrollPaneOrder);
 
-		JTable table = new JTable();
-		table.setFillsViewportHeight(true);
+		JTable tableOrder = new JTable() {
+			public boolean isCellEditable(int row, int column) {
+				return false;
+			}
+		};
+		tableOrder.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		tableOrder.setFillsViewportHeight(true);
 
 		DefaultTableModel model = new DefaultTableModel(new Object[][] {,}, new String[] { "Numéro commande",
 				"Fournisseur", "Montant €", "Date commande", "Date livraison", "Statut" });
 
-		table.setModel(model);
-		table.getColumnModel().getColumn(0).setResizable(false);
-		table.getColumnModel().getColumn(1).setResizable(false);
-		table.getColumnModel().getColumn(2).setResizable(false);
-		table.getColumnModel().getColumn(3).setResizable(false);
-		table.getColumnModel().getColumn(4).setResizable(false);
-		table.getColumnModel().getColumn(5).setResizable(false);
-		scrollPane.setViewportView(table);
+		tableOrder.setModel(model);
+		tableOrder.getColumnModel().getColumn(0).setResizable(false);
+		tableOrder.getColumnModel().getColumn(1).setResizable(false);
+		tableOrder.getColumnModel().getColumn(2).setResizable(false);
+		tableOrder.getColumnModel().getColumn(3).setResizable(false);
+		tableOrder.getColumnModel().getColumn(4).setResizable(false);
+		tableOrder.getColumnModel().getColumn(5).setResizable(false);
+		scrollPaneOrder.setViewportView(tableOrder);
 		
 		JLabel lblSaveState = new JLabel("Statut Livraison");
 		lblSaveState.setHorizontalAlignment(SwingConstants.CENTER);
@@ -105,6 +110,27 @@ public class HistoryPanel extends JPanel {
 		lblSaveState.setBounds(800, 620, 150, 30);
 		this.add(lblSaveState);
 		
-	}
+		JScrollPane scrollPaneSelectedOrder = new JScrollPane();
+		scrollPaneSelectedOrder.setBounds(800, 100, 550, 452);
+		add(scrollPaneSelectedOrder);
+		
+		tableSelectedOrder = new JTable() {
+			public boolean isCellEditable(int row, int column) {
+				return false;
+			}
+		};
+		tableSelectedOrder.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		DefaultTableModel modelSelected = new DefaultTableModel(new Object[][] {,}, new String[] { "Identifiant",
+				"Produit", "Conditionnement", "Qté commandée", "Qté reçue", "Prix €" });
 
+		tableSelectedOrder.setModel(modelSelected);
+		tableSelectedOrder.getColumnModel().getColumn(0).setResizable(false);
+		tableSelectedOrder.getColumnModel().getColumn(1).setResizable(false);
+		tableSelectedOrder.getColumnModel().getColumn(2).setResizable(false);
+		tableSelectedOrder.getColumnModel().getColumn(3).setResizable(false);
+		tableSelectedOrder.getColumnModel().getColumn(4).setResizable(false);
+		tableSelectedOrder.getColumnModel().getColumn(5).setResizable(false);
+		scrollPaneSelectedOrder.setViewportView(tableSelectedOrder);
+		
+	}
 }

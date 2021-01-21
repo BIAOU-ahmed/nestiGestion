@@ -53,28 +53,33 @@ public class ProductPanel extends JPanel {
 	public ProductPanel(Management mainController, JTabbedPane tabbedPane, JComboBox comboBoxProductArticle) {
 		setLayout(null);
 
-		JTextField textField_2 = new JTextField();
-		textField_2.setBounds(809, 70, 571, 20);
-		this.add(textField_2);
-		textField_2.setColumns(10);
+		JTextField textFieldSearch = new JTextField();
+		textFieldSearch.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		textFieldSearch.setBounds(809, 70, 571, 27);
+		this.add(textFieldSearch);
+		textFieldSearch.setColumns(10);
 
-		JScrollPane scrollPane_1 = new JScrollPane();
+		JScrollPane scrollPaneProductList = new JScrollPane();
 
-		scrollPane_1.setBounds(809, 132, 571, 492);
+		scrollPaneProductList.setBounds(809, 132, 571, 492);
 
-		this.add(scrollPane_1);
+		this.add(scrollPaneProductList);
 
 		DefaultTableModel model2 = new DefaultTableModel(new Object[][] {,}, new String[] { "Numéro commande",
 				"Fournisseur", "Montant €", "Date commande", "Date livraison", "Statut" });
 
-		this.add(scrollPane_1);
+		this.add(scrollPaneProductList);
 
 		DefaultTableModel productModel = new DefaultTableModel(new Object[][] {,},
 				new String[] { "Identifiant", "Libellé", "Type", "Unité", "Nb d'articles créés" });
-		productList = new JTable();
+		productList = new JTable() {
+			public boolean isCellEditable(int row, int column) {
+				return false;
+			}
+		};
 
 		productList.setModel(productModel);
-		scrollPane_1.setViewportView(productList);
+		scrollPaneProductList.setViewportView(productList);
 		var conbo = mainController.getPanelArticle().getComboBoxProductArticle();
 //		productModel.addTableModelListener(e->refreshProduct(productList));
 		productModel.addTableModelListener(e->{
@@ -82,15 +87,18 @@ public class ProductPanel extends JPanel {
 			mainController.getPanelArticle().refreshProduct();
 		});
 
-		JTextField libeleTxt = new JTextField();
-		libeleTxt.setBounds(95, 160, 185, 34);
-		this.add(libeleTxt);
-		libeleTxt.setColumns(10);
+		JTextField textFieldProductName = new JTextField();
+		textFieldProductName.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		textFieldProductName.setBounds(95, 160, 185, 34);
+		this.add(textFieldProductName);
+		textFieldProductName.setColumns(10);
 
 		JComboBox typeCombo = new JComboBox();
+		typeCombo.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		DefaultComboBoxModel productType = new DefaultComboBoxModel(new String[] { "", "Ingredients", "Ustensils" });
 		typeCombo.setModel(productType);
 		JComboBox unityCombo = new JComboBox();
+		unityCombo.setFont(new Font("Tahoma", Font.PLAIN, 16));
 
 		typeCombo.setBounds(307, 160, 138, 34);
 //		typeCombo.addItem(new ComboItem("Visible String 1", "Value 1"));
@@ -101,39 +109,43 @@ public class ProductPanel extends JPanel {
 		this.add(unityCombo);
 
 		JButton btnAdd = new JButton("Ajouter");
-		btnAdd.addActionListener(new AddProductListener(libeleTxt, typeCombo, unityCombo, productModel));
+		btnAdd.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		btnAdd.addActionListener(new AddProductListener(textFieldProductName, typeCombo, unityCombo, productModel));
 		btnAdd.setBounds(150, 297, 104, 49);
 		this.add(btnAdd);
 
 		JButton btnUpdate = new JButton("Modifier");
+		btnUpdate.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		btnUpdate.setBounds(308, 297, 104, 49);
 		this.add(btnUpdate);
 
 		JButton btnBlocked = new JButton("Retirer");
+		btnBlocked.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		btnBlocked.setBounds(452, 297, 104, 49);
 		this.add(btnBlocked);
 
-		JButton creatArticlebtn = new JButton("Cr�er un article � partir de ce produit");
-		creatArticlebtn.setBounds(226, 424, 248, 77);
+		JButton creatArticlebtn = new JButton("Créer un article à partir de ce produit");
+		creatArticlebtn.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		creatArticlebtn.setBounds(200, 424, 330, 77);
 		this.add(creatArticlebtn);
 
-		JLabel lblNewLabel_2 = new JLabel("Libell\u00E9");
-		lblNewLabel_2.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		lblNewLabel_2.setBounds(95, 132, 78, 27);
-		this.add(lblNewLabel_2);
+		JLabel lblProductName = new JLabel("Libell\u00E9");
+		lblProductName.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		lblProductName.setBounds(95, 132, 78, 27);
+		this.add(lblProductName);
 
-		JLabel lblNewLabel_2_1 = new JLabel("Type");
-		lblNewLabel_2_1.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		lblNewLabel_2_1.setBounds(338, 132, 78, 27);
-		this.add(lblNewLabel_2_1);
+		JLabel lblProductType = new JLabel("Type");
+		lblProductType.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		lblProductType.setBounds(347, 132, 78, 27);
+		this.add(lblProductType);
 
-		JLabel lblNewLabel_2_2 = new JLabel("Unit\u00E9");
-		lblNewLabel_2_2.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		lblNewLabel_2_2.setBounds(478, 130, 78, 27);
-		this.add(lblNewLabel_2_2);
+		JLabel lblProductUnit = new JLabel("Unit\u00E9");
+		lblProductUnit.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		lblProductUnit.setBounds(478, 130, 78, 27);
+		this.add(lblProductUnit);
 
 		productList
-				.addMouseListener(new ProductListListener(productModel, productList, libeleTxt, typeCombo, unityCombo));
+				.addMouseListener(new ProductListListener(productModel, productList, textFieldProductName, typeCombo, unityCombo));
 
 		typeCombo.addActionListener(new ActionListener() {
 			@Override
@@ -170,7 +182,7 @@ public class ProductPanel extends JPanel {
 
 					Product updateProduct = new Product();
 					updateProduct.setId((Integer) productModel.getValueAt(row, 0));
-					updateProduct.setProductName(libeleTxt.getText());
+					updateProduct.setProductName(textFieldProductName.getText());
 					updateProduct.setType(typeCombo.getSelectedItem().toString());
 					updateProduct.update(unityCombo);
 					List<Product> updateProducts = (new ProductDAO()).findALL();//

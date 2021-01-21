@@ -57,10 +57,15 @@ public class ArticlePanel extends JPanel {
 		scrollPaneArticle.setBounds(643, 142, 726, 560);
 		this.add(scrollPaneArticle);
 
-		JTable tableArticle = new JTable();
+		JTable tableArticle = new JTable() {
+			
+			public boolean isCellEditable(int row, int column) {
+				return false;
+			}
+		};
 		tableArticle.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		scrollPaneArticle.setViewportView(tableArticle);
-
+		
 		DefaultTableModel articleModel = new DefaultTableModel(new Object[][] {,},
 				new String[] { "Identifiant", "Produit", "Conditionnement", "Stock", "Poids", "Prix �", "Statut" });
 
@@ -74,7 +79,7 @@ public class ArticlePanel extends JPanel {
 		tableArticle.getColumnModel().getColumn(6).setResizable(false);
 //		scrollPane.setViewportView(table);
 //		scrollPane.setColumnHeaderView(table);
-
+		
 		JLabel lblWeightArticle = new JLabel("Poids");
 		lblWeightArticle.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		lblWeightArticle.setBounds(291, 189, 46, 14);
@@ -178,7 +183,12 @@ public class ArticlePanel extends JPanel {
 		scrollPaneProviderListArticle.setBounds(39, 392, 544, 275);
 		this.add(scrollPaneProviderListArticle);
 
-		JTable tableProviderListArticle = new JTable();
+		JTable tableProviderListArticle = new JTable() {
+			
+			public boolean isCellEditable(int row, int column) {
+				return false;
+			}
+		};
 		tableProviderListArticle.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		scrollPaneProviderListArticle.setViewportView(tableProviderListArticle);
 
