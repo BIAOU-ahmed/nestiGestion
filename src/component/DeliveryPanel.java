@@ -101,7 +101,11 @@ public class DeliveryPanel extends JPanel {
 		scrollPaneDelivery.setBounds(500, 90, 850, 600);
 		this.add(scrollPaneDelivery);
 
-		JTable tableDelivery = new JTable();
+		JTable tableDelivery = new JTable() {
+			public boolean isCellEditable(int row, int column) {
+				return false;
+			}
+		};
 		scrollPaneDelivery.setViewportView(tableDelivery);
 
 		DefaultTableModel modelDelivery = new DefaultTableModel(new Object[][] {,},

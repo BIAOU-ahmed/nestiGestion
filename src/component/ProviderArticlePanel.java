@@ -86,7 +86,11 @@ public class ProviderArticlePanel extends JPanel {
 		scrollPaneArticleProvider.setBounds(700, 100, 600, 550);
 		this.add(scrollPaneArticleProvider);
 
-		JTable tableArticleProvider = new JTable();
+		JTable tableArticleProvider = new JTable() {
+			public boolean isCellEditable(int row, int column) {
+				return false;
+			}
+		};
 		tableArticleProvider.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		scrollPaneArticleProvider.setViewportView(tableArticleProvider);
 

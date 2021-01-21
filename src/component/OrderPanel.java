@@ -92,7 +92,11 @@ public class OrderPanel extends JPanel {
 		scrollPaneOrder.setBounds(500, 90, 850, 550);
 		this.add(scrollPaneOrder);
 
-		JTable tableOrder = new JTable();
+		JTable tableOrder = new JTable() {
+			public boolean isCellEditable(int row, int column) {
+				return false;
+			}
+		};
 		scrollPaneOrder.setViewportView(tableOrder);
 
 		DefaultTableModel modelOrder = new DefaultTableModel(new Object[][] {,},

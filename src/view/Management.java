@@ -155,13 +155,12 @@ public class Management extends JFrame {
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		tabbedPane.setMaximumSize(new Dimension(10, 32767));
 		contentPane.add(tabbedPane, BorderLayout.CENTER);
-
-		// Onglet Historique Commande
-
-		HistoryPanel panelHistory = new HistoryPanel();
-		tabbedPane.addTab("Historique Commande", null, panelHistory, null);
 //		panelHistory.setLayout(null);
 //
+		
+		
+		HistoryPanel panelHistory = new HistoryPanel();
+		tabbedPane.addTab("Historique Commande", null, panelHistory, null);
 //		JLabel lblTitleHistory = new JLabel("Historique des commandes");
 //		lblTitleHistory.setHorizontalAlignment(SwingConstants.CENTER);
 //		lblTitleHistory.setFont(new Font("Tahoma", Font.PLAIN, 24));
@@ -621,6 +620,9 @@ public class Management extends JFrame {
 		// Gestion Produit
 		panelProduct = new ProductPanel(this,tabbedPane, panelArticle.getComboBoxProductArticle());
 		tabbedPane.addTab("Gestion Produit", null, panelProduct, null);
+		
+				// Onglet Historique Commande
+		
 //		panelProduct.setLayout(null);
 
 //		creatArticlebtn.addActionListener(new ActionListener() {
