@@ -33,12 +33,14 @@ import view.Management;
 
 public class ArticlePanel extends JPanel {
 	protected JComboBox comboBoxProductArticle;
+	protected JComboBox comboBoxConditioningArticle;
 	Management mainController;
+
 	/**
 	 * Create the panel.
 	 */
 	public ArticlePanel(Management c) {
-		mainController=c;
+		mainController = c;
 //		comboBoxProductArticle = comboBoxProductArticles;
 //		tabbedPane.addTab("Gestion Article", null, this, null);
 		this.setLayout(null);
@@ -136,11 +138,11 @@ public class ArticlePanel extends JPanel {
 				Article article = new Article();
 				var adminId = Integer.parseInt(AppSettings.get("loginUser"));
 				var admin = (new AdministratorDAO()).find("idAdministrator", adminId);
-				
-				article.setWeight(Double.parseDouble(textFieldWeightArticle.getText()) );
-				article.setAmount(Integer.parseInt(textFieldQtyArticle.getText()) );
+
+				article.setWeight(Double.parseDouble(textFieldWeightArticle.getText()));
+				article.setAmount(Integer.parseInt(textFieldQtyArticle.getText()));
 				article.setArticleState(comboBoxStatutArticle.getSelectedItem().toString());
-				java.util.Date sqlDate = new java.util.Date(); 
+				java.util.Date sqlDate = new java.util.Date();
 				Date createDate = new Date(sqlDate.getTime());
 				article.setCreatedAt(createDate);
 				article.setIdAdministrator(adminId);
@@ -183,7 +185,7 @@ public class ArticlePanel extends JPanel {
 		scrollPaneProviderListArticle.setViewportView(tableProviderListArticle);
 
 		DefaultTableModel providerListArticleModel = new DefaultTableModel(new Object[][] {,},
-				new String[] { "Entreprise", "Qt� command�e", "Qt� re�ue", "Stock", "Prix �" });
+				new String[] { "Entreprise", "Qté commandée", "Qté reçue", "Stock", "Prix €" });
 
 		tableProviderListArticle.setModel(providerListArticleModel);
 		tableProviderListArticle.getColumnModel().getColumn(0).setResizable(false);
@@ -198,40 +200,33 @@ public class ArticlePanel extends JPanel {
 		btnOrderArticle.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		btnOrderArticle.setBounds(214, 687, 203, 35);
 
-		List<Conditioning> conditioning = (new ConditioningDAO()).findALL();//
-		conditioning.forEach(condi -> {
+		refreshConditioning();
 
-			comboBoxConditioningArticle.addItem(condi.getConditioningName());
-
-		});
-		
 //		var productList = (new ProductDAO()).findALL();//
 		refreshProduct();
 //		mainController.getPanelProduct().getProductList().getModel().addTableModelListener(e->refreshProduct(productList));
-		
+
 		List<Article> updateProducts = (new ArticleDAO()).findALL();//
 		Useful.displayArticle(updateProducts, articleModel);
-		
-		
+
 		tableArticle.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				System.out.println("testttt");
 				if (!tableArticle.getSelectionModel().isSelectionEmpty()) {
 					int row = tableArticle.getSelectedRow();
-					
+
 					comboBoxStatutArticle.setSelectedItem((String) articleModel.getValueAt(row, 6));
 //					textFieldWeightArticle.setText((String) articleModel.getValueAt(row, 4));
 					comboBoxProductArticle.setSelectedItem((String) articleModel.getValueAt(row, 1));
-					
+
 					comboBoxConditioningArticle.setSelectedItem((String) articleModel.getValueAt(row, 2));
 					textFieldQtyArticle.setText((String) articleModel.getValueAt(row, 3));
-					textFieldWeightArticle.setText( Double.toString((Double) articleModel.getValueAt(row, 4)));
-					
+					textFieldWeightArticle.setText(Double.toString((Double) articleModel.getValueAt(row, 4)));
+
 				}
 			}
 		});
-		
 
 	}
 
@@ -244,7 +239,17 @@ public class ArticlePanel extends JPanel {
 
 		});
 	}
-	
+
+	public void refreshConditioning() {
+		var conditioning = (new ConditioningDAO()).findALL();//
+		//TODO comboBoxConditioningArticle.removeAllItems();
+		conditioning.forEach(condi -> {
+
+			comboBoxConditioningArticle.addItem(condi.getConditioningName());
+
+		});
+	}
+
 	/**
 	 * @return the comboBoxProductArticle
 	 */
@@ -258,9 +263,5 @@ public class ArticlePanel extends JPanel {
 	public void setComboBoxProductArticle(JComboBox comboBoxProductArticle) {
 		this.comboBoxProductArticle = comboBoxProductArticle;
 	}
-	
-	
-	
-	
 
 }
