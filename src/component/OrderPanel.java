@@ -4,6 +4,7 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Date;
+import java.sql.SQLException;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -16,6 +17,7 @@ import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 
 import dao.AdministratorDAO;
+import dao.OrderDAO;
 import model.Order;
 import tools.AppSettings;
 
@@ -132,10 +134,20 @@ public class OrderPanel extends JPanel {
 				
 				java.util.Date sqlDate = new java.util.Date(); 
 				Date orderDate = new Date(sqlDate.getTime());
+				
 				order.setOrderDate(orderDate);
 				order.setIdAdministrator(adminId);
 				//TODO 	order.setIdProvider(comboBoxProviderOrder.getSelectedItem().toString());
 				order.setState("w");
+				var ordDAO = new OrderDAO();
+				
+				try {
+					ordDAO.insert(order);
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
 				admin.createOrder(order);
 			}
 		});

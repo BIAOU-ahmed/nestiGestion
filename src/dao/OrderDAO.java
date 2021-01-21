@@ -55,6 +55,13 @@ public class OrderDAO extends BaseDAO<Order>{
 		insertOrder.setInt(4, order.getIdAdministrator());
 
 		insertOrder.executeUpdate();
+		
+		var rs = insertOrder.getGeneratedKeys();
+		if (rs.next()) {
+		  order.setId(rs.getInt(1));
+		}
+
+//		return order;
 
 	}
 }

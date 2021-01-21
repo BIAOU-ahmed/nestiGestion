@@ -3,6 +3,8 @@ package component;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.sql.Date;
 import java.util.List;
 
@@ -156,13 +158,25 @@ public class ProviderArticlePanel extends JPanel {
 //				article.setProductFromName(comboBoxProductArticle.getSelectedItem().toString());
 //				article.setConditioningFromName(comboBoxConditioningArticle.getSelectedItem().toString());
 				sell.create();
-
+				
 				List<Sell> sells = (new SellDAO()).findALL();//
 				Useful.displaySell(sells, providerModel);
 				
 			}
 		});
 		
+		
+		tableArticleProvider.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (!tableArticleProvider.getSelectionModel().isSelectionEmpty()) {
+					int row = tableArticleProvider.getSelectedRow();
+					comboBoxArticle.setSelectedItem((String) providerModel.getValueAt(row, 0));
+					textFieldPrice.setText(Double.toString((Double) providerModel.getValueAt(row, 1)) );
+
+				}
+			}
+		});
 		
 		List<Sell> sells = (new SellDAO()).findALL();//
 		Useful.displaySell(sells, providerModel);
