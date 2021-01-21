@@ -3,6 +3,7 @@ package component;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusAdapter;
 import java.sql.Date;
 import java.util.List;
 
@@ -10,12 +11,14 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.text.MaskFormatter;
 
 import dao.AdministratorDAO;
 import dao.ProductDAO;
@@ -29,6 +32,14 @@ import tools.AppSettings;
 import tools.Useful;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import javax.swing.JFormattedTextField;
+import java.awt.event.FocusEvent;
+import javax.swing.event.CaretListener;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.event.CaretEvent;
 
 public class ProviderPanel extends JPanel {
 
@@ -99,6 +110,30 @@ public class ProviderPanel extends JPanel {
 		textFieldFirstNameProvider.setColumns(10);
 
 		JTextField textFieldPhoneNumberProvider = new JTextField();
+		textFieldPhoneNumberProvider.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+
+				char testChar = e.getKeyChar();
+				if (!(Character.isDigit(testChar)) || (textFieldPhoneNumberProvider.getText().length() >= 14)) {
+					e.consume();
+				}
+			}
+
+			@Override
+			public void keyPressed(KeyEvent e) {
+
+				if (e.getKeyCode() != KeyEvent.VK_BACK_SPACE || e.getKeyCode() != KeyEvent.VK_DELETE) {
+					var textSize = textFieldPhoneNumberProvider.getText();
+					var phoneFormat = formatPhoneNumber(textSize);
+					// textFieldPhoneNumberProvider.setText(String.format("(%d{2})(%d{2})(%d+)",
+					// textSize));
+					textFieldPhoneNumberProvider.setText(phoneFormat);
+				}
+			}
+
+		});
+
 		textFieldPhoneNumberProvider.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		textFieldPhoneNumberProvider.setBounds(508, 261, 176, 35);
 		this.add(textFieldPhoneNumberProvider);
@@ -135,7 +170,6 @@ public class ProviderPanel extends JPanel {
 		DefaultTableModel selectedCompanyModel = new DefaultTableModel(new Object[][] {,},
 
 				new String[] { "Identifiant", "Produit", "Conditionnement", "Poids", "Prix fournisseur €" });
-
 
 		tableSelectedProvider.setModel(selectedCompanyModel);
 		tableSelectedProvider.getColumnModel().getColumn(0).setResizable(false);
@@ -236,9 +270,6 @@ public class ProviderPanel extends JPanel {
 				var admin = (new AdministratorDAO()).find("idAdministrator", adminId);
 				int row = ProviderTable.getSelectedRow();
 
-			
-				
-
 				newProvider.setId((Integer) providerModel.getValueAt(row, 0));
 				newProvider.setCompanyName(textFieldCompanyNameProvider.getText());
 				newProvider.setContactLastName(textFieldLastNameProvider.getText());
@@ -249,7 +280,7 @@ public class ProviderPanel extends JPanel {
 				admin.updateProvider(newProvider);
 				List<Provider> updateProvider = (new ProviderDAO()).findALL();//
 				Useful.displayProvider(updateProvider, providerModel);
-				
+
 				textFieldCompanyNameProvider.setText("");
 				textFieldLastNameProvider.setText("");
 				textFieldFirstNameProvider.setText("");
@@ -265,12 +296,13 @@ public class ProviderPanel extends JPanel {
 					int row = ProviderTable.getSelectedRow();
 					textFieldLastNameProvider.setText((String) providerModel.getValueAt(row, 2));
 					textFieldFirstNameProvider.setText((String) providerModel.getValueAt(row, 3));
-					textFieldPhoneNumberProvider.setText((String) providerModel.getValueAt(row, 4));
+					textFieldPhoneNumberProvider.setText(formatPhoneNumber((String) providerModel.getValueAt(row, 4)));
 					textFieldCompanyNameProvider.setText((String) providerModel.getValueAt(row, 1));
 					comboBoxStatusProvider.setSelectedItem((String) providerModel.getValueAt(row, 5));
-					
+
 					lblSelectedCompanyNameProvider.setText((String) providerModel.getValueAt(row, 1));
-					List<Sell> acticleSells = (new SellDAO()).findALLBy("idProvider",((Integer) providerModel.getValueAt(row, 0)));//
+					List<Sell> acticleSells = (new SellDAO()).findALLBy("idProvider",
+							((Integer) providerModel.getValueAt(row, 0)));//
 					Useful.displayProviderSell(acticleSells, selectedCompanyModel);
 
 				}
@@ -280,6 +312,24 @@ public class ProviderPanel extends JPanel {
 		List<Provider> updateProvider = (new ProviderDAO()).findALL();//
 		Useful.displayProvider(updateProvider, providerModel);
 
+	}
+
+	private String formatPhoneNumber(String textSize) {
+		// TODO Auto-generated method stub
+		String result = "";
+		int i = 0;
+		for (char c : textSize.toCharArray()) {
+
+			if (Character.isDigit(c)) {
+				if (i % 2 == 0 && i != 0) {
+					result += " ";
+				}
+				result += c;
+				i++;
+			}
+
+		}
+		return result;
 	}
 
 }
