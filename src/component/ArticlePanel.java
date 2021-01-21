@@ -37,7 +37,6 @@ public class ArticlePanel extends JPanel {
 	protected JComboBox comboBoxConditioningArticle;
 	Management mainController;
 
-	
 	/**
 	 * Create the panel.
 	 */
@@ -62,16 +61,16 @@ public class ArticlePanel extends JPanel {
 		this.add(scrollPaneArticle);
 
 		JTable tableArticle = new JTable() {
-			
+
 			public boolean isCellEditable(int row, int column) {
 				return false;
 			}
 		};
 		tableArticle.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		scrollPaneArticle.setViewportView(tableArticle);
-		
-		DefaultTableModel articleModel = new DefaultTableModel(new Object[][] {,},
-				new String[] { "Identifiant", "Produit", "Quantité", "Conditionnement", "Poids", "Prix €", "En Stock", "Statut" });
+
+		DefaultTableModel articleModel = new DefaultTableModel(new Object[][] {,}, new String[] { "Identifiant",
+				"Produit", "Quantité", "Conditionnement", "Poids", "Prix €", "En Stock", "Statut" });
 
 		tableArticle.setModel(articleModel);
 		tableArticle.getColumnModel().getColumn(0).setResizable(false);
@@ -84,7 +83,7 @@ public class ArticlePanel extends JPanel {
 		tableArticle.getColumnModel().getColumn(7).setResizable(false);
 //		scrollPane.setViewportView(table);
 //		scrollPane.setColumnHeaderView(table);
-		
+
 		JLabel lblWeightArticle = new JLabel("Poids");
 		lblWeightArticle.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		lblWeightArticle.setBounds(291, 189, 46, 14);
@@ -132,8 +131,9 @@ public class ArticlePanel extends JPanel {
 		comboBoxConditioningArticle.setBounds(326, 103, 255, 44);
 		this.add(comboBoxConditioningArticle);
 
-		JComboBox comboBoxStatutArticle = new JComboBox<String>();
-		DefaultComboBoxModel articleStatutsModel = new DefaultComboBoxModel(new String[] { "a", "w", "b" });
+		JComboBox<String> comboBoxStatutArticle = new JComboBox<String>();
+		DefaultComboBoxModel<String> articleStatutsModel = new DefaultComboBoxModel<String>(
+				new String[] { "a", "w", "b" });
 		comboBoxStatutArticle.setModel(articleStatutsModel);
 		comboBoxStatutArticle.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		comboBoxStatutArticle.setBounds(436, 215, 145, 40);
@@ -143,6 +143,7 @@ public class ArticlePanel extends JPanel {
 		btnAddArticle.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+
 				Article article = new Article();
 				var adminId = Integer.parseInt(AppSettings.get("loginUser"));
 				var admin = (new AdministratorDAO()).find("idAdministrator", adminId);
@@ -157,7 +158,7 @@ public class ArticlePanel extends JPanel {
 				article.setProductFromName(comboBoxProductArticle.getSelectedItem().toString());
 				article.setConditioningFromName(comboBoxConditioningArticle.getSelectedItem().toString());
 				admin.createArticle(article);
-				
+
 				List<Article> updateProducts = (new ArticleDAO()).findALL();//
 				Useful.displayArticle(updateProducts, articleModel);
 
@@ -182,7 +183,7 @@ public class ArticlePanel extends JPanel {
 		this.add(scrollPaneProviderListArticle);
 
 		JTable tableProviderListArticle = new JTable() {
-			
+
 			public boolean isCellEditable(int row, int column) {
 				return false;
 			}
@@ -194,7 +195,7 @@ public class ArticlePanel extends JPanel {
 				new String[] { "Entreprise", "Qté commandée", "Qté reçue", "Stock", "Prix €" });
 
 		tableProviderListArticle.setModel(providerListArticleModel);
-		
+
 		JLabel lblTitleArticle = new JLabel("Gestions des Articles");
 		lblTitleArticle.setHorizontalAlignment(SwingConstants.CENTER);
 		lblTitleArticle.setFont(new Font("Tahoma", Font.PLAIN, 24));
@@ -221,19 +222,45 @@ public class ArticlePanel extends JPanel {
 		List<Article> updateProducts = (new ArticleDAO()).findALL();//
 		Useful.displayArticle(updateProducts, articleModel);
 
-		tableArticle.addMouseListener(new MouseAdapter() {
+		btnEditArticle.addActionListener(new ActionListener() {
 			@Override
-			public void mouseClicked(MouseEvent e) {
-				System.out.println("testttt");
+			public void actionPerformed(ActionEvent e) {
 				if (!tableArticle.getSelectionModel().isSelectionEmpty()) {
 					int row = tableArticle.getSelectedRow();
 
-					comboBoxStatutArticle.setSelectedItem((String) articleModel.getValueAt(row, 6));
+					Article article = new Article();
+					var adminId = Integer.parseInt(AppSettings.get("loginUser"));
+					var admin = (new AdministratorDAO()).find("idAdministrator", adminId);
+//System.out.println("art "+ ((Integer) articleModel.getValueAt(row, 0)));
+					article.setId((Integer) articleModel.getValueAt(row, 0));
+					article.setWeight(Double.parseDouble(textFieldWeightArticle.getText()));
+					article.setAmount(Integer.parseInt(textFieldQtyArticle.getText()));
+					article.setArticleState(comboBoxStatutArticle.getSelectedItem().toString());
+
+					article.setProductFromName(comboBoxProductArticle.getSelectedItem().toString());
+					article.setConditioningFromName(comboBoxConditioningArticle.getSelectedItem().toString());
+					admin.updateArticle(article);
+
+					// vider les champ apres modification
+					List<Article> updateProducts = (new ArticleDAO()).findALL();//
+					Useful.displayArticle(updateProducts, articleModel);
+				}
+			}
+		});
+
+		tableArticle.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+//				System.out.println("testttt");
+				if (!tableArticle.getSelectionModel().isSelectionEmpty()) {
+					int row = tableArticle.getSelectedRow();
+
+					comboBoxStatutArticle.setSelectedItem((String) articleModel.getValueAt(row, 7));
 //					textFieldWeightArticle.setText((String) articleModel.getValueAt(row, 4));
 					comboBoxProductArticle.setSelectedItem((String) articleModel.getValueAt(row, 1));
 
-					comboBoxConditioningArticle.setSelectedItem((String) articleModel.getValueAt(row, 2));
-					textFieldQtyArticle.setText((String) articleModel.getValueAt(row, 3));
+					comboBoxConditioningArticle.setSelectedItem((String) articleModel.getValueAt(row, 3));
+					textFieldQtyArticle.setText(Integer.toString((Integer) articleModel.getValueAt(row, 2)));
 					textFieldWeightArticle.setText(Double.toString((Double) articleModel.getValueAt(row, 4)));
 
 				}

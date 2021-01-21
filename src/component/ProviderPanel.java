@@ -10,6 +10,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
@@ -18,6 +19,7 @@ import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 import dao.AdministratorDAO;
+import dao.ArticleDAO;
 import dao.ProductDAO;
 import dao.ProviderDAO;
 import dao.SellDAO;
@@ -27,6 +29,8 @@ import model.Provider;
 import model.Sell;
 import tools.AppSettings;
 import tools.Useful;
+import view.Management;
+
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -35,7 +39,7 @@ public class ProviderPanel extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public ProviderPanel() {
+	public ProviderPanel(Management mainController) {
 
 		setLayout(null);
 		JLabel lblCompanyNameProvider = new JLabel("Nom d'entreprise");
@@ -238,7 +242,6 @@ public class ProviderPanel extends JPanel {
 
 			
 				
-
 				newProvider.setId((Integer) providerModel.getValueAt(row, 0));
 				newProvider.setCompanyName(textFieldCompanyNameProvider.getText());
 				newProvider.setContactLastName(textFieldLastNameProvider.getText());
@@ -257,7 +260,37 @@ public class ProviderPanel extends JPanel {
 				textFieldPhoneNumberProvider.setText("");
 			}
 		});
+		
+		OrderButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (!tableSelectedProvider.getSelectionModel().isSelectionEmpty()) {
+//					System.out.println("oui in the dd");
 
+					int row = tableSelectedProvider.getSelectedRow();
+					int providerRow = ProviderTable.getSelectedRow();
+//					libeleTxt.setText((String) productModel.getValueAt(row, 1));
+////					String t = ((String) productModel.getValueAt(row, 1));
+					var a = (new ArticleDAO()).find("idArticle",tableSelectedProvider.getValueAt(row, 0));
+					String article = a.getId() +" - "+a.getProduct().getProductName() + " "+ a.getConditioning().getConditioningName()+" "+a.getAmount();
+//					System.out.println(p);
+					mainController.getPanelOrder().getComboBoxProviderOrder().setSelectedItem(providerModel.getValueAt(providerRow, 1));;
+					mainController.getPanelOrder().getComboBoxArticleOrder().setSelectedItem(article);
+					mainController.getTabbedPane().setSelectedIndex(2);
+				} else {
+					JOptionPane.showMessageDialog(null, "Select product first");
+				}
+				
+				textFieldCompanyNameProvider.setText("");
+				textFieldLastNameProvider.setText("");
+				textFieldFirstNameProvider.setText("");
+				comboBoxStatusProvider.setSelectedIndex(0);
+				textFieldPhoneNumberProvider.setText("");
+//				
+			}
+		});
+
+		
 		ProviderTable.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -280,6 +313,8 @@ public class ProviderPanel extends JPanel {
 		List<Provider> updateProvider = (new ProviderDAO()).findALL();//
 		Useful.displayProvider(updateProvider, providerModel);
 
+		
+		
 	}
 
 }
