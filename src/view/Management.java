@@ -96,6 +96,7 @@ public class Management extends JFrame {
 	private JTextField textFieldUsernameProfile;
 	private JTextField textFieldPasswordProfile;
 	private JTextField textFieldPrice;
+	
 	private ArticlePanel panelArticle;
 	private ProductPanel panelProduct ;
 	/**
