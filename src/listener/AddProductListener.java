@@ -40,6 +40,7 @@ public class AddProductListener implements ActionListener{
 			myProduct.create(libeleTxt, typeCombo, unityCombo);
 			List<Product> updateProducts = (new ProductDAO()).findALL();//
 			Useful.display(updateProducts, productModel);
+			
 		}
 		
 	}

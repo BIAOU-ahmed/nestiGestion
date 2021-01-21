@@ -29,16 +29,17 @@ import model.Measurement;
 import model.Product;
 import tools.AppSettings;
 import tools.Useful;
+import view.Management;
 
 public class ArticlePanel extends JPanel {
-	JComboBox comboBoxProductArticle;
-
+	protected JComboBox comboBoxProductArticle;
+	Management mainController;
 	/**
 	 * Create the panel.
 	 */
-	public ArticlePanel(JComboBox comboBoxProductArticles) {
-
-		comboBoxProductArticle = comboBoxProductArticles;
+	public ArticlePanel(Management c) {
+		mainController=c;
+//		comboBoxProductArticle = comboBoxProductArticles;
 //		tabbedPane.addTab("Gestion Article", null, this, null);
 		this.setLayout(null);
 		JLabel lblSearchArticle = new JLabel("Rechercher");
@@ -111,7 +112,7 @@ public class ArticlePanel extends JPanel {
 		this.add(textFieldQtyArticle);
 		textFieldQtyArticle.setColumns(10);
 
-		comboBoxProductArticle = new JComboBox();
+		comboBoxProductArticle = new JComboBox<String>();
 		comboBoxProductArticle.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		comboBoxProductArticle.setBounds(39, 103, 219, 44);
 		this.add(comboBoxProductArticle);
@@ -121,7 +122,7 @@ public class ArticlePanel extends JPanel {
 		comboBoxConditioningArticle.setBounds(326, 103, 255, 44);
 		this.add(comboBoxConditioningArticle);
 
-		JComboBox comboBoxStatutArticle = new JComboBox();
+		JComboBox comboBoxStatutArticle = new JComboBox<String>();
 		DefaultComboBoxModel articleStatutsModel = new DefaultComboBoxModel(new String[] { "a", "w", "b" });
 		comboBoxStatutArticle.setModel(articleStatutsModel);
 		comboBoxStatutArticle.setFont(new Font("Tahoma", Font.PLAIN, 16));
@@ -198,18 +199,16 @@ public class ArticlePanel extends JPanel {
 		btnOrderArticle.setBounds(214, 687, 203, 35);
 
 		List<Conditioning> conditioning = (new ConditioningDAO()).findALL();//
-		conditioning.forEach(c -> {
+		conditioning.forEach(condi -> {
 
-			comboBoxConditioningArticle.addItem(c.getConditioningName());
-
-		});
-
-		List<Product> productList = (new ProductDAO()).findALL();//
-		productList.forEach(p -> {
-
-			comboBoxProductArticle.addItem(p.getProductName());
+			comboBoxConditioningArticle.addItem(condi.getConditioningName());
 
 		});
+		
+//		var productList = (new ProductDAO()).findALL();//
+		refreshProduct();
+//		mainController.getPanelProduct().getProductList().getModel().addTableModelListener(e->refreshProduct(productList));
+		
 		List<Article> updateProducts = (new ArticleDAO()).findALL();//
 		Useful.displayArticle(updateProducts, articleModel);
 		
@@ -236,6 +235,16 @@ public class ArticlePanel extends JPanel {
 
 	}
 
+	public void refreshProduct() {
+		var productList = (new ProductDAO()).findALL();//
+		comboBoxProductArticle.removeAllItems();
+		productList.forEach(p -> {
+
+			comboBoxProductArticle.addItem(p.getProductName());
+
+		});
+	}
+	
 	/**
 	 * @return the comboBoxProductArticle
 	 */

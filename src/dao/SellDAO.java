@@ -59,21 +59,23 @@ public class SellDAO extends BaseDAO<Sell> {
 
 	}
 
-//	public void update(Product product) throws SQLException {
-//		String sql = "UPDATE " + getTableName() + " SET productName = ?" + "WHERE idProduct = ?;";
-//
-//		var updateUser = DBConnection.get().prepareStatement(sql);
-//		updateUser.setString(1, product.getProductName());
-//		updateUser.setInt(2, product.getId());
-////        updateUser.setString(3,  user.getFirstName());
-////        updateUser.setString(4,  user.getLastName());
-////        updateUser.setString(5,  user.getCity());
-////        updateUser.setString(6,  user.getPasswordHash());
-////        updateUser.setString(7,  user.getRegistrationDate());
-////        updateUser.setInt(8,  user.getUserId());
-////        
-//		updateUser.executeUpdate();
-//
-//	}
+	public void update(Sell sell) throws SQLException {
+		String sql = "UPDATE " + getTableName() + " SET price = ?,updateDate=?" + "WHERE idProvider = ? AND idArticle = ?;";
+
+		var updateUser = DBConnection.get().prepareStatement(sql);
+		updateUser.setDouble(1, sell.getPrice());
+		updateUser.setDate(2, sell.getUpdateDate());
+		updateUser.setInt(3, sell.getIdProvider());
+		updateUser.setInt(4, sell.getIdArticle());
+//        updateUser.setString(3,  user.getFirstName());
+//        updateUser.setString(4,  user.getLastName());
+//        updateUser.setString(5,  user.getCity());
+//        updateUser.setString(6,  user.getPasswordHash());
+//        updateUser.setString(7,  user.getRegistrationDate());
+//        updateUser.setInt(8,  user.getUserId());
+//        
+		updateUser.executeUpdate();
+
+	}
 
 }
