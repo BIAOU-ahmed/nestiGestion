@@ -30,6 +30,7 @@ import model.Product;
 import tools.AppSettings;
 import tools.Useful;
 import view.Management;
+import javax.swing.SwingConstants;
 
 public class ArticlePanel extends JPanel {
 	protected JComboBox comboBoxProductArticle;
@@ -70,7 +71,7 @@ public class ArticlePanel extends JPanel {
 		scrollPaneArticle.setViewportView(tableArticle);
 		
 		DefaultTableModel articleModel = new DefaultTableModel(new Object[][] {,},
-				new String[] { "Identifiant", "Produit", "Conditionnement", "Stock", "Poids", "Prix �", "Statut" });
+				new String[] { "Identifiant", "Produit", "Quantité", "Conditionnement", "Poids", "Prix €", "En Stock", "Statut" });
 
 		tableArticle.setModel(articleModel);
 		tableArticle.getColumnModel().getColumn(0).setResizable(false);
@@ -80,6 +81,7 @@ public class ArticlePanel extends JPanel {
 		tableArticle.getColumnModel().getColumn(4).setResizable(false);
 		tableArticle.getColumnModel().getColumn(5).setResizable(false);
 		tableArticle.getColumnModel().getColumn(6).setResizable(false);
+		tableArticle.getColumnModel().getColumn(7).setResizable(false);
 //		scrollPane.setViewportView(table);
 //		scrollPane.setColumnHeaderView(table);
 		
@@ -162,23 +164,13 @@ public class ArticlePanel extends JPanel {
 			}
 		});
 		btnAddArticle.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		btnAddArticle.setBounds(79, 286, 111, 40);
+		btnAddArticle.setBounds(153, 286, 111, 40);
 		this.add(btnAddArticle);
 
 		JButton btnEditArticle = new JButton("Modfifier");
 		btnEditArticle.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		btnEditArticle.setBounds(200, 286, 111, 40);
+		btnEditArticle.setBounds(349, 286, 111, 40);
 		this.add(btnEditArticle);
-
-		JButton btnAvailableArticle = new JButton("Disponible");
-		btnAvailableArticle.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		btnAvailableArticle.setBounds(321, 286, 111, 40);
-		this.add(btnAvailableArticle);
-
-		JButton btnRemoveArticle = new JButton("Retirer");
-		btnRemoveArticle.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		btnRemoveArticle.setBounds(442, 286, 111, 40);
-		this.add(btnRemoveArticle);
 
 		JLabel lblProviderListArticle = new JLabel("Liste Fournisseurs");
 		lblProviderListArticle.setFont(new Font("Tahoma", Font.PLAIN, 24));
@@ -202,6 +194,12 @@ public class ArticlePanel extends JPanel {
 				new String[] { "Entreprise", "Qté commandée", "Qté reçue", "Stock", "Prix €" });
 
 		tableProviderListArticle.setModel(providerListArticleModel);
+		
+		JLabel lblTitleArticle = new JLabel("Gestions des Articles");
+		lblTitleArticle.setHorizontalAlignment(SwingConstants.CENTER);
+		lblTitleArticle.setFont(new Font("Tahoma", Font.PLAIN, 24));
+		lblTitleArticle.setBounds(150, 10, 300, 50);
+		add(lblTitleArticle);
 		tableProviderListArticle.getColumnModel().getColumn(0).setResizable(false);
 		tableProviderListArticle.getColumnModel().getColumn(1).setResizable(false);
 		tableProviderListArticle.getColumnModel().getColumn(2).setResizable(false);
@@ -256,7 +254,7 @@ public class ArticlePanel extends JPanel {
 
 	public void refreshConditioning() {
 		var conditioning = (new ConditioningDAO()).findALL();//
-		//TODO comboBoxConditioningArticle.removeAllItems();
+		comboBoxConditioningArticle.removeAllItems();
 		conditioning.forEach(condi -> {
 
 			comboBoxConditioningArticle.addItem(condi.getConditioningName());

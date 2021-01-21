@@ -12,8 +12,12 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 
+import dao.ConditioningDAO;
+import dao.ProviderDAO;
+
 public class HistoryPanel extends JPanel {
 	private JTable tableSelectedOrder;
+	protected JComboBox comboBoxProviderHistory;
 
 	/**
 	 * Create the panel.
@@ -22,6 +26,7 @@ public class HistoryPanel extends JPanel {
 
 		this.setLayout(null);
 
+		
 		JLabel lblTitleHistory = new JLabel("Historique des commandes");
 		lblTitleHistory.setHorizontalAlignment(SwingConstants.CENTER);
 		lblTitleHistory.setFont(new Font("Tahoma", Font.PLAIN, 24));
@@ -34,10 +39,11 @@ public class HistoryPanel extends JPanel {
 		lblProviderHistory.setBounds(20, 70, 200, 30);
 		this.add(lblProviderHistory);
 
-		JComboBox comboBoxProviderHistory = new JComboBox();
+		comboBoxProviderHistory = new JComboBox();
 		comboBoxProviderHistory.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		comboBoxProviderHistory.setBounds(20, 100, 200, 40);
 		this.add(comboBoxProviderHistory);
+		refreshProvider();
 
 		JComboBox comboBoxStateHistory = new JComboBox();
 		comboBoxStateHistory.setFont(new Font("Tahoma", Font.PLAIN, 16));
@@ -132,5 +138,15 @@ public class HistoryPanel extends JPanel {
 		tableSelectedOrder.getColumnModel().getColumn(5).setResizable(false);
 		scrollPaneSelectedOrder.setViewportView(tableSelectedOrder);
 		
+	}
+	
+	public void refreshProvider() {
+		var provider = (new ProviderDAO()).findALL();//
+		comboBoxProviderHistory.removeAllItems();
+		provider.forEach(p -> {
+
+			comboBoxProviderHistory.addItem(p.getCompanyName());
+
+		});
 	}
 }

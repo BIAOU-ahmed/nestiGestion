@@ -133,7 +133,9 @@ public class ProviderPanel extends JPanel {
 		scrollPaneSelectedProvider.setViewportView(tableSelectedProvider);
 
 		DefaultTableModel selectedCompanyModel = new DefaultTableModel(new Object[][] {,},
-				new String[] { "Identifiant", "Produit", "Conditionnement", "Poids", "Prix fournisseur �" });
+
+				new String[] { "Identifiant", "Produit", "Conditionnement", "Poids", "Prix fournisseur €" });
+
 
 		tableSelectedProvider.setModel(selectedCompanyModel);
 		tableSelectedProvider.getColumnModel().getColumn(0).setResizable(false);
@@ -203,7 +205,7 @@ public class ProviderPanel extends JPanel {
 
 		JButton OrderButton = new JButton("Passer une commande");
 		OrderButton.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		OrderButton.setBounds(279, 688, 192, 34);
+		OrderButton.setBounds(255, 687, 250, 34);
 		this.add(OrderButton);
 
 		btnAddProvider.addActionListener(new ActionListener() {
