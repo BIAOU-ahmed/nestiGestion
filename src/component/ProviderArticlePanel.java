@@ -71,12 +71,12 @@ public class ProviderArticlePanel extends JPanel {
 
 		JButton btnAdd = new JButton("Ajouter");
 		btnAdd.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		btnAdd.setBounds(100, 600, 200, 40);
+		btnAdd.setBounds(50, 600, 150, 40);
 		this.add(btnAdd);
 
 		JButton btnModify = new JButton("Modifier");
 		btnModify.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		btnModify.setBounds(400, 600, 200, 40);
+		btnModify.setBounds(275, 600, 150, 40);
 		this.add(btnModify);
 
 		DefaultTableModel articleProvierModel = new DefaultTableModel(new Object[][] {,},
@@ -118,6 +118,11 @@ public class ProviderArticlePanel extends JPanel {
 		lblTableTitle.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		lblTableTitle.setBounds(700, 50, 600, 30);
 		this.add(lblTableTitle);
+		
+		JButton btnDelete = new JButton("Supprimer");
+		btnDelete.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		btnDelete.setBounds(500, 600, 150, 40);
+		add(btnDelete);
 		
 		List<Provider> providertList = (new ProviderDAO()).findALL();//
 		providertList.forEach(p -> {
@@ -217,5 +222,4 @@ public class ProviderArticlePanel extends JPanel {
 		Useful.displaySell(sells, providerModel);
 		
 	}
-
 }
