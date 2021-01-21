@@ -17,11 +17,16 @@ import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 
 import dao.AdministratorDAO;
+import dao.ArticleDAO;
 import dao.OrderDAO;
+import dao.ProviderDAO;
 import model.Order;
 import tools.AppSettings;
 
 public class OrderPanel extends JPanel {
+
+	JComboBox comboBoxProviderOrder;
+	JComboBox comboBoxArticleOrder;
 
 	/**
 	 * Create the panel.
@@ -71,15 +76,17 @@ public class OrderPanel extends JPanel {
 		comboBoxOrderNumberOrder.setBounds(900, 30, 250, 40);
 		this.add(comboBoxOrderNumberOrder);
 
-		JComboBox comboBoxProviderOrder = new JComboBox();
+		comboBoxProviderOrder = new JComboBox();
 		comboBoxProviderOrder.setBounds(100, 200, 300, 40);
 		comboBoxProviderOrder.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		this.add(comboBoxProviderOrder);
+		refreshProvider();
 
-		JComboBox comboBoxArticleOrder = new JComboBox();
+		comboBoxArticleOrder = new JComboBox();
 		comboBoxArticleOrder.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		comboBoxArticleOrder.setBounds(50, 450, 250, 40);
 		this.add(comboBoxArticleOrder);
+		refreshArticle();
 
 		JTextField textFieldQtyOrder = new JTextField();
 		textFieldQtyOrder.setHorizontalAlignment(SwingConstants.CENTER);
@@ -100,7 +107,7 @@ public class OrderPanel extends JPanel {
 		scrollPaneOrder.setViewportView(tableOrder);
 
 		DefaultTableModel modelOrder = new DefaultTableModel(new Object[][] {,},
-				new String[] { "Identifiant", "Produit", "Conditionnement", "Quantite Commande", "Prix (en Euros)" });
+				new String[] { "Identifiant", "Produit", "Conditionnement", "Quantite Commande", "Prix €" });
 
 		tableOrder.setModel(modelOrder);
 		tableOrder.getColumnModel().getColumn(0).setResizable(false);
@@ -114,7 +121,7 @@ public class OrderPanel extends JPanel {
 		btnOrderOrder.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		btnOrderOrder.setBounds(1200, 670, 150, 40);
 		this.add(btnOrderOrder);
-		
+
 		JTextField textFieldTotalPrice = new JTextField();
 		textFieldTotalPrice.setHorizontalAlignment(SwingConstants.CENTER);
 		textFieldTotalPrice.setFont(new Font("Tahoma", Font.PLAIN, 16));
@@ -127,37 +134,37 @@ public class OrderPanel extends JPanel {
 		lblTotalPriceOrder.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		lblTotalPriceOrder.setBounds(900, 670, 150, 40);
 		this.add(lblTotalPriceOrder);
-		
+
 		JButton btnAddOrder = new JButton("Ajouter");
 		btnAddOrder.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		btnAddOrder.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				Order order = new Order();
 				var adminId = Integer.parseInt(AppSettings.get("loginUser"));
-				var admin=(new AdministratorDAO()).find("idAdministrator",adminId);
-				
-				java.util.Date sqlDate = new java.util.Date(); 
+				var admin = (new AdministratorDAO()).find("idAdministrator", adminId);
+
+				java.util.Date sqlDate = new java.util.Date();
 				Date orderDate = new Date(sqlDate.getTime());
-				
+
 				order.setOrderDate(orderDate);
 				order.setIdAdministrator(adminId);
-				//TODO 	order.setIdProvider(comboBoxProviderOrder.getSelectedItem().toString());
+				// TODO order.setIdProvider(comboBoxProviderOrder.getSelectedItem().toString());
 				order.setState("w");
 				var ordDAO = new OrderDAO();
-				
+
 				try {
 					ordDAO.insert(order);
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				
+
 				admin.createOrder(order);
 			}
 		});
 		btnAddOrder.setBounds(35, 600, 120, 40);
 		this.add(btnAddOrder);
-		
+
 		JButton btnUpdateOrder = new JButton("Modifier");
 		btnUpdateOrder.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		btnUpdateOrder.setBounds(190, 600, 120, 40);
@@ -167,7 +174,28 @@ public class OrderPanel extends JPanel {
 		btnDeleteOrder.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		btnDeleteOrder.setBounds(345, 600, 120, 40);
 		this.add(btnDeleteOrder);
-		
+
+	}
+
+	public void refreshProvider() {
+		var provider = (new ProviderDAO()).findALL();//
+		comboBoxProviderOrder.removeAllItems();
+		provider.forEach(p -> {
+
+			comboBoxProviderOrder.addItem(p.getCompanyName());
+
+		});
+	}
+
+	public void refreshArticle() {
+		var article = (new ArticleDAO()).findALL();//
+		comboBoxArticleOrder.removeAllItems();
+		article.forEach(a -> {
+
+			comboBoxArticleOrder.addItem(a.getId() + " - " + a.getProduct().getProductName() + " "
+					+ a.getConditioning().getConditioningName() + " " + a.getAmount());
+
+		});
 	}
 
 }

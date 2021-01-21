@@ -12,7 +12,13 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 
+import dao.ArticleDAO;
+import dao.ProductDAO;
+import dao.ProviderDAO;
+
 public class DeliveryPanel extends JPanel {
+	JComboBox comboBoxArticleDelivery;
+	JComboBox comboBoxProviderDelivery;
 
 	/**
 	 * Create the panel.
@@ -27,10 +33,11 @@ public class DeliveryPanel extends JPanel {
 		lblTitleDelivery.setBounds(0, 50, 500, 70);
 		this.add(lblTitleDelivery);
 
-		JComboBox comboBoxArticleDelivery = new JComboBox();
+		comboBoxArticleDelivery = new JComboBox();
 		comboBoxArticleDelivery.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		comboBoxArticleDelivery.setBounds(25, 320, 250, 40);
 		this.add(comboBoxArticleDelivery);
+		refreshArticle();
 
 		JComboBox comboBoxOrderNumberDelivery = new JComboBox();
 		comboBoxOrderNumberDelivery.setFont(new Font("Tahoma", Font.PLAIN, 16));
@@ -109,8 +116,8 @@ public class DeliveryPanel extends JPanel {
 		scrollPaneDelivery.setViewportView(tableDelivery);
 
 		DefaultTableModel modelDelivery = new DefaultTableModel(new Object[][] {,},
-				new String[] { "Identifiant", "Produit", "Conditionnement", "Qté Commandée", "Qté reçue",
-						"Prix €", "Date commande", "Date livraison" });
+				new String[] { "Identifiant", "Produit", "Conditionnement", "Qté Commandée", "Qté reçue", "Prix €",
+						"Date commande", "Date livraison" });
 
 		tableDelivery.setModel(modelDelivery);
 		tableDelivery.getColumnModel().getColumn(0).setResizable(false);
@@ -123,11 +130,31 @@ public class DeliveryPanel extends JPanel {
 		tableDelivery.getColumnModel().getColumn(7).setResizable(false);
 		scrollPaneDelivery.setViewportView(tableDelivery);
 
-		JComboBox comboBoxProviderDelivery = new JComboBox();
+		comboBoxProviderDelivery = new JComboBox();
 		comboBoxProviderDelivery.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		comboBoxProviderDelivery.setBounds(100, 200, 300, 40);
 		this.add(comboBoxProviderDelivery);
-		
+		refreshProvider();
+	}
+
+	public void refreshProvider() {
+		var provider = (new ProviderDAO()).findALL();//
+		comboBoxProviderDelivery.removeAllItems();
+		provider.forEach(p -> {
+
+			comboBoxProviderDelivery.addItem(p.getCompanyName());
+
+		});
+	}
+
+	public void refreshArticle() {
+		var article = (new ArticleDAO()).findALL();//
+		comboBoxArticleDelivery.removeAllItems();
+		article.forEach(a -> {
+
+			comboBoxArticleDelivery.addItem(a.getId() +" - "+a.getProduct().getProductName() + " "+ a.getConditioning().getConditioningName()+" "+a.getAmount());
+
+		});
 	}
 
 }
