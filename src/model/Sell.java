@@ -132,7 +132,24 @@ public class Sell {
 			e.printStackTrace();
 		}
 	}
+	public void delete() {
+		var deleteSell = new Sell();
+		
+		deleteSell.setIdArticle(idArticle);
+		deleteSell.setIdProvider(idProvider);
+		deleteSell.setPrice(price);
+		deleteSell.setUpdateDate(updateDate);
+		
+		try {
+			(new SellDAO()).delete(deleteSell);
+			JOptionPane.showMessageDialog(null, "Sell deleted succesfully");
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
+	
 	public Object[] toRow() {
 		Object[] sell = {
 				getIdArticle() + " - " + getArticle().getProduct().getProductName() + " "
@@ -140,6 +157,13 @@ public class Sell {
 				getPrice() };
 		return sell;
 
+	}
+	public Object[] toRowForProvider() {
+		Object[] sell = {
+				getArticle().getProduct().getProductName() ,getArticle().getConditioning().getConditioningName(),getArticle().getWeight(),
+						getPrice() };
+		return sell;
+		
 	}
 
 	private Article getArticle() {

@@ -60,6 +60,27 @@ public abstract class BaseDAO<E> {
 
 		return result;
 	}
+	public <T> ArrayList<E> findALLBy(String fieldName, T fieldValue) {
+		ArrayList<E> result = null;
+		
+		try {
+			
+			PreparedStatement find = DBConnection.get()
+					.prepareStatement("SELECT * FROM " + getTableName() + " WHERE " + fieldName + " = ?");
+
+			find.setObject(1, fieldValue);
+			
+			ResultSet allRs = find.executeQuery();
+			
+			
+			
+			result = getAllFromResultSet(allRs);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return result;
+	}
 
 	private ArrayList<E> getAllFromResultSet(ResultSet rs) throws SQLException {
 		ArrayList<E> resultList = new ArrayList<>();

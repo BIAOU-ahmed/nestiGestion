@@ -36,6 +36,7 @@ public class ArticlePanel extends JPanel {
 	protected JComboBox comboBoxConditioningArticle;
 	Management mainController;
 
+	
 	/**
 	 * Create the panel.
 	 */
@@ -124,7 +125,7 @@ public class ArticlePanel extends JPanel {
 		comboBoxProductArticle.setBounds(39, 103, 219, 44);
 		this.add(comboBoxProductArticle);
 
-		JComboBox comboBoxConditioningArticle = new JComboBox();
+		comboBoxConditioningArticle = new JComboBox();
 		comboBoxConditioningArticle.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		comboBoxConditioningArticle.setBounds(326, 103, 255, 44);
 		this.add(comboBoxConditioningArticle);
@@ -154,6 +155,9 @@ public class ArticlePanel extends JPanel {
 				article.setProductFromName(comboBoxProductArticle.getSelectedItem().toString());
 				article.setConditioningFromName(comboBoxConditioningArticle.getSelectedItem().toString());
 				admin.createArticle(article);
+				
+				List<Article> updateProducts = (new ArticleDAO()).findALL();//
+				Useful.displayArticle(updateProducts, articleModel);
 
 			}
 		});

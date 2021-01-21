@@ -203,6 +203,39 @@ public class ProviderArticlePanel extends JPanel {
 			}
 		});
 		
+		btnDelete.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				var sell = new Sell();
+//				var adminId = Integer.parseInt(AppSettings.get("loginUser"));
+//				var admin = (new AdministratorDAO()).find("idAdministrator", adminId);
+				var article = comboBoxArticle.getSelectedItem().toString();
+//				var provider = new Provider();
+//				provider.s
+				sell.setProviderFromName(comboBoxProvider.getSelectedItem().toString());
+				sell.setIdArticle(Integer.parseInt(article.split(" - ")[0]));
+//				sell.setIdProvider();
+				sell.setPrice(Double.parseDouble(textFieldPrice.getText()));
+				
+				java.util.Date sqlDate = new java.util.Date(); 
+				Date createDate = new Date(sqlDate.getTime());
+				
+				sell.setUpdateDate(createDate);
+				
+				
+				sell.delete();
+				comboBoxProvider.setSelectedIndex(0);
+				comboBoxArticle.setSelectedIndex(0);
+				textFieldPrice.setText("");
+				
+				comboBoxProvider.setEnabled(true);
+				comboBoxArticle.setEnabled(true);
+				List<Sell> sells = (new SellDAO()).findALL();//
+				Useful.displaySell(sells, providerModel);
+				
+			}
+		});
+	
 		
 		tableArticleProvider.addMouseListener(new MouseAdapter() {
 			@Override
