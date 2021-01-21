@@ -29,6 +29,8 @@ import model.Provider;
 import model.Sell;
 import tools.AppSettings;
 import tools.Useful;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class ProviderArticlePanel extends JPanel {
 
@@ -63,6 +65,16 @@ public class ProviderArticlePanel extends JPanel {
 		this.add(comboBoxProvider);
 
 		JTextField textFieldPrice = new JTextField();
+		textFieldPrice.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				
+				char testChar = e.getKeyChar();
+				if (!(Character.isDigit(testChar))) {
+					e.consume();
+				}
+			}
+		});
 		textFieldPrice.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		textFieldPrice.setHorizontalAlignment(SwingConstants.CENTER);
 		textFieldPrice.setBounds(250, 480, 200, 40);
