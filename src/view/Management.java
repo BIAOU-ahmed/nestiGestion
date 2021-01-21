@@ -93,10 +93,12 @@ public class Management extends JFrame {
 	private JTextField textFieldPasswordProfile;
 	private JTextField textFieldPrice;
 	
+
 	private HistoryPanel panelHistory;
 	private DeliveryPanel panelDelivery;
 	private OrderPanel panelOrder;
 	private UnitAndCondPanel panelUnitAndCond;
+
 	private ArticlePanel panelArticle;
 	private ProductPanel panelProduct ;
 	private ProviderPanel panelProvider;
@@ -189,12 +191,15 @@ public class Management extends JFrame {
 		tabbedPane.setMaximumSize(new Dimension(10, 32767));
 		contentPane.add(tabbedPane, BorderLayout.CENTER);
 
+
 		// Onglet Historique Commande
 
 		panelHistory = new HistoryPanel();
 		tabbedPane.addTab("Historique Commande", null, panelHistory, null);
+
 //		panelHistory.setLayout(null);
 //
+		
 //		JLabel lblTitleHistory = new JLabel("Historique des commandes");
 //		lblTitleHistory.setHorizontalAlignment(SwingConstants.CENTER);
 //		lblTitleHistory.setFont(new Font("Tahoma", Font.PLAIN, 24));
@@ -654,6 +659,9 @@ public class Management extends JFrame {
 		// Gestion Produit
 		panelProduct = new ProductPanel(this,tabbedPane, panelArticle.getComboBoxProductArticle());
 		tabbedPane.addTab("Gestion Produit", null, panelProduct, null);
+		
+				// Onglet Historique Commande
+		
 //		panelProduct.setLayout(null);
 
 //		creatArticlebtn.addActionListener(new ActionListener() {

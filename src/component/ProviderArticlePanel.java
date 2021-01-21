@@ -86,7 +86,11 @@ public class ProviderArticlePanel extends JPanel {
 		scrollPaneArticleProvider.setBounds(700, 100, 600, 550);
 		this.add(scrollPaneArticleProvider);
 
-		JTable tableArticleProvider = new JTable();
+		JTable tableArticleProvider = new JTable() {
+			public boolean isCellEditable(int row, int column) {
+				return false;
+			}
+		};
 		tableArticleProvider.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		scrollPaneArticleProvider.setViewportView(tableArticleProvider);
 
@@ -153,17 +157,46 @@ public class ProviderArticlePanel extends JPanel {
 				
 				sell.setUpdateDate(createDate);
 			
-//				article.setWeight(Double.parseDouble(textFieldWeightArticle.getText()) );
-//				article.setAmount(Integer.parseInt(textFieldQtyArticle.getText()) );
-//				article.setArticleState(comboBoxStatutArticle.getSelectedItem().toString());
-//				java.util.Date sqlDate = new java.util.Date(); 
-//				Date createDate = new Date(sqlDate.getTime());
-//				article.setCreatedAt(createDate);
-//				article.setIdAdministrator(adminId);
-//				article.setProductFromName(comboBoxProductArticle.getSelectedItem().toString());
-//				article.setConditioningFromName(comboBoxConditioningArticle.getSelectedItem().toString());
+
 				sell.create();
 				
+				comboBoxProvider.setSelectedIndex(0);
+				comboBoxArticle.setSelectedIndex(0);
+				textFieldPrice.setText("");
+				
+				List<Sell> sells = (new SellDAO()).findALL();//
+				Useful.displaySell(sells, providerModel);
+				
+			}
+		});
+		
+		btnModify.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				var sell = new Sell();
+//				var adminId = Integer.parseInt(AppSettings.get("loginUser"));
+//				var admin = (new AdministratorDAO()).find("idAdministrator", adminId);
+				var article = comboBoxArticle.getSelectedItem().toString();
+//				var provider = new Provider();
+//				provider.s
+				sell.setProviderFromName(comboBoxProvider.getSelectedItem().toString());
+				sell.setIdArticle(Integer.parseInt(article.split(" - ")[0]));
+//				sell.setIdProvider();
+				sell.setPrice(Double.parseDouble(textFieldPrice.getText()));
+				
+				java.util.Date sqlDate = new java.util.Date(); 
+				Date createDate = new Date(sqlDate.getTime());
+				
+				sell.setUpdateDate(createDate);
+				
+				
+				sell.update();
+				comboBoxProvider.setSelectedIndex(0);
+				comboBoxArticle.setSelectedIndex(0);
+				textFieldPrice.setText("");
+				
+				comboBoxProvider.setEnabled(true);
+				comboBoxArticle.setEnabled(true);
 				List<Sell> sells = (new SellDAO()).findALL();//
 				Useful.displaySell(sells, providerModel);
 				
@@ -178,6 +211,8 @@ public class ProviderArticlePanel extends JPanel {
 					int row = tableArticleProvider.getSelectedRow();
 					comboBoxArticle.setSelectedItem((String) providerModel.getValueAt(row, 0));
 					textFieldPrice.setText(Double.toString((Double) providerModel.getValueAt(row, 1)) );
+					comboBoxProvider.setEnabled(false);
+					comboBoxArticle.setEnabled(false);
 
 				}
 			}

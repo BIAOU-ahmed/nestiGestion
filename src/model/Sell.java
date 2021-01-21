@@ -39,8 +39,6 @@ public class Sell {
 //		this.idProvider = article.getId();
 //	}
 
-	
-
 	public Date updateDate;
 
 	/**
@@ -107,8 +105,8 @@ public class Sell {
 		sell.setPrice(price);
 
 		sell.setUpdateDate(updateDate);
-		
-		System.out.println(sell.getIdArticle()+"provi"+ sell.getIdProvider());
+
+		System.out.println(sell.getIdArticle() + "provi" + sell.getIdProvider());
 
 		try {
 			(new SellDAO()).insert(sell);
@@ -117,35 +115,36 @@ public class Sell {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void update() {
-  	var updatesell = new Sell();
-    	
-//    	updatedProvider.setId(id);
-//    	updatedProvider.setCompanyName(getCompanyName());
-//    	updatedProvider.setContactLastName(getContactLastName());
-//    	updatedProvider.setContactFirstName(getContactFirstName());
-//		updatedProvider.setProviderState(getProviderState());
-//		updatedProvider.setContactPhoneNumber(getContactPhoneNumber());
-//		updatedProvider.setIdAdministrator(getIdAdministrator());
-//		JOptionPane.showMessageDialog(null, "Provider update succesfully");
-//		try {
-//			(new ProviderDAO()).update(updatedProvider);
-//		} catch (SQLException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-	}
-	public Object[] toRow() {
-		Object[] sell = { getIdArticle() +" - "+getArticle().getProduct().getProductName() + " "+ getArticle().getConditioning().getConditioningName()+" "+getArticle().getAmount(), getPrice() };
-		return sell;
+		var updatesell = new Sell();
+
+		updatesell.setIdArticle(idArticle);
+		updatesell.setIdProvider(idProvider);
+		updatesell.setPrice(price);
+		updatesell.setUpdateDate(updateDate);
 		
+		try {
+			(new SellDAO()).update(updatesell);
+			JOptionPane.showMessageDialog(null, "Sell update succesfully");
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	public Object[] toRow() {
+		Object[] sell = {
+				getIdArticle() + " - " + getArticle().getProduct().getProductName() + " "
+						+ getArticle().getConditioning().getConditioningName() + " " + getArticle().getAmount(),
+				getPrice() };
+		return sell;
+
 	}
 
 	private Article getArticle() {
 		// TODO Auto-generated method stub
 		return (new ArticleDAO()).find("idArticle", this.idArticle);
 	}
-	
 
 }

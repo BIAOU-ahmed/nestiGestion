@@ -62,7 +62,11 @@ public class UnitAndCondPanel extends JPanel {
 		scrollPaneUnit.setBounds(200, 400, 300, 300);
 		this.add(scrollPaneUnit);
 
-		JTable tableUnit = new JTable();
+		JTable tableUnit = new JTable() {
+			public boolean isCellEditable(int row, int column) {
+				return false;
+			}
+		};
 		scrollPaneUnit.setViewportView(tableUnit);
 		
 		DefaultTableModel unitModel = new DefaultTableModel(new Object[][] {,},
@@ -77,7 +81,11 @@ public class UnitAndCondPanel extends JPanel {
 		scrollPaneCond.setBounds(905, 400, 300, 300);
 		this.add(scrollPaneCond);
 
-		JTable tableCond = new JTable();
+		JTable tableCond = new JTable() {
+			public boolean isCellEditable(int row, int column) {
+				return false;
+			}
+		};
 		scrollPaneCond.setViewportView(tableCond);
 		
 		DefaultTableModel condModel = new DefaultTableModel(new Object[][] {,},

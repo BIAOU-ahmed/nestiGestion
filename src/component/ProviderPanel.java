@@ -122,7 +122,11 @@ public class ProviderPanel extends JPanel {
 		scrollPaneSelectedProvider.setBounds(57, 427, 627, 249);
 		this.add(scrollPaneSelectedProvider);
 
-		JTable tableSelectedProvider = new JTable();
+		JTable tableSelectedProvider = new JTable() {
+			public boolean isCellEditable(int row, int column) {
+				return false;
+			}
+		};
 		tableSelectedProvider.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		scrollPaneSelectedProvider.setViewportView(tableSelectedProvider);
 
@@ -173,7 +177,11 @@ public class ProviderPanel extends JPanel {
 		ProviderScrollPanel.setBounds(771, 146, 595, 565);
 		this.add(ProviderScrollPanel);
 
-		JTable ProviderTable = new JTable();
+		JTable ProviderTable = new JTable() {
+			public boolean isCellEditable(int row, int column) {
+				return false;
+			}
+		};
 		ProviderTable.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		ProviderScrollPanel.setViewportView(ProviderTable);
 
