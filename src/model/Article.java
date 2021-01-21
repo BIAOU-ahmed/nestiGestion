@@ -227,7 +227,7 @@ public class Article {
 	}
 
 	public Object[] toRow() {
-		Object[] article = { getId(), getProduct().getProductName(), getConditioning().getConditioningName(), "54", getWeight(),"12",getArticleState() };
+		Object[] article = { getId(), getProduct().getProductName(), "Qté", getConditioning().getConditioningName(), "54", getWeight(),"12",getArticleState() };
 		return article;
 		
 	}

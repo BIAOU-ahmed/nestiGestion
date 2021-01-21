@@ -124,7 +124,7 @@ public class ArticlePanel extends JPanel {
 		comboBoxProductArticle.setBounds(39, 103, 219, 44);
 		this.add(comboBoxProductArticle);
 
-		JComboBox comboBoxConditioningArticle = new JComboBox();
+		comboBoxConditioningArticle = new JComboBox();
 		comboBoxConditioningArticle.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		comboBoxConditioningArticle.setBounds(326, 103, 255, 44);
 		this.add(comboBoxConditioningArticle);
