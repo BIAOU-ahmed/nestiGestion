@@ -114,18 +114,13 @@ public class ProductPanel extends JPanel {
 		JButton btnAdd = new JButton("Ajouter");
 		btnAdd.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		btnAdd.addActionListener(new AddProductListener(textFieldProductName, comboBoxType, unityCombo, productModel));
-		btnAdd.setBounds(146, 351, 104, 49);
+		btnAdd.setBounds(206, 351, 104, 49);
 		this.add(btnAdd);
 
 		JButton btnUpdate = new JButton("Modifier");
 		btnUpdate.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		btnUpdate.setBounds(307, 351, 104, 49);
+		btnUpdate.setBounds(452, 351, 104, 49);
 		this.add(btnUpdate);
-
-		JButton btnBlocked = new JButton("Retirer");
-		btnBlocked.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		btnBlocked.setBounds(452, 351, 104, 49);
-		this.add(btnBlocked);
 
 		JButton creatArticlebtn = new JButton("Créer un article à partir de ce produit");
 		creatArticlebtn.setFont(new Font("Tahoma", Font.PLAIN, 16));
