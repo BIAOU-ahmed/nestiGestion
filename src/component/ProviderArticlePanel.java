@@ -76,9 +76,11 @@ public class ProviderArticlePanel extends JPanel {
 		textFieldPrice.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent e) {
-
+				
 				char testChar = e.getKeyChar();
-				if (!(Character.isDigit(testChar))) {
+
+				if ((!(Character.isDigit(testChar)) && !(e.getKeyChar() == KeyEvent.VK_PERIOD))
+						|| ((textFieldPrice.getText().indexOf(".") != -1) && (e.getKeyChar() == KeyEvent.VK_PERIOD))) {
 					e.consume();
 				}
 			}
@@ -145,7 +147,6 @@ public class ProviderArticlePanel extends JPanel {
 		btnDelete.setBounds(500, 600, 150, 40);
 		add(btnDelete);
 
-
 		List<Provider> providertList = (new ProviderDAO()).findALL();//
 		comboBoxProvider.addItem("");
 		providertList.forEach(p -> {
@@ -161,7 +162,6 @@ public class ProviderArticlePanel extends JPanel {
 					+ a.getConditioning().getConditioningName() + " " + a.getAmount());
 
 		});
-
 
 		btnAdd.addActionListener(new ActionListener() {
 			@Override
