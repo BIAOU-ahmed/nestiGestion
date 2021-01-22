@@ -52,7 +52,8 @@ public abstract class BaseDAO<E> {
 		ArrayList<E> result = null;
 
 		try {
-			ResultSet allUsersRs = DBConnection.get().createStatement().executeQuery("SELECT * FROM " + getTableName() + ";");
+			ResultSet allUsersRs = DBConnection.get().createStatement()
+					.executeQuery("SELECT * FROM " + getTableName() + ";");
 			result = getAllFromResultSet(allUsersRs);
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -60,29 +61,49 @@ public abstract class BaseDAO<E> {
 
 		return result;
 	}
+
 	public <T> ArrayList<E> findALLBy(String fieldName, T fieldValue) {
 		ArrayList<E> result = null;
-		
+
 		try {
-			
+
 			PreparedStatement find = DBConnection.get()
 					.prepareStatement("SELECT * FROM " + getTableName() + " WHERE " + fieldName + " = ?");
 
 			find.setObject(1, fieldValue);
-			
+
 			ResultSet allRs = find.executeQuery();
-			
-			
-			
+
 			result = getAllFromResultSet(allRs);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
+
 		return result;
 	}
 
-	private ArrayList<E> getAllFromResultSet(ResultSet rs) throws SQLException {
+	public <T> ArrayList<E> findAllLike(String fieldName, T fieldValue) {
+		ArrayList<E> result = null;
+
+		try {
+
+			PreparedStatement find = DBConnection.get()
+					.prepareStatement("SELECT * FROM " + getTableName() + " WHERE " + fieldName + " LIKE ?");
+
+			System.out.println("SELECT * FROM " + getTableName() + " WHERE " + fieldName + " LIKE %" + fieldValue + "%");
+			find.setObject(1, "%" + fieldValue + "%");
+
+			ResultSet allRs = find.executeQuery();
+
+			result = getAllFromResultSet(allRs);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return result;
+	}
+
+	protected ArrayList<E> getAllFromResultSet(ResultSet rs) throws SQLException {
 		ArrayList<E> resultList = new ArrayList<>();
 		E result = getFromResultSet(rs);
 

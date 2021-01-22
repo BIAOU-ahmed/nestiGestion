@@ -4,6 +4,7 @@
 package dao;
 
 import java.sql.Date;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -43,6 +44,26 @@ public class SellDAO extends BaseDAO<Sell> {
 		return result;
 	}
 
+	public void getSell(Sell sell) {
+		Sell result = null;
+		try {
+			PreparedStatement find = DBConnection.get()
+					.prepareStatement("SELECT * FROM " + getTableName() + " WHERE idProvider = ? AND idArticle=?");
+
+			find.setObject(1, sell.getIdProvider());
+			find.setObject(2, sell.getIdArticle());
+//			System.out.println(fieldValue);
+//			System.out.println("ee " + fieldName);
+
+			result = getFromResultSet(find.executeQuery());
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		sell.setPrice(result.getPrice());
+		sell.setUpdateDate(result.getUpdateDate());
+		
+	}
 	public void insert(Sell sell) throws SQLException {
 		var sql = "INSERT INTO " + getTableName() + "(idProvider, idArticle, price, updateDate) VALUES (?,?,?,?);"; // Don't insert ID, let database
 																					// auto-increment it.

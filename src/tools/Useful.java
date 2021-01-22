@@ -8,6 +8,7 @@ import java.util.List;
 import javax.swing.table.DefaultTableModel;
 
 import model.Article;
+import model.OrderLine;
 import model.Product;
 import model.Provider;
 import model.Sell;
@@ -76,6 +77,17 @@ public  class Useful {
 		sells.forEach(s -> {
 			
 			Object[] row1 = s.toRowForProvider();
+			// Ajout d'une rang�e
+			model.addRow(row1);
+			
+		});
+	}
+	public static void displayOrderLine(List<OrderLine> sells,DefaultTableModel model) {
+//		 = (new ProductDAO()).findALL();//
+		model.setRowCount(0);
+		sells.forEach(s -> {
+			
+			Object[] row1 = s.toRow2();
 			// Ajout d'une rang�e
 			model.addRow(row1);
 			

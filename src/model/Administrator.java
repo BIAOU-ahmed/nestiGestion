@@ -88,7 +88,7 @@ public class Administrator {
      * 
      */
     public void createOrder(Order order) {
-    	order.create();
+    	order.create(order);
     }
     
     /**

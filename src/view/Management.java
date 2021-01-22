@@ -2,11 +2,15 @@ package view;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
+import java.lang.reflect.InvocationTargetException;
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JTabbedPane;
 import java.awt.Dimension;
+
+import component.Activatable;
 import component.ArticlePanel;
 import component.DeliveryPanel;
 import component.HistoryPanel;
@@ -26,11 +30,11 @@ public class Management extends JFrame {
 	private OrderPanel panelOrder;
 	private UnitAndCondPanel panelUnitAndCond;
 	private ArticlePanel panelArticle;
-	private ProductPanel panelProduct ;
+	private ProductPanel panelProduct;
 	private ProviderPanel panelProvider;
 	private ProviderArticlePanel panelProviderArticle;
 	private ProfilePanel panelProfile;
-	
+
 	/**
 	 * Launch the application.
 	 */
@@ -54,8 +58,6 @@ public class Management extends JFrame {
 		return tabbedPane;
 	}
 
-
-
 	public HistoryPanel getPanelHistory() {
 		return panelHistory;
 	}
@@ -72,7 +74,6 @@ public class Management extends JFrame {
 		return panelUnitAndCond;
 	}
 
-
 	public ProviderPanel getPanelProvider() {
 		return panelProvider;
 	}
@@ -81,19 +82,16 @@ public class Management extends JFrame {
 		return panelProviderArticle;
 	}
 
-
 	public ProfilePanel getPanelProfile() {
 		return panelProfile;
 	}
 
-	
 	/**
 	 * @return the panelProduct
 	 */
 	public ProductPanel getPanelProduct() {
 		return panelProduct;
 	}
-
 
 	/**
 	 * @return the comboBoxProductArticle
@@ -102,14 +100,11 @@ public class Management extends JFrame {
 		return panelArticle;
 	}
 
-
-
-
 	/**
 	 * Create the frame.
 	 */
 	public Management() {
-	
+
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1440, 810);
 		contentPane = new JPanel();
@@ -123,17 +118,17 @@ public class Management extends JFrame {
 
 		// Onglet Historique Commande
 
-		panelHistory = new HistoryPanel();
+		panelHistory = new HistoryPanel(this);
 		tabbedPane.addTab("Historique Commande", null, panelHistory, null);
 
 		// Onglet Gestion Livraison
 
-		panelDelivery = new DeliveryPanel();
+		panelDelivery = new DeliveryPanel(this);
 		tabbedPane.addTab("Gestion Livraison", null, panelDelivery, null);
 
 		// Gestion Commande
 
-		panelOrder = new OrderPanel();
+		panelOrder = new OrderPanel(this);
 		tabbedPane.addTab("Gestion Commande", null, panelOrder, null);
 
 		// Gestion Article
@@ -147,12 +142,10 @@ public class Management extends JFrame {
 
 		// Unite de mesure et Conditionnement
 
-		panelUnitAndCond = new UnitAndCondPanel();
+		panelUnitAndCond = new UnitAndCondPanel(this);
 		tabbedPane.addTab("Unite de mesure et Conditionnement", null, panelUnitAndCond, null);
 
 		// Gestion Fournisseur
-
-
 
 		panelProvider = new ProviderPanel(this);
 
@@ -160,13 +153,39 @@ public class Management extends JFrame {
 
 		// Gestion Articles Fournisseurs
 
-		panelProviderArticle = new ProviderArticlePanel();
+		panelProviderArticle = new ProviderArticlePanel(this);
 		tabbedPane.addTab("Gestion Articles Fournisseurs", null, panelProviderArticle, null);
 
 		// Gestion Profil
 
-		panelProfile = new ProfilePanel();
+		panelProfile = new ProfilePanel(this);
 		tabbedPane.addTab("Profil", null, panelProfile, null);
+		var me = this;
+		tabbedPane.addChangeListener((e) -> {
+			var component = tabbedPane.getSelectedComponent();
+			var i = tabbedPane.getSelectedIndex();
+			var title = tabbedPane.getTitleAt(i);
+			try {
+				var newComponent = component.getClass().getConstructor(me.getClass()).newInstance(me);
+				
+//				tabbedPane.remove(i);
+				tabbedPane.setComponentAt(i, newComponent);
+				tabbedPane.setTitleAt(i, title);
+				
+				
+			} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
+					| InvocationTargetException | NoSuchMethodException | SecurityException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+
+			System.out.println(component.getClass());
+
+//			if(tabbedPane.getSelectedComponent().equals(panelOrder)) {
+//				System.out.println("test");
+//			}
+
+		});
 
 	}
 }

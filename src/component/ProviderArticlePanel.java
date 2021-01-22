@@ -29,6 +29,8 @@ import model.Provider;
 import model.Sell;
 import tools.AppSettings;
 import tools.Useful;
+import view.Management;
+
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
@@ -37,7 +39,7 @@ public class ProviderArticlePanel extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public ProviderArticlePanel() {
+	public ProviderArticlePanel(Management c) {
 
 		this.setLayout(null);
 
@@ -68,7 +70,7 @@ public class ProviderArticlePanel extends JPanel {
 		textFieldPrice.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent e) {
-				
+
 				char testChar = e.getKeyChar();
 				if (!(Character.isDigit(testChar))) {
 					e.consume();
@@ -130,26 +132,27 @@ public class ProviderArticlePanel extends JPanel {
 		lblTableTitle.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		lblTableTitle.setBounds(700, 50, 600, 30);
 		this.add(lblTableTitle);
-		
+
 		JButton btnDelete = new JButton("Supprimer");
 		btnDelete.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		btnDelete.setBounds(500, 600, 150, 40);
 		add(btnDelete);
-		
+
 		List<Provider> providertList = (new ProviderDAO()).findALL();//
 		providertList.forEach(p -> {
 
 			comboBoxProvider.addItem(p.getCompanyName());
 
 		});
-		
+
 		List<Article> articleList = (new ArticleDAO()).findALL();//
 		articleList.forEach(a -> {
 
-			comboBoxArticle.addItem(a.getId() +" - "+a.getProduct().getProductName() + " "+ a.getConditioning().getConditioningName()+" "+a.getAmount());
+			comboBoxArticle.addItem(a.getId() + " - " + a.getProduct().getProductName() + " "
+					+ a.getConditioning().getConditioningName() + " " + a.getAmount());
 
 		});
-		
+
 		btnAdd.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -163,108 +166,106 @@ public class ProviderArticlePanel extends JPanel {
 				sell.setIdArticle(Integer.parseInt(article.split(" - ")[0]));
 //				sell.setIdProvider();
 				sell.setPrice(Double.parseDouble(textFieldPrice.getText()));
-				
-				java.util.Date sqlDate = new java.util.Date(); 
+
+				java.util.Date sqlDate = new java.util.Date();
 				Date createDate = new Date(sqlDate.getTime());
-				
+
 				sell.setUpdateDate(createDate);
-			
 
 				sell.create();
-				
+
 				comboBoxProvider.setSelectedIndex(0);
 				comboBoxArticle.setSelectedIndex(0);
 				textFieldPrice.setText("");
-				
+
 				List<Sell> sells = (new SellDAO()).findALL();//
 				Useful.displaySell(sells, providerModel);
-				
+
 			}
 		});
-		
+
 		btnModify.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				var sell = new Sell();
+				if (!tableArticleProvider.getSelectionModel().isSelectionEmpty()) {
+					var sell = new Sell();
 //				var adminId = Integer.parseInt(AppSettings.get("loginUser"));
 //				var admin = (new AdministratorDAO()).find("idAdministrator", adminId);
-				var article = comboBoxArticle.getSelectedItem().toString();
+					var article = comboBoxArticle.getSelectedItem().toString();
 //				var provider = new Provider();
 //				provider.s
-				sell.setProviderFromName(comboBoxProvider.getSelectedItem().toString());
-				sell.setIdArticle(Integer.parseInt(article.split(" - ")[0]));
+					sell.setProviderFromName(comboBoxProvider.getSelectedItem().toString());
+					sell.setIdArticle(Integer.parseInt(article.split(" - ")[0]));
 //				sell.setIdProvider();
-				sell.setPrice(Double.parseDouble(textFieldPrice.getText()));
-				
-				java.util.Date sqlDate = new java.util.Date(); 
-				Date createDate = new Date(sqlDate.getTime());
-				
-				sell.setUpdateDate(createDate);
-				
-				
-				sell.update();
-				comboBoxProvider.setSelectedIndex(0);
-				comboBoxArticle.setSelectedIndex(0);
-				textFieldPrice.setText("");
-				
-				comboBoxProvider.setEnabled(true);
-				comboBoxArticle.setEnabled(true);
-				List<Sell> sells = (new SellDAO()).findALL();//
-				Useful.displaySell(sells, providerModel);
-				
+					sell.setPrice(Double.parseDouble(textFieldPrice.getText()));
+
+					java.util.Date sqlDate = new java.util.Date();
+					Date createDate = new Date(sqlDate.getTime());
+
+					sell.setUpdateDate(createDate);
+
+					sell.update();
+					comboBoxProvider.setSelectedIndex(0);
+					comboBoxArticle.setSelectedIndex(0);
+					textFieldPrice.setText("");
+
+					comboBoxProvider.setEnabled(true);
+					comboBoxArticle.setEnabled(true);
+					List<Sell> sells = (new SellDAO()).findALL();//
+					Useful.displaySell(sells, providerModel);
+				}
 			}
 		});
-		
+
 		btnDelete.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				var sell = new Sell();
+				if (!tableArticleProvider.getSelectionModel().isSelectionEmpty()) {
+					var sell = new Sell();
 //				var adminId = Integer.parseInt(AppSettings.get("loginUser"));
 //				var admin = (new AdministratorDAO()).find("idAdministrator", adminId);
-				var article = comboBoxArticle.getSelectedItem().toString();
+					var article = comboBoxArticle.getSelectedItem().toString();
 //				var provider = new Provider();
 //				provider.s
-				sell.setProviderFromName(comboBoxProvider.getSelectedItem().toString());
-				sell.setIdArticle(Integer.parseInt(article.split(" - ")[0]));
+					sell.setProviderFromName(comboBoxProvider.getSelectedItem().toString());
+					sell.setIdArticle(Integer.parseInt(article.split(" - ")[0]));
 //				sell.setIdProvider();
-				sell.setPrice(Double.parseDouble(textFieldPrice.getText()));
-				
-				java.util.Date sqlDate = new java.util.Date(); 
-				Date createDate = new Date(sqlDate.getTime());
-				
-				sell.setUpdateDate(createDate);
-				
-				
-				sell.delete();
-				comboBoxProvider.setSelectedIndex(0);
-				comboBoxArticle.setSelectedIndex(0);
-				textFieldPrice.setText("");
-				
-				comboBoxProvider.setEnabled(true);
-				comboBoxArticle.setEnabled(true);
-				List<Sell> sells = (new SellDAO()).findALL();//
-				Useful.displaySell(sells, providerModel);
-				
+					sell.setPrice(Double.parseDouble(textFieldPrice.getText()));
+
+					java.util.Date sqlDate = new java.util.Date();
+					Date createDate = new Date(sqlDate.getTime());
+
+					sell.setUpdateDate(createDate);
+
+					sell.delete();
+					comboBoxProvider.setSelectedIndex(0);
+					comboBoxArticle.setSelectedIndex(0);
+					textFieldPrice.setText("");
+
+					comboBoxProvider.setEnabled(true);
+					comboBoxArticle.setEnabled(true);
+					List<Sell> sells = (new SellDAO()).findALL();//
+					Useful.displaySell(sells, providerModel);
+				}
 			}
 		});
-	
-		
+
 		tableArticleProvider.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if (!tableArticleProvider.getSelectionModel().isSelectionEmpty()) {
 					int row = tableArticleProvider.getSelectedRow();
 					comboBoxArticle.setSelectedItem((String) providerModel.getValueAt(row, 0));
-					textFieldPrice.setText(Double.toString((Double) providerModel.getValueAt(row, 1)) );
+					textFieldPrice.setText(Double.toString((Double) providerModel.getValueAt(row, 1)));
 					comboBoxProvider.setEnabled(false);
 					comboBoxArticle.setEnabled(false);
 
 				}
 			}
 		});
-		
+
 		List<Sell> sells = (new SellDAO()).findALL();//
 		Useful.displaySell(sells, providerModel);
-		
+
 	}
 }

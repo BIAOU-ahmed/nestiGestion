@@ -45,7 +45,7 @@ import javax.swing.event.DocumentListener;
 import javax.swing.event.CaretEvent;
 
 public class ProviderPanel extends JPanel {
-
+	DefaultTableModel providerModel;
 	/**
 	 * Create the panel.
 	 */
@@ -189,6 +189,15 @@ public class ProviderPanel extends JPanel {
 		this.add(ProviderSearchLabel);
 
 		JTextField ProviderSearchBarField = new JTextField();
+		ProviderSearchBarField.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				var list = (new ProviderDAO()).findAllLike("compagnyName", ProviderSearchBarField.getText());
+//				System.out.println(list.size());
+				Useful.displayProvider(list, providerModel);
+				
+			}
+		});
 		ProviderSearchBarField.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		ProviderSearchBarField.setBounds(771, 62, 595, 35);
 		this.add(ProviderSearchBarField);
@@ -227,7 +236,7 @@ public class ProviderPanel extends JPanel {
 		ProviderTable.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		ProviderScrollPanel.setViewportView(ProviderTable);
 
-		DefaultTableModel providerModel = new DefaultTableModel(new Object[][] {,},
+		providerModel = new DefaultTableModel(new Object[][] {,},
 				new String[] { "Identifiant", "Entreprise", "Nom", "Prénom", "Téléphone", "Statut" });
 
 		ProviderTable.setModel(providerModel);
@@ -268,6 +277,7 @@ public class ProviderPanel extends JPanel {
 		btnEditProvider.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				if (!ProviderTable.getSelectionModel().isSelectionEmpty()) {
 				Provider newProvider = new Provider();
 				var adminId = Integer.parseInt(AppSettings.get("loginUser"));
 				var admin = (new AdministratorDAO()).find("idAdministrator", adminId);
@@ -290,6 +300,7 @@ public class ProviderPanel extends JPanel {
 				textFieldFirstNameProvider.setText("");
 				comboBoxStatusProvider.setSelectedIndex(0);
 				textFieldPhoneNumberProvider.setText("");
+				}
 			}
 		});
 		
@@ -306,9 +317,10 @@ public class ProviderPanel extends JPanel {
 					var a = (new ArticleDAO()).find("idArticle",tableSelectedProvider.getValueAt(row, 0));
 					String article = a.getId() +" - "+a.getProduct().getProductName() + " "+ a.getConditioning().getConditioningName()+" "+a.getAmount();
 //					System.out.println(p);
+					mainController.getTabbedPane().setSelectedIndex(2);
 					mainController.getPanelOrder().getComboBoxProviderOrder().setSelectedItem(providerModel.getValueAt(providerRow, 1));;
 					mainController.getPanelOrder().getComboBoxArticleOrder().setSelectedItem(article);
-					mainController.getTabbedPane().setSelectedIndex(2);
+					
 				} else {
 					JOptionPane.showMessageDialog(null, "Select product first");
 				}
