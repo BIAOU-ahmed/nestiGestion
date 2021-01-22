@@ -11,6 +11,7 @@ import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -34,6 +35,8 @@ import view.Management;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class OrderPanel extends JPanel implements Activatable {
 
@@ -174,6 +177,18 @@ public class OrderPanel extends JPanel implements Activatable {
 		this.add(lblTotalPriceOrder);
 
 		JButton btnAddOrder = new JButton("Ajouter");
+		btnAddOrder.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				var qty = textFieldQtyOrder.getText().isEmpty();
+
+				if (qty == false) {
+					textFieldQtyOrder.setText("");
+				} else {
+					JOptionPane.showMessageDialog(null, "Tous les champs ne sont pas remplis.");
+				}
+			}
+		});
 		btnAddOrder.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		btnAddOrder.addActionListener(new ActionListener() {
 
@@ -229,11 +244,35 @@ public class OrderPanel extends JPanel implements Activatable {
 		this.add(btnAddOrder);
 
 		JButton btnUpdateOrder = new JButton("Modifier");
+		btnUpdateOrder.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				var qty = textFieldQtyOrder.getText().isEmpty();
+
+				if (qty == false) {
+					textFieldQtyOrder.setText("");
+				} else {
+					JOptionPane.showMessageDialog(null, "Tous les champs ne sont pas remplis.");
+				}
+			}
+		});
 		btnUpdateOrder.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		btnUpdateOrder.setBounds(190, 600, 120, 40);
 		this.add(btnUpdateOrder);
 
 		JButton btnDeleteOrder = new JButton("Supprimer");
+		btnDeleteOrder.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				var qty = textFieldQtyOrder.getText().isEmpty();
+
+				if (qty == false) {
+					textFieldQtyOrder.setText("");
+				} else {
+					JOptionPane.showMessageDialog(null, "Tous les champs ne sont pas remplis.");
+				}
+			}
+		});
 		btnDeleteOrder.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		btnDeleteOrder.setBounds(345, 600, 120, 40);
 		this.add(btnDeleteOrder);
@@ -309,6 +348,7 @@ public class OrderPanel extends JPanel implements Activatable {
 			var article = (new SellDAO()).findALLBy("idProvider", provider.getId());//
 
 			comboBoxArticleOrder.removeAllItems();
+
 			article.forEach(a -> {
 
 				comboBoxArticleOrder.addItem(a.getArticle().getId() + " - "
