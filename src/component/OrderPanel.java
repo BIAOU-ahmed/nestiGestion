@@ -309,6 +309,25 @@ public class OrderPanel extends JPanel implements Activatable {
 			}
 		});
 
+		comboBoxOrderNumberOrder.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (!comboBoxOrderNumberOrder.getSelectedItem().toString().isEmpty()) {
+					var order = (new OrderDAO()).find("idOrders",
+							comboBoxOrderNumberOrder.getSelectedItem().toString());
+
+					comboBoxProviderOrder.setSelectedItem(order.getProvider().getCompanyName());
+
+				} else {
+
+					comboBoxProviderOrder.setSelectedIndex(0);
+
+				}
+				refreshArticle();
+
+			}
+		});
+
 	}
 
 	public void refreshProvider() {
@@ -328,13 +347,17 @@ public class OrderPanel extends JPanel implements Activatable {
 
 			var article = (new SellDAO()).findALLBy("idProvider", provider.getId());//
 
+			comboBoxArticleOrder.removeAllItems();
+
 			article.forEach(a -> {
 
-				comboBoxArticleOrder.addItem(a.getArticle().getId() + " - "
-						+ a.getArticle().getProduct().getProductName() + " "
-						+ a.getArticle().getConditioning().getConditioningName() + " " + a.getArticle().getAmount());
+				comboBoxArticleOrder.addItem(
+						a.getArticle().getId() + " - " + a.getArticle().getConditioning().getConditioningName() + " de "
+								+ a.getArticle().getAmount() + " " + a.getArticle().getProduct().getProductName());
 
 			});
+		} else {
+			comboBoxArticleOrder.removeAllItems();
 		}
 	}
 

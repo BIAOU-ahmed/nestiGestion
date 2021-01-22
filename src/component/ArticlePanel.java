@@ -39,6 +39,7 @@ public class ArticlePanel extends JPanel {
 	protected JComboBox comboBoxProductArticle;
 	protected JComboBox comboBoxConditioningArticle;
 	Management mainController;
+	protected DefaultTableModel articleModel;
 
 	/**
 	 * Create the panel.
@@ -72,7 +73,7 @@ public class ArticlePanel extends JPanel {
 		tableArticle.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		scrollPaneArticle.setViewportView(tableArticle);
 
-		DefaultTableModel articleModel = new DefaultTableModel(new Object[][] {,}, new String[] { "Identifiant",
+		articleModel = new DefaultTableModel(new Object[][] {,}, new String[] { "Identifiant",
 				"Produit", "Quantité", "Conditionnement", "Poids", "Prix €", "En Stock", "Statut" });
 
 		tableArticle.setModel(articleModel);
@@ -104,7 +105,7 @@ public class ArticlePanel extends JPanel {
 
 		JLabel lblConditioningArticle = new JLabel("Conditionnement");
 		lblConditioningArticle.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lblConditioningArticle.setBounds(397, 64, 126, 14);
+		lblConditioningArticle.setBounds(422, 76, 126, 14);
 		this.add(lblConditioningArticle);
 
 		JLabel lblStatusArticle = new JLabel("Statut");
@@ -123,7 +124,7 @@ public class ArticlePanel extends JPanel {
 			}
 		});
 		textFieldWeightArticle.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		textFieldWeightArticle.setBounds(246, 215, 131, 42);
+		textFieldWeightArticle.setBounds(246, 215, 131, 40);
 		this.add(textFieldWeightArticle);
 		textFieldWeightArticle.setColumns(10);
 
@@ -138,28 +139,30 @@ public class ArticlePanel extends JPanel {
 			}
 		});
 		textFieldQtyArticle.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		textFieldQtyArticle.setBounds(39, 214, 152, 43);
+		textFieldQtyArticle.setBounds(39, 214, 152, 40);
 		this.add(textFieldQtyArticle);
 		textFieldQtyArticle.setColumns(10);
 
 		comboBoxProductArticle = new JComboBox<String>();
 		comboBoxProductArticle.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		comboBoxProductArticle.setBounds(39, 103, 219, 44);
+		comboBoxProductArticle.setBounds(39, 103, 219, 40);
 		this.add(comboBoxProductArticle);
 
 		comboBoxConditioningArticle = new JComboBox();
 		comboBoxConditioningArticle.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		comboBoxConditioningArticle.setBounds(326, 103, 255, 44);
+		comboBoxConditioningArticle.setBounds(381, 103, 200, 40);
 		this.add(comboBoxConditioningArticle);
 
 		JComboBox<String> comboBoxStatutArticle = new JComboBox<String>();
 		DefaultComboBoxModel<String> articleStatutsModel = new DefaultComboBoxModel<String>(
-				new String[] { "Disponible", "Retiré" });
+				new String[] { "Disponible", "Brouillon", "Retiré" });
 		comboBoxStatutArticle.setModel(articleStatutsModel);
 		comboBoxStatutArticle.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		comboBoxStatutArticle.setBounds(436, 215, 145, 40);
 		this.add(comboBoxStatutArticle);
+		comboBoxStatutArticle.setSelectedIndex(1);
 
+		
 		JButton btnAddArticle = new JButton("Ajouter");
 		btnAddArticle.addMouseListener(new MouseAdapter() {
 			@Override
@@ -180,12 +183,16 @@ public class ArticlePanel extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 
 				Article article = new Article();
+				var state = "a";
 				var adminId = Integer.parseInt(AppSettings.get("loginUser"));
 				var admin = (new AdministratorDAO()).find("idAdministrator", adminId);
 
 				article.setWeight(Double.parseDouble(textFieldWeightArticle.getText()));
 				article.setAmount(Integer.parseInt(textFieldQtyArticle.getText()));
-				article.setArticleState(comboBoxStatutArticle.getSelectedItem().toString());
+				if(comboBoxStatutArticle.getSelectedItem().toString().equals("Retiré")) {
+					state = "w";
+				}
+				article.setArticleState(state);
 				java.util.Date sqlDate = new java.util.Date();
 				Date createDate = new Date(sqlDate.getTime());
 				article.setCreatedAt(createDate);
@@ -250,6 +257,11 @@ public class ArticlePanel extends JPanel {
 		lblTitleArticle.setFont(new Font("Tahoma", Font.PLAIN, 24));
 		lblTitleArticle.setBounds(150, 10, 300, 50);
 		add(lblTitleArticle);
+		
+		JButton btnOrdering = new JButton("Passer une commande");
+		btnOrdering.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		btnOrdering.setBounds(220, 680, 200, 40);
+		add(btnOrdering);
 		tableProviderListArticle.getColumnModel().getColumn(0).setResizable(false);
 		tableProviderListArticle.getColumnModel().getColumn(1).setResizable(false);
 		tableProviderListArticle.getColumnModel().getColumn(2).setResizable(false);
@@ -268,8 +280,7 @@ public class ArticlePanel extends JPanel {
 		refreshProduct();
 //		mainController.getPanelProduct().getProductList().getModel().addTableModelListener(e->refreshProduct(productList));
 
-		List<Article> updateProducts = (new ArticleDAO()).findALL();//
-		Useful.displayArticle(updateProducts, articleModel);
+		refreshTable();
 
 		btnEditArticle.addActionListener(new ActionListener() {
 			@Override
@@ -291,8 +302,7 @@ public class ArticlePanel extends JPanel {
 					admin.updateArticle(article);
 
 					// vider les champ apres modification
-					List<Article> updateProducts = (new ArticleDAO()).findALL();//
-					Useful.displayArticle(updateProducts, articleModel);
+					refreshTable();
 				}
 			}
 		});
@@ -318,6 +328,11 @@ public class ArticlePanel extends JPanel {
 
 	}
 
+	public void refreshTable() {
+		List<Article> updateProducts = (new ArticleDAO()).findALL();//
+		Useful.displayArticle(updateProducts, articleModel);
+	}
+	
 	public void refreshProduct() {
 		var productList = (new ProductDAO()).findALL();//
 		comboBoxProductArticle.removeAllItems();
@@ -351,5 +366,4 @@ public class ArticlePanel extends JPanel {
 	public void setComboBoxProductArticle(JComboBox comboBoxProductArticle) {
 		this.comboBoxProductArticle = comboBoxProductArticle;
 	}
-
 }

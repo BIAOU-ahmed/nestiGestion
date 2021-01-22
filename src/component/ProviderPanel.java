@@ -309,6 +309,7 @@ public class ProviderPanel extends JPanel {
 						var admin = (new AdministratorDAO()).find("idAdministrator", adminId);
 						int row = ProviderTable.getSelectedRow();
 
+						
 						newProvider.setId((Integer) providerModel.getValueAt(row, 0));
 						newProvider.setCompanyName(textFieldCompanyNameProvider.getText());
 						newProvider.setContactLastName(textFieldLastNameProvider.getText());
@@ -317,8 +318,8 @@ public class ProviderPanel extends JPanel {
 						newProvider.setContactPhoneNumber(textFieldPhoneNumberProvider.getText());
 						newProvider.setIdAdministrator(adminId);
 						admin.updateProvider(newProvider);
-						List<Provider> updateProvider = (new ProviderDAO()).findALL();//
-						Useful.displayProvider(updateProvider, providerModel);
+						
+						refreshTable();
 
 						textFieldCompanyNameProvider.setText("");
 						textFieldLastNameProvider.setText("");
@@ -386,10 +387,7 @@ public class ProviderPanel extends JPanel {
 				}
 			}
 		});
-
-		List<Provider> updateProvider = (new ProviderDAO()).findALL();//
-		Useful.displayProvider(updateProvider, providerModel);
-
+refreshTable();
 	}
 
 	private String formatPhoneNumber(String textSize) {
@@ -410,4 +408,9 @@ public class ProviderPanel extends JPanel {
 		return result;
 	}
 
+	public void refreshTable() {
+		List<Provider> updateProvider = (new ProviderDAO()).findALL();//
+		Useful.displayProvider(updateProvider, providerModel);
+	}
+	
 }

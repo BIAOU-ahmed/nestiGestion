@@ -136,6 +136,11 @@ public class UnitAndCondPanel extends JPanel {
 		lblCondTable.setBounds(905, 350, 300, 50);
 		this.add(lblCondTable);
 
+		btnAddCond.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+			}
+		});
 		
 		
 		

@@ -251,8 +251,12 @@ public class Article {
 	}
 
 	public Object[] toRow() {
+		var status = "Disponible";
+		if(getArticleState().equals("w")) {
+			status = "retiré";
+		}
 		Object[] article = { getId(), getProduct().getProductName(), getAmount(),
-				getConditioning().getConditioningName(), getWeight(), "12 €", "54", getArticleState() };
+				getConditioning().getConditioningName(), getWeight(), "12 €", "54", status };
 		return article;
 
 	}
