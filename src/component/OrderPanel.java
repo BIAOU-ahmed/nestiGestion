@@ -351,9 +351,9 @@ public class OrderPanel extends JPanel implements Activatable {
 
 			article.forEach(a -> {
 
-				comboBoxArticleOrder.addItem(a.getArticle().getId() + " - "
-						+ a.getArticle().getProduct().getProductName() + " "
-						+ a.getArticle().getConditioning().getConditioningName() + " " + a.getArticle().getAmount());
+				comboBoxArticleOrder.addItem(
+						a.getArticle().getId() + " - " + a.getArticle().getConditioning().getConditioningName() + " de "
+								+ a.getArticle().getAmount() + " " + a.getArticle().getProduct().getProductName());
 
 			});
 		} else {
