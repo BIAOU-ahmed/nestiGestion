@@ -5,6 +5,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Date;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -19,21 +21,33 @@ import javax.swing.table.DefaultTableModel;
 import dao.AdministratorDAO;
 import dao.ArticleDAO;
 import dao.OrderDAO;
+import dao.OrderLineDAO;
 import dao.ProviderDAO;
 import model.Order;
+import model.OrderLine;
+import model.Provider;
 import tools.AppSettings;
+import tools.Useful;
+import view.Management;
 
-public class OrderPanel extends JPanel {
+public class OrderPanel extends JPanel implements Activatable {
 
-	JComboBox comboBoxProviderOrder;
-	JComboBox comboBoxArticleOrder;
+	Order order = null;
+	JComboBox<String> comboBoxProviderOrder;
+	JComboBox<String> comboBoxArticleOrder;
 
 	/**
 	 * Create the panel.
 	 */
-	public OrderPanel() {
+	public OrderPanel(Management c) {
 
 		this.setLayout(null);
+
+		var orderList = (new OrderDAO()).getActiveOrders();
+
+//		if(orderList.size()==0) {
+//			orderList.add(new Order()); 
+//		}
 
 		JLabel lblTitle1Order = new JLabel("Passer une commande");
 		lblTitle1Order.setHorizontalAlignment(SwingConstants.CENTER);
@@ -71,10 +85,20 @@ public class OrderPanel extends JPanel {
 		lblTitle2Order.setBounds(100, 320, 300, 40);
 		this.add(lblTitle2Order);
 
-		JComboBox comboBoxOrderNumberOrder = new JComboBox();
+		var comboBoxOrderNumberOrder = new JComboBox<String>();
 		comboBoxOrderNumberOrder.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		comboBoxOrderNumberOrder.setBounds(900, 30, 250, 40);
+
 		this.add(comboBoxOrderNumberOrder);
+//		for (int i = 0; i < orderList.size(); i++) {
+//			
+//		}
+		comboBoxOrderNumberOrder.addItem("");
+		orderList.forEach(o -> {
+			comboBoxOrderNumberOrder.addItem(Integer.toString(o.getId()));
+		});
+
+		comboBoxOrderNumberOrder.setSelectedIndex(0);
 
 		comboBoxProviderOrder = new JComboBox();
 		comboBoxProviderOrder.setBounds(100, 200, 300, 40);
@@ -139,7 +163,10 @@ public class OrderPanel extends JPanel {
 		btnAddOrder.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		btnAddOrder.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				Order order = new Order();
+
+				order = new Order();
+
+				var orderLine = new OrderLine();
 				var adminId = Integer.parseInt(AppSettings.get("loginUser"));
 				var admin = (new AdministratorDAO()).find("idAdministrator", adminId);
 
@@ -148,18 +175,38 @@ public class OrderPanel extends JPanel {
 
 				order.setOrderDate(orderDate);
 				order.setIdAdministrator(adminId);
-				// TODO order.setIdProvider(comboBoxProviderOrder.getSelectedItem().toString());
+				order.setProviderFromName(comboBoxProviderOrder.getSelectedItem().toString());
 				order.setState("w");
-				var ordDAO = new OrderDAO();
+				var article = comboBoxArticleOrder.getSelectedItem().toString().split(" - ");
+			
+//				var ordDAO = new OrderDAO();
 
-				try {
-					ordDAO.insert(order);
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+				if (comboBoxOrderNumberOrder.getSelectedItem().toString().isEmpty()) {
+//						ordDAO.insert(order);
+					admin.createOrder(order);
+					var orderLis = (new OrderDAO()).getActiveOrders();
+
+					comboBoxOrderNumberOrder.removeAllItems();
+					comboBoxOrderNumberOrder.addItem("");
+					orderLis.forEach(o -> {
+						comboBoxOrderNumberOrder.addItem(Integer.toString(o.getId()));
+					});
+					System.out.println("new order id " + order.getId());
+					comboBoxOrderNumberOrder.setSelectedItem(Integer.toString(order.getId()));
+
+				} else {
+					System.out.println("toto " + comboBoxOrderNumberOrder.getSelectedItem().toString() + "toto");
 				}
-
-				admin.createOrder(order);
+				
+				//verifier si la ligne de commande existe deja pour cette commande
+				System.out.println(Integer.parseInt(article[0]));
+				orderLine.setIdArticle(Integer.parseInt(article[0]));
+				orderLine.setIdOrders(Integer.parseInt(comboBoxOrderNumberOrder.getSelectedItem().toString()));
+				orderLine.setAmount(Integer.parseInt(textFieldQtyOrder.getText()));
+				orderLine.create();
+				
+				List<OrderLine> updateLine = (new OrderLineDAO()).findALLBy("idOrders", Integer.parseInt(comboBoxOrderNumberOrder.getSelectedItem().toString()));//
+				Useful.displayOrderLine(updateLine, modelOrder);
 			}
 		});
 		btnAddOrder.setBounds(35, 600, 120, 40);
@@ -212,5 +259,10 @@ public class OrderPanel extends JPanel {
 		return comboBoxArticleOrder;
 	}
 
-	
+	@Override
+	public void onActivate() {
+		// TODO Auto-generated method stub
+
+	}
+
 }

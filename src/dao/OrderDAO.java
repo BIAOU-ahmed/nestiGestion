@@ -1,8 +1,12 @@
 package dao;
 
 import java.sql.Date;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 import model.Article;
 import model.Order;
@@ -39,11 +43,43 @@ public class OrderDAO extends BaseDAO<Order>{
 		return result;
 	}
 
+	public List<Order> getActiveOrders() {
+		var result = new ArrayList<Order>();
+		PreparedStatement find;
+		try {
+			find = DBConnection.get()
+					.prepareStatement("SELECT * FROM " + getTableName() + " WHERE state = 'w'");
+			
+			ResultSet allRs = find.executeQuery();
+
+			result = getAllFromResultSet(allRs);
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		
+		
+//		if(result.size()==0) {
+//			var newOrder = new Order();
+//			newOrder.setState("w");
+//			try {
+//				this.insert(newOrder);
+//				result.add(newOrder);
+//			} catch (SQLException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//		}
+		return result;
+	}
+	
 	public void insert(Order order) throws SQLException {
 		var sql = "INSERT INTO " + getTableName() + "(`orderDate`,`state`,`idProvider`,`idAdministrator`) VALUES (?,?,?,?);"; // Don't insert ID, let database
 																					// auto-increment it.
 
-		var insertOrder = DBConnection.get().prepareStatement(sql);
+		var insertOrder = DBConnection.get().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 
 //		System.out.println("admin "+article.getIdAdministrator());
 //		System.out.println("product "+article.getIdProduct());

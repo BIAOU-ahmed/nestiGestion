@@ -15,6 +15,7 @@ import javax.swing.table.DefaultTableModel;
 import dao.ArticleDAO;
 import dao.ProductDAO;
 import dao.ProviderDAO;
+import view.Management;
 
 public class DeliveryPanel extends JPanel {
 	JComboBox comboBoxArticleDelivery;
@@ -23,7 +24,7 @@ public class DeliveryPanel extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public DeliveryPanel() {
+	public DeliveryPanel(Management c) {
 
 		this.setLayout(null);
 

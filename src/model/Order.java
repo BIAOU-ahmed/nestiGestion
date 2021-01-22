@@ -1,9 +1,13 @@
 package model;
 
 
+import java.sql.Date;
 import java.sql.SQLException;
 import java.util.*;
+
+import dao.ConditioningDAO;
 import dao.OrderDAO;
+import dao.ProviderDAO;
 
 /**
  * 
@@ -36,8 +40,17 @@ public class Order {
 
 	
     public Order() {
+    	java.util.Date sqlDate = new java.util.Date();
+//		Date createDate = new Date(sqlDate.getTime());
+    	setOrderDate(new Date(sqlDate.getTime()));
     }
 
+    
+    public void setProviderFromName(String providerName) {
+		var provider = (new ProviderDAO()).find("compagnyName", providerName);
+		this.idProvider = provider.getId();
+	}
+    
     public int getIdAdministrator() {
 		return idAdministrator;
 	}
@@ -78,7 +91,7 @@ public class Order {
 		this.state = state;
 	}
 
-	public void create() {
+	public void create(Order cretedOrder) {
 		Order order = new Order();
 		order.setOrderDate(getOrderDate());
 		order.setState(getState());
@@ -87,6 +100,7 @@ public class Order {
 	
 		try {
 			(new OrderDAO()).insert(order);
+			cretedOrder.setId(order.getId());
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
