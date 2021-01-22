@@ -43,6 +43,7 @@ import javax.swing.event.CaretListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.event.CaretEvent;
+import javax.swing.SwingConstants;
 
 public class ProviderPanel extends JPanel {
 	DefaultTableModel providerModel;
@@ -154,9 +155,10 @@ public class ProviderPanel extends JPanel {
 		btnEditProvider.setBounds(425, 329, 104, 35);
 		this.add(btnEditProvider);
 
-		JLabel lblSelectedCompanyNameProvider = new JLabel("Légumes.fr");
+		JLabel lblSelectedCompanyNameProvider = new JLabel("");
+		lblSelectedCompanyNameProvider.setHorizontalAlignment(SwingConstants.CENTER);
 		lblSelectedCompanyNameProvider.setFont(new Font("Tahoma", Font.PLAIN, 24));
-		lblSelectedCompanyNameProvider.setBounds(305, 388, 126, 35);
+		lblSelectedCompanyNameProvider.setBounds(57, 388, 627, 35);
 		this.add(lblSelectedCompanyNameProvider);
 
 		JScrollPane scrollPaneSelectedProvider = new JScrollPane();
@@ -278,7 +280,11 @@ public class ProviderPanel extends JPanel {
 					admin.createProvider(newProvider);
 					List<Provider> updateProvider = (new ProviderDAO()).findALL();//
 					Useful.displayProvider(updateProvider, providerModel);
-
+					
+					textFieldCompanyNameProvider.setText("");
+					textFieldLastNameProvider.setText("");
+					textFieldFirstNameProvider.setText("");
+					textFieldPhoneNumberProvider.setText("");
 				} else {
 					JOptionPane.showMessageDialog(null, "Tous les champs ne sont pas remplis.");
 				}
