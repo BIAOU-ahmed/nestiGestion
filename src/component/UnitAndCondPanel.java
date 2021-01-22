@@ -101,6 +101,10 @@ public class UnitAndCondPanel extends JPanel {
 		scrollPaneCond.setViewportView(tableCond);
 
 		JButton btnAddUnit = new JButton("Cr\u00E9er");
+		btnAddUnit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
 		btnAddUnit.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		btnAddUnit.setBounds(150, 250, 150, 30);
 		this.add(btnAddUnit);
@@ -138,6 +142,23 @@ public class UnitAndCondPanel extends JPanel {
 			}
 		});
 		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		btnAddUnit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+			}
+		});
 	}
 
 }

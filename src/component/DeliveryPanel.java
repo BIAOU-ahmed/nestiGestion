@@ -5,6 +5,7 @@ import java.awt.Font;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -20,6 +21,8 @@ import view.Management;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class DeliveryPanel extends JPanel {
 	JComboBox comboBoxArticleDelivery;
@@ -80,6 +83,7 @@ public class DeliveryPanel extends JPanel {
 		textFieldAmountExpected.setBounds(400, 320, 75, 40);
 		this.add(textFieldAmountExpected);
 		textFieldAmountExpected.setColumns(10);
+		textFieldAmountExpected.setEditable(false);
 
 		JTextField textFieldDeliveryDate = new JTextField();
 		textFieldDeliveryDate.addKeyListener(new KeyAdapter() {
@@ -88,8 +92,6 @@ public class DeliveryPanel extends JPanel {
 				if (e.getKeyCode() != KeyEvent.VK_BACK_SPACE || e.getKeyCode() != KeyEvent.VK_DELETE) {
 					var dateSize = textFieldDeliveryDate.getText();
 					var dateFormat = formatDeliveryDate(dateSize);
-					// textFieldPhoneNumberProvider.setText(String.format("(%d{2})(%d{2})(%d+)",
-					// textSize));
 					textFieldDeliveryDate.setText(dateFormat);
 				}
 			}
@@ -108,11 +110,40 @@ public class DeliveryPanel extends JPanel {
 		textFieldDeliveryDate.setColumns(10);
 
 		JButton btnSaveDelivery = new JButton("Enregistrer");
+		btnSaveDelivery.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				var amount = textFieldAmountReceived.getText().isEmpty();
+				var date = textFieldDeliveryDate.getText().isEmpty();
+
+				if (amount == false && date == false) {
+					textFieldAmountReceived.setText("");
+					textFieldDeliveryDate.setText("");
+				} else {
+					JOptionPane.showMessageDialog(null, "Tous les champs ne sont pas remplis.");
+				}
+
+			}
+		});
 		btnSaveDelivery.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		btnSaveDelivery.setBounds(75, 600, 150, 40);
 		this.add(btnSaveDelivery);
 
 		JButton btnDeleteDelivery = new JButton("Supprimer");
+		btnDeleteDelivery.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				var amount = textFieldAmountReceived.getText().isEmpty();
+				var date = textFieldDeliveryDate.getText().isEmpty();
+
+				if (amount == false && date == false) {
+					textFieldAmountReceived.setText("");
+					textFieldDeliveryDate.setText("");
+				} else {
+					JOptionPane.showMessageDialog(null, "Tous les champs ne sont pas remplis.");
+				}
+			}
+		});
 		btnDeleteDelivery.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		btnDeleteDelivery.setBounds(275, 600, 150, 40);
 		this.add(btnDeleteDelivery);

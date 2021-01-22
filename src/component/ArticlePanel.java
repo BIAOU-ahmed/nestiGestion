@@ -12,6 +12,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -94,7 +95,7 @@ public class ArticlePanel extends JPanel {
 
 		JLabel lblQtyArticle = new JLabel("Quantité");
 		lblQtyArticle.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lblQtyArticle.setBounds(87, 189, 57, 14);
+		lblQtyArticle.setBounds(87, 189, 64, 14);
 		this.add(lblQtyArticle);
 
 		JLabel lblProductsArticle = new JLabel("Produits");
@@ -163,6 +164,20 @@ public class ArticlePanel extends JPanel {
 
 		
 		JButton btnAddArticle = new JButton("Ajouter");
+		btnAddArticle.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				var qty = textFieldQtyArticle.getText().isEmpty();
+				var weight = textFieldWeightArticle.getText().isEmpty();
+
+				if (qty == false && weight == false) {
+					textFieldQtyArticle.setText("");
+					textFieldWeightArticle.setText("");
+				} else {
+					JOptionPane.showMessageDialog(null, "Tous les champs ne sont pas remplis.");
+				}
+			}
+		});
 		btnAddArticle.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -192,6 +207,20 @@ public class ArticlePanel extends JPanel {
 		this.add(btnAddArticle);
 
 		JButton btnEditArticle = new JButton("Modfifier");
+		btnEditArticle.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				var qty = textFieldQtyArticle.getText().isEmpty();
+				var weight = textFieldWeightArticle.getText().isEmpty();
+
+				if (qty == false && weight == false) {
+					textFieldQtyArticle.setText("");
+					textFieldWeightArticle.setText("");
+				} else {
+					JOptionPane.showMessageDialog(null, "Tous les champs ne sont pas remplis.");
+				}
+			}
+		});
 		btnEditArticle.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		btnEditArticle.setBounds(349, 286, 111, 40);
 		this.add(btnEditArticle);
