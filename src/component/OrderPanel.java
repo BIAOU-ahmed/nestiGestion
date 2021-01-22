@@ -23,6 +23,7 @@ import dao.ArticleDAO;
 import dao.OrderDAO;
 import dao.OrderLineDAO;
 import dao.ProviderDAO;
+import dao.SellDAO;
 import model.Order;
 import model.OrderLine;
 import model.Provider;
@@ -175,6 +176,7 @@ public class OrderPanel extends JPanel implements Activatable {
 		JButton btnAddOrder = new JButton("Ajouter");
 		btnAddOrder.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		btnAddOrder.addActionListener(new ActionListener() {
+
 			public void actionPerformed(ActionEvent arg0) {
 
 				order = new Order();
@@ -236,11 +238,44 @@ public class OrderPanel extends JPanel implements Activatable {
 		btnDeleteOrder.setBounds(345, 600, 120, 40);
 		this.add(btnDeleteOrder);
 
+		comboBoxProviderOrder.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (!comboBoxProviderOrder.getSelectedItem().toString().isEmpty()) {
+					var orderLis = (new OrderDAO()).getActiveOrders();
+
+					comboBoxOrderNumberOrder.removeAllItems();
+					comboBoxOrderNumberOrder.addItem("");
+					orderLis.forEach(o -> {
+						var provider = (new ProviderDAO()).find("compagnyName",
+								comboBoxProviderOrder.getSelectedItem().toString());
+						if (o.getIdProvider() == provider.getId()) {
+							comboBoxOrderNumberOrder.addItem(Integer.toString(o.getId()));
+						}
+
+					});
+				} else {
+
+					var orderLis = (new OrderDAO()).getActiveOrders();
+
+					comboBoxOrderNumberOrder.removeAllItems();
+					comboBoxOrderNumberOrder.addItem("");
+					orderLis.forEach(o -> {
+						comboBoxOrderNumberOrder.addItem(Integer.toString(o.getId()));
+					});
+
+				}
+				refreshArticle();
+
+			}
+		});
+
 	}
 
 	public void refreshProvider() {
 		var provider = (new ProviderDAO()).findALL();//
 		comboBoxProviderOrder.removeAllItems();
+		comboBoxProviderOrder.addItem("");
 		provider.forEach(p -> {
 
 			comboBoxProviderOrder.addItem(p.getCompanyName());
@@ -249,14 +284,25 @@ public class OrderPanel extends JPanel implements Activatable {
 	}
 
 	public void refreshArticle() {
-		var article = (new ArticleDAO()).findALL();//
-		comboBoxArticleOrder.removeAllItems();
-		article.forEach(a -> {
+		if (!comboBoxProviderOrder.getSelectedItem().toString().isEmpty()) {
+			var provider = (new ProviderDAO()).find("compagnyName", comboBoxProviderOrder.getSelectedItem().toString());
+
+
+			var article = (new SellDAO()).findALLBy("idProvider", provider.getId());//
 
 			comboBoxArticleOrder.addItem(a.getId() + " - " + a.getConditioning().getConditioningName() + " de "
 					+ +a.getAmount() + " " + a.getProduct().getProductName());
 
-		});
+
+			comboBoxArticleOrder.removeAllItems();
+			article.forEach(a -> {
+
+				comboBoxArticleOrder.addItem(a.getArticle().getId() + " - "
+						+ a.getArticle().getProduct().getProductName() + " "
+						+ a.getArticle().getConditioning().getConditioningName() + " " + a.getArticle().getAmount());
+
+			});
+		}
 	}
 
 	/**

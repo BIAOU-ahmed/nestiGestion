@@ -44,6 +44,30 @@ public class SellDAO extends BaseDAO<Sell> {
 		return result;
 	}
 
+	
+	public Sell findByProviderArticle(Sell sell) {
+		Sell result = null;
+
+//		System.out.println("table " + getTableName());
+		try {
+			PreparedStatement find = DBConnection.get()
+					.prepareStatement("SELECT * FROM " + getTableName() + " WHERE idProvider = ? AND idArticle = ?");
+
+			find.setObject(1, sell.getIdProvider());
+			find.setObject(2, sell.getIdArticle());
+//			System.out.println(fieldValue);
+//			System.out.println("ee " + fieldName);
+
+			result = getFromResultSet(find.executeQuery());
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return result;
+	}
+	
+	
 	public void getSell(Sell sell) {
 		Sell result = null;
 		try {
