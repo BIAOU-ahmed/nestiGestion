@@ -6,11 +6,13 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -35,6 +37,9 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 public class ProviderArticlePanel extends JPanel {
+
+	JComboBox comboBoxProvider;
+	JComboBox comboBoxArticle;
 
 	/**
 	 * Create the panel.
@@ -61,10 +66,11 @@ public class ProviderArticlePanel extends JPanel {
 		lblPrice.setBounds(200, 450, 300, 30);
 		this.add(lblPrice);
 
-		JComboBox comboBoxProvider = new JComboBox();
+		comboBoxProvider = new JComboBox();
 		comboBoxProvider.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		comboBoxProvider.setBounds(200, 180, 300, 40);
 		this.add(comboBoxProvider);
+		refreshProvider();
 
 		JTextField textFieldPrice = new JTextField();
 		textFieldPrice.addKeyListener(new KeyAdapter() {
@@ -122,10 +128,11 @@ public class ProviderArticlePanel extends JPanel {
 		lblArticle.setBounds(200, 300, 300, 30);
 		this.add(lblArticle);
 
-		JComboBox comboBoxArticle = new JComboBox();
+		comboBoxArticle = new JComboBox();
 		comboBoxArticle.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		comboBoxArticle.setBounds(200, 330, 300, 40);
 		this.add(comboBoxArticle);
+		refreshArticle();
 
 		JLabel lblTableTitle = new JLabel("Liste des articles vendus par le fournisseur");
 		lblTableTitle.setHorizontalAlignment(SwingConstants.CENTER);
@@ -138,7 +145,9 @@ public class ProviderArticlePanel extends JPanel {
 		btnDelete.setBounds(500, 600, 150, 40);
 		add(btnDelete);
 
+
 		List<Provider> providertList = (new ProviderDAO()).findALL();//
+		comboBoxProvider.addItem("");
 		providertList.forEach(p -> {
 
 			comboBoxProvider.addItem(p.getCompanyName());
@@ -153,33 +162,36 @@ public class ProviderArticlePanel extends JPanel {
 
 		});
 
+
 		btnAdd.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				var sell = new Sell();
-//				var adminId = Integer.parseInt(AppSettings.get("loginUser"));
-//				var admin = (new AdministratorDAO()).find("idAdministrator", adminId);
-				var article = comboBoxArticle.getSelectedItem().toString();
-//				var provider = new Provider();
-//				provider.s
-				sell.setProviderFromName(comboBoxProvider.getSelectedItem().toString());
-				sell.setIdArticle(Integer.parseInt(article.split(" - ")[0]));
-//				sell.setIdProvider();
-				sell.setPrice(Double.parseDouble(textFieldPrice.getText()));
+				if (!comboBoxProvider.getSelectedItem().toString().isEmpty() && !textFieldPrice.getText().isEmpty()) {
+					var sell = new Sell();
+//					var adminId = Integer.parseInt(AppSettings.get("loginUser"));
+//					var admin = (new AdministratorDAO()).find("idAdministrator", adminId);
+					var article = comboBoxArticle.getSelectedItem().toString();
+//					var provider = new Provider();
+//					provider.s
+					sell.setProviderFromName(comboBoxProvider.getSelectedItem().toString());
+					sell.setIdArticle(Integer.parseInt(article.split(" - ")[0]));
+//					sell.setIdProvider();
+					sell.setPrice(Double.parseDouble(textFieldPrice.getText()));
 
-				java.util.Date sqlDate = new java.util.Date();
-				Date createDate = new Date(sqlDate.getTime());
+					java.util.Date sqlDate = new java.util.Date();
+					Date createDate = new Date(sqlDate.getTime());
 
-				sell.setUpdateDate(createDate);
+					sell.setUpdateDate(createDate);
 
-				sell.create();
+					sell.create();
 
-				comboBoxProvider.setSelectedIndex(0);
-				comboBoxArticle.setSelectedIndex(0);
-				textFieldPrice.setText("");
+					comboBoxArticle.setSelectedIndex(0);
+					textFieldPrice.setText("");
 
-				List<Sell> sells = (new SellDAO()).findALL();//
-				Useful.displaySell(sells, providerModel);
+					refreshTable(comboBoxProvider, providerModel);
+				} else {
+					JOptionPane.showMessageDialog(null, "required camp empty");
+				}
 
 			}
 		});
@@ -188,31 +200,35 @@ public class ProviderArticlePanel extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (!tableArticleProvider.getSelectionModel().isSelectionEmpty()) {
-					var sell = new Sell();
+					if (!comboBoxProvider.getSelectedItem().toString().isEmpty()
+							&& !textFieldPrice.getText().isEmpty()) {
+						var sell = new Sell();
 //				var adminId = Integer.parseInt(AppSettings.get("loginUser"));
 //				var admin = (new AdministratorDAO()).find("idAdministrator", adminId);
-					var article = comboBoxArticle.getSelectedItem().toString();
+						var article = comboBoxArticle.getSelectedItem().toString();
 //				var provider = new Provider();
 //				provider.s
-					sell.setProviderFromName(comboBoxProvider.getSelectedItem().toString());
-					sell.setIdArticle(Integer.parseInt(article.split(" - ")[0]));
+						sell.setProviderFromName(comboBoxProvider.getSelectedItem().toString());
+						sell.setIdArticle(Integer.parseInt(article.split(" - ")[0]));
 //				sell.setIdProvider();
-					sell.setPrice(Double.parseDouble(textFieldPrice.getText()));
+						sell.setPrice(Double.parseDouble(textFieldPrice.getText()));
 
-					java.util.Date sqlDate = new java.util.Date();
-					Date createDate = new Date(sqlDate.getTime());
+						java.util.Date sqlDate = new java.util.Date();
+						Date createDate = new Date(sqlDate.getTime());
 
-					sell.setUpdateDate(createDate);
+						sell.setUpdateDate(createDate);
 
-					sell.update();
-					comboBoxProvider.setSelectedIndex(0);
-					comboBoxArticle.setSelectedIndex(0);
-					textFieldPrice.setText("");
+						sell.update();
+						comboBoxProvider.setSelectedIndex(0);
+						comboBoxArticle.setSelectedIndex(0);
+						textFieldPrice.setText("");
 
-					comboBoxProvider.setEnabled(true);
-					comboBoxArticle.setEnabled(true);
-					List<Sell> sells = (new SellDAO()).findALL();//
-					Useful.displaySell(sells, providerModel);
+						comboBoxProvider.setEnabled(true);
+						comboBoxArticle.setEnabled(true);
+						List<Sell> sells = (new SellDAO()).findALL();//
+						Useful.displaySell(sells, providerModel);
+						refreshTable(comboBoxProvider, providerModel);
+					}
 				}
 			}
 		});
@@ -244,9 +260,16 @@ public class ProviderArticlePanel extends JPanel {
 
 					comboBoxProvider.setEnabled(true);
 					comboBoxArticle.setEnabled(true);
-					List<Sell> sells = (new SellDAO()).findALL();//
-					Useful.displaySell(sells, providerModel);
+					refreshTable(comboBoxProvider, providerModel);
 				}
+			}
+		});
+
+		comboBoxProvider.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				refreshTable(comboBoxProvider, providerModel);
+
 			}
 		});
 
@@ -264,8 +287,44 @@ public class ProviderArticlePanel extends JPanel {
 			}
 		});
 
-		List<Sell> sells = (new SellDAO()).findALL();//
+//		refreshTable(comboBoxProvider, providerModel);
+	}
+
+	public void refreshTable(JComboBox<String> comboBoxProvider, DefaultTableModel providerModel) {
+
+		var sell = new Sell();
+		List<Sell> sells = null;
+
+		if (!comboBoxProvider.getSelectedItem().toString().isEmpty()) {
+			sell.setProviderFromName(comboBoxProvider.getSelectedItem().toString());
+			var providerId = sell.getIdProvider();
+			sells = (new SellDAO()).findALLBy("idProvider", providerId);//
+		} else {
+			sells = new ArrayList<Sell>();
+		}
+
 		Useful.displaySell(sells, providerModel);
 
 	}
+
+	public void refreshProvider() {
+		var provider = (new ProviderDAO()).findALL();//
+		provider.forEach(p -> {
+
+			comboBoxProvider.addItem(p.getCompanyName());
+
+		});
+	}
+
+	public void refreshArticle() {
+		var article = (new ArticleDAO()).findALL();//
+
+		article.forEach(a -> {
+
+			comboBoxArticle.addItem(a.getId() + " - " + a.getConditioning().getConditioningName() + " de "
+					+ +a.getAmount() + " " + a.getProduct().getProductName());
+
+		});
+	}
+
 }

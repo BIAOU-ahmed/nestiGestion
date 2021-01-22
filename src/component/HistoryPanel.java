@@ -86,20 +86,10 @@ public class HistoryPanel extends JPanel implements Activatable{
 		JTextField textFieldTotalPriceHistory = new JTextField();
 		textFieldTotalPriceHistory.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		textFieldTotalPriceHistory.setHorizontalAlignment(SwingConstants.CENTER);
-		textFieldTotalPriceHistory.setBounds(1200, 550, 150, 40);
+		textFieldTotalPriceHistory.setBounds(1200, 600, 150, 40);
 		this.add(textFieldTotalPriceHistory);
 		textFieldTotalPriceHistory.setColumns(10);
 		textFieldTotalPriceHistory.setEditable(false);
-
-		JComboBox comboBoxFinalStateHistory = new JComboBox();
-		comboBoxFinalStateHistory.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		comboBoxFinalStateHistory.setBounds(800, 650, 150, 40);
-		this.add(comboBoxFinalStateHistory);
-
-		JButton btnSaveStateHistory = new JButton("Valider");
-		btnSaveStateHistory.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		btnSaveStateHistory.setBounds(1000, 650, 150, 40);
-		this.add(btnSaveStateHistory);
 
 		JScrollPane scrollPaneOrder = new JScrollPane();
 		scrollPaneOrder.setBounds(20, 170, 650, 550);
@@ -113,7 +103,7 @@ public class HistoryPanel extends JPanel implements Activatable{
 		tableOrder.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		tableOrder.setFillsViewportHeight(true);
 
-		DefaultTableModel model = new DefaultTableModel(new Object[][] {,}, new String[] { "Numéro commande",
+		DefaultTableModel model = new DefaultTableModel(new Object[][] {,}, new String[] { "N° commande",
 				"Fournisseur", "Montant €", "Date commande", "Date livraison", "Statut" });
 
 		tableOrder.setModel(model);
@@ -125,14 +115,8 @@ public class HistoryPanel extends JPanel implements Activatable{
 		tableOrder.getColumnModel().getColumn(5).setResizable(false);
 		scrollPaneOrder.setViewportView(tableOrder);
 		
-		JLabel lblSaveState = new JLabel("Statut Livraison");
-		lblSaveState.setHorizontalAlignment(SwingConstants.CENTER);
-		lblSaveState.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lblSaveState.setBounds(800, 620, 150, 30);
-		this.add(lblSaveState);
-		
 		JScrollPane scrollPaneSelectedOrder = new JScrollPane();
-		scrollPaneSelectedOrder.setBounds(800, 100, 550, 452);
+		scrollPaneSelectedOrder.setBounds(800, 100, 550, 500);
 		add(scrollPaneSelectedOrder);
 		
 		tableSelectedOrder = new JTable() {
@@ -142,7 +126,7 @@ public class HistoryPanel extends JPanel implements Activatable{
 		};
 		tableSelectedOrder.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		DefaultTableModel modelSelected = new DefaultTableModel(new Object[][] {,}, new String[] { "Identifiant",
-				"Produit", "Conditionnement", "Qté commandée", "Qté reçue", "Prix €" });
+				"Article", "Qté commandée", "Qté reçue", "Prix €" });
 
 		tableSelectedOrder.setModel(modelSelected);
 		tableSelectedOrder.getColumnModel().getColumn(0).setResizable(false);
@@ -150,7 +134,6 @@ public class HistoryPanel extends JPanel implements Activatable{
 		tableSelectedOrder.getColumnModel().getColumn(2).setResizable(false);
 		tableSelectedOrder.getColumnModel().getColumn(3).setResizable(false);
 		tableSelectedOrder.getColumnModel().getColumn(4).setResizable(false);
-		tableSelectedOrder.getColumnModel().getColumn(5).setResizable(false);
 		scrollPaneSelectedOrder.setViewportView(tableSelectedOrder);
 		
 	}
