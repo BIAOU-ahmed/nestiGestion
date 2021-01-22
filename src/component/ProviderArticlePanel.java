@@ -38,6 +38,9 @@ import java.awt.event.KeyEvent;
 
 public class ProviderArticlePanel extends JPanel {
 
+	JComboBox comboBoxProvider;
+	JComboBox comboBoxArticle;
+
 	/**
 	 * Create the panel.
 	 */
@@ -63,10 +66,11 @@ public class ProviderArticlePanel extends JPanel {
 		lblPrice.setBounds(200, 450, 300, 30);
 		this.add(lblPrice);
 
-		JComboBox comboBoxProvider = new JComboBox();
+		comboBoxProvider = new JComboBox();
 		comboBoxProvider.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		comboBoxProvider.setBounds(200, 180, 300, 40);
 		this.add(comboBoxProvider);
+		refreshProvider();
 
 		JTextField textFieldPrice = new JTextField();
 		textFieldPrice.addKeyListener(new KeyAdapter() {
@@ -124,10 +128,11 @@ public class ProviderArticlePanel extends JPanel {
 		lblArticle.setBounds(200, 300, 300, 30);
 		this.add(lblArticle);
 
-		JComboBox comboBoxArticle = new JComboBox();
+		comboBoxArticle = new JComboBox();
 		comboBoxArticle.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		comboBoxArticle.setBounds(200, 330, 300, 40);
 		this.add(comboBoxArticle);
+		refreshArticle();
 
 		JLabel lblTableTitle = new JLabel("Liste des articles vendus par le fournisseur");
 		lblTableTitle.setHorizontalAlignment(SwingConstants.CENTER);
@@ -139,6 +144,7 @@ public class ProviderArticlePanel extends JPanel {
 		btnDelete.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		btnDelete.setBounds(500, 600, 150, 40);
 		add(btnDelete);
+
 
 		List<Provider> providertList = (new ProviderDAO()).findALL();//
 		comboBoxProvider.addItem("");
@@ -155,6 +161,7 @@ public class ProviderArticlePanel extends JPanel {
 					+ a.getConditioning().getConditioningName() + " " + a.getAmount());
 
 		});
+
 
 		btnAdd.addActionListener(new ActionListener() {
 			@Override
@@ -299,4 +306,25 @@ public class ProviderArticlePanel extends JPanel {
 		Useful.displaySell(sells, providerModel);
 
 	}
+
+	public void refreshProvider() {
+		var provider = (new ProviderDAO()).findALL();//
+		provider.forEach(p -> {
+
+			comboBoxProvider.addItem(p.getCompanyName());
+
+		});
+	}
+
+	public void refreshArticle() {
+		var article = (new ArticleDAO()).findALL();//
+
+		article.forEach(a -> {
+
+			comboBoxArticle.addItem(a.getId() + " - " + a.getConditioning().getConditioningName() + " de "
+					+ +a.getAmount() + " " + a.getProduct().getProductName());
+
+		});
+	}
+
 }

@@ -21,7 +21,6 @@ import view.Management;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
-
 public class DeliveryPanel extends JPanel {
 	JComboBox comboBoxArticleDelivery;
 	JComboBox comboBoxProviderDelivery;
@@ -94,6 +93,7 @@ public class DeliveryPanel extends JPanel {
 					textFieldDeliveryDate.setText(dateFormat);
 				}
 			}
+
 			@Override
 			public void keyTyped(KeyEvent e) {
 				char testChar = e.getKeyChar();
@@ -158,9 +158,8 @@ public class DeliveryPanel extends JPanel {
 		};
 		scrollPaneDelivery.setViewportView(tableDelivery);
 
-		DefaultTableModel modelDelivery = new DefaultTableModel(new Object[][] {,},
-				new String[] { "Identifiant", "Produit", "Conditionnement", "Qté Commandée", "Qté reçue", "Prix €",
-						"Date commande", "Date livraison" });
+		DefaultTableModel modelDelivery = new DefaultTableModel(new Object[][] {,}, new String[] { "Identifiant",
+				"Article", "Qté Commandée", "Qté reçue", "Prix €", "Date commande", "Date livraison" });
 
 		tableDelivery.setModel(modelDelivery);
 		tableDelivery.getColumnModel().getColumn(0).setResizable(false);
@@ -170,7 +169,6 @@ public class DeliveryPanel extends JPanel {
 		tableDelivery.getColumnModel().getColumn(4).setResizable(false);
 		tableDelivery.getColumnModel().getColumn(5).setResizable(false);
 		tableDelivery.getColumnModel().getColumn(6).setResizable(false);
-		tableDelivery.getColumnModel().getColumn(7).setResizable(false);
 		scrollPaneDelivery.setViewportView(tableDelivery);
 
 		comboBoxProviderDelivery = new JComboBox();
@@ -195,10 +193,12 @@ public class DeliveryPanel extends JPanel {
 		comboBoxArticleDelivery.removeAllItems();
 		article.forEach(a -> {
 
-			comboBoxArticleDelivery.addItem(a.getId() +" - "+a.getProduct().getProductName() + " "+ a.getConditioning().getConditioningName()+" "+a.getAmount());
+			comboBoxArticleDelivery.addItem(a.getId() + " - " + a.getConditioning().getConditioningName() + " de "
+					+ a.getAmount() + " " + a.getProduct().getProductName());
 
 		});
 	}
+
 	private String formatDeliveryDate(String dateSize) {
 		// TODO Auto-generated method stub
 		String result = "";

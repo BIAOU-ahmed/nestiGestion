@@ -145,14 +145,13 @@ public class OrderPanel extends JPanel implements Activatable {
 		scrollPaneOrder.setViewportView(tableOrder);
 
 		DefaultTableModel modelOrder = new DefaultTableModel(new Object[][] {,},
-				new String[] { "Identifiant", "Produit", "Conditionnement", "Quantite Commande", "Prix €" });
+				new String[] { "Identifiant", "Article", "Quantite Commande", "Prix €" });
 
 		tableOrder.setModel(modelOrder);
 		tableOrder.getColumnModel().getColumn(0).setResizable(false);
 		tableOrder.getColumnModel().getColumn(1).setResizable(false);
 		tableOrder.getColumnModel().getColumn(2).setResizable(false);
 		tableOrder.getColumnModel().getColumn(3).setResizable(false);
-		tableOrder.getColumnModel().getColumn(4).setResizable(false);
 		scrollPaneOrder.setViewportView(tableOrder);
 
 		JButton btnOrderOrder = new JButton("Commander");
@@ -288,7 +287,12 @@ public class OrderPanel extends JPanel implements Activatable {
 		if (!comboBoxProviderOrder.getSelectedItem().toString().isEmpty()) {
 			var provider = (new ProviderDAO()).find("compagnyName", comboBoxProviderOrder.getSelectedItem().toString());
 
+
 			var article = (new SellDAO()).findALLBy("idProvider", provider.getId());//
+
+			comboBoxArticleOrder.addItem(a.getId() + " - " + a.getConditioning().getConditioningName() + " de "
+					+ +a.getAmount() + " " + a.getProduct().getProductName());
+
 
 			comboBoxArticleOrder.removeAllItems();
 			article.forEach(a -> {
