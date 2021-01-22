@@ -180,12 +180,16 @@ public class ArticlePanel extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 
 				Article article = new Article();
+				var state = "a";
 				var adminId = Integer.parseInt(AppSettings.get("loginUser"));
 				var admin = (new AdministratorDAO()).find("idAdministrator", adminId);
 
 				article.setWeight(Double.parseDouble(textFieldWeightArticle.getText()));
 				article.setAmount(Integer.parseInt(textFieldQtyArticle.getText()));
-				article.setArticleState(comboBoxStatutArticle.getSelectedItem().toString());
+				if(comboBoxStatutArticle.getSelectedItem().toString().equals("Retiré")) {
+					state = "w";
+				}
+				article.setArticleState(state);
 				java.util.Date sqlDate = new java.util.Date();
 				Date createDate = new Date(sqlDate.getTime());
 				article.setCreatedAt(createDate);

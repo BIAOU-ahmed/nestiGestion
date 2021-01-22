@@ -309,6 +309,7 @@ public class ProviderPanel extends JPanel {
 						var admin = (new AdministratorDAO()).find("idAdministrator", adminId);
 						int row = ProviderTable.getSelectedRow();
 
+						
 						newProvider.setId((Integer) providerModel.getValueAt(row, 0));
 						newProvider.setCompanyName(textFieldCompanyNameProvider.getText());
 						newProvider.setContactLastName(textFieldLastNameProvider.getText());
