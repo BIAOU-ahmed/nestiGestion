@@ -31,6 +31,8 @@ import tools.AppSettings;
 import tools.Useful;
 import view.Management;
 import javax.swing.SwingConstants;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class ArticlePanel extends JPanel {
 	protected JComboBox comboBoxProductArticle;
@@ -110,12 +112,30 @@ public class ArticlePanel extends JPanel {
 		this.add(lblStatusArticle);
 
 		JTextField textFieldWeightArticle = new JTextField();
+		textFieldWeightArticle.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				char testChar = e.getKeyChar();
+				if (!(Character.isDigit(testChar))) {
+					e.consume();
+				}
+			}
+		});
 		textFieldWeightArticle.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		textFieldWeightArticle.setBounds(246, 215, 131, 42);
 		this.add(textFieldWeightArticle);
 		textFieldWeightArticle.setColumns(10);
 
 		JTextField textFieldQtyArticle = new JTextField();
+		textFieldQtyArticle.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				char testChar = e.getKeyChar();
+				if (!(Character.isDigit(testChar))) {
+					e.consume();
+				}
+			}
+		});
 		textFieldQtyArticle.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		textFieldQtyArticle.setBounds(39, 214, 152, 43);
 		this.add(textFieldQtyArticle);

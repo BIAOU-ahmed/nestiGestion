@@ -27,8 +27,13 @@ import model.Order;
 import model.OrderLine;
 import model.Provider;
 import tools.AppSettings;
+
 import tools.Useful;
 import view.Management;
+
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+
 
 public class OrderPanel extends JPanel implements Activatable {
 
@@ -61,7 +66,7 @@ public class OrderPanel extends JPanel implements Activatable {
 		lblProviderOrder.setBounds(100, 180, 300, 20);
 		this.add(lblProviderOrder);
 
-		JLabel lblQtyOrder = new JLabel("Quantit\u00E9e");
+		JLabel lblQtyOrder = new JLabel("Quantité");
 		lblQtyOrder.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		lblQtyOrder.setHorizontalAlignment(SwingConstants.CENTER);
 		lblQtyOrder.setBounds(350, 430, 100, 20);
@@ -113,6 +118,15 @@ public class OrderPanel extends JPanel implements Activatable {
 		refreshArticle();
 
 		JTextField textFieldQtyOrder = new JTextField();
+		textFieldQtyOrder.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				char testChar = e.getKeyChar();
+				if (!(Character.isDigit(testChar))) {
+					e.consume();
+				}
+			}
+		});
 		textFieldQtyOrder.setHorizontalAlignment(SwingConstants.CENTER);
 		textFieldQtyOrder.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		textFieldQtyOrder.setBounds(350, 450, 100, 40);
@@ -152,6 +166,7 @@ public class OrderPanel extends JPanel implements Activatable {
 		textFieldTotalPrice.setBounds(1050, 670, 100, 40);
 		this.add(textFieldTotalPrice);
 		textFieldTotalPrice.setColumns(10);
+		textFieldTotalPrice.setEditable(false);
 
 		JLabel lblTotalPriceOrder = new JLabel("Montant Total");
 		lblTotalPriceOrder.setHorizontalAlignment(SwingConstants.CENTER);
