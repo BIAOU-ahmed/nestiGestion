@@ -14,6 +14,8 @@ import javax.swing.table.DefaultTableModel;
 
 import dao.ConditioningDAO;
 import dao.ProviderDAO;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class HistoryPanel extends JPanel {
 	private JTable tableSelectedOrder;
@@ -63,6 +65,15 @@ public class HistoryPanel extends JPanel {
 		this.add(lblOrderNumberHistory);
 
 		JTextField textFieldOrderNumberHistory = new JTextField();
+		textFieldOrderNumberHistory.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				char testChar = e.getKeyChar();
+				if (!(Character.isDigit(testChar))) {
+					e.consume();
+				}
+			}
+		});
 		textFieldOrderNumberHistory.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		textFieldOrderNumberHistory.setBounds(270, 100, 200, 40);
 		this.add(textFieldOrderNumberHistory);
