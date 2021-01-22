@@ -34,7 +34,6 @@ import view.Management;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
-
 public class OrderPanel extends JPanel implements Activatable {
 
 	Order order = null;
@@ -145,14 +144,13 @@ public class OrderPanel extends JPanel implements Activatable {
 		scrollPaneOrder.setViewportView(tableOrder);
 
 		DefaultTableModel modelOrder = new DefaultTableModel(new Object[][] {,},
-				new String[] { "Identifiant", "Produit", "Conditionnement", "Quantite Commande", "Prix €" });
+				new String[] { "Identifiant", "Article", "Quantite Commande", "Prix €" });
 
 		tableOrder.setModel(modelOrder);
 		tableOrder.getColumnModel().getColumn(0).setResizable(false);
 		tableOrder.getColumnModel().getColumn(1).setResizable(false);
 		tableOrder.getColumnModel().getColumn(2).setResizable(false);
 		tableOrder.getColumnModel().getColumn(3).setResizable(false);
-		tableOrder.getColumnModel().getColumn(4).setResizable(false);
 		scrollPaneOrder.setViewportView(tableOrder);
 
 		JButton btnOrderOrder = new JButton("Commander");
@@ -193,7 +191,7 @@ public class OrderPanel extends JPanel implements Activatable {
 				order.setProviderFromName(comboBoxProviderOrder.getSelectedItem().toString());
 				order.setState("w");
 				var article = comboBoxArticleOrder.getSelectedItem().toString().split(" - ");
-			
+
 //				var ordDAO = new OrderDAO();
 
 				if (comboBoxOrderNumberOrder.getSelectedItem().toString().isEmpty()) {
@@ -212,15 +210,16 @@ public class OrderPanel extends JPanel implements Activatable {
 				} else {
 					System.out.println("toto " + comboBoxOrderNumberOrder.getSelectedItem().toString() + "toto");
 				}
-				
-				//verifier si la ligne de commande existe deja pour cette commande
+
+				// verifier si la ligne de commande existe deja pour cette commande
 				System.out.println(Integer.parseInt(article[0]));
 				orderLine.setIdArticle(Integer.parseInt(article[0]));
 				orderLine.setIdOrders(Integer.parseInt(comboBoxOrderNumberOrder.getSelectedItem().toString()));
 				orderLine.setAmount(Integer.parseInt(textFieldQtyOrder.getText()));
 				orderLine.create();
-				
-				List<OrderLine> updateLine = (new OrderLineDAO()).findALLBy("idOrders", Integer.parseInt(comboBoxOrderNumberOrder.getSelectedItem().toString()));//
+
+				List<OrderLine> updateLine = (new OrderLineDAO()).findALLBy("idOrders",
+						Integer.parseInt(comboBoxOrderNumberOrder.getSelectedItem().toString()));//
 				Useful.displayOrderLine(updateLine, modelOrder);
 			}
 		});
@@ -254,8 +253,8 @@ public class OrderPanel extends JPanel implements Activatable {
 		comboBoxArticleOrder.removeAllItems();
 		article.forEach(a -> {
 
-			comboBoxArticleOrder.addItem(a.getId() + " - " + a.getProduct().getProductName() + " "
-					+ a.getConditioning().getConditioningName() + " " + a.getAmount());
+			comboBoxArticleOrder.addItem(a.getId() + " - " + a.getConditioning().getConditioningName() + " de "
+					+ +a.getAmount() + " " + a.getProduct().getProductName());
 
 		});
 	}

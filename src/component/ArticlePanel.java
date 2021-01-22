@@ -91,7 +91,7 @@ public class ArticlePanel extends JPanel {
 		lblWeightArticle.setBounds(291, 189, 46, 14);
 		this.add(lblWeightArticle);
 
-		JLabel lblQtyArticle = new JLabel("Nombre");
+		JLabel lblQtyArticle = new JLabel("Quantité");
 		lblQtyArticle.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		lblQtyArticle.setBounds(87, 189, 57, 14);
 		this.add(lblQtyArticle);
@@ -153,7 +153,7 @@ public class ArticlePanel extends JPanel {
 
 		JComboBox<String> comboBoxStatutArticle = new JComboBox<String>();
 		DefaultComboBoxModel<String> articleStatutsModel = new DefaultComboBoxModel<String>(
-				new String[] { "a", "w", "b" });
+				new String[] { "Disponible", "Retiré" });
 		comboBoxStatutArticle.setModel(articleStatutsModel);
 		comboBoxStatutArticle.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		comboBoxStatutArticle.setBounds(436, 215, 145, 40);

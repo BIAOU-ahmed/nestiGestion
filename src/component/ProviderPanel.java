@@ -75,7 +75,7 @@ public class ProviderPanel extends JPanel {
 
 		JComboBox comboBoxStatusProvider = new JComboBox();
 		comboBoxStatusProvider.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		DefaultComboBoxModel articleStatutsModel = new DefaultComboBoxModel(new String[] { "a", "w", "b" });
+		DefaultComboBoxModel articleStatutsModel = new DefaultComboBoxModel(new String[] { "Disponible", "Inactif" });
 		comboBoxStatusProvider.setModel(articleStatutsModel);
 		comboBoxStatusProvider.setBounds(425, 103, 123, 35);
 		this.add(comboBoxStatusProvider);
@@ -172,14 +172,13 @@ public class ProviderPanel extends JPanel {
 
 		DefaultTableModel selectedCompanyModel = new DefaultTableModel(new Object[][] {,},
 
-				new String[] { "Identifiant", "Produit", "Conditionnement", "Poids", "Prix fournisseur €" });
+				new String[] { "Identifiant", "Article", "Poids", "Prix fournisseur €" });
 
 		tableSelectedProvider.setModel(selectedCompanyModel);
 		tableSelectedProvider.getColumnModel().getColumn(0).setResizable(false);
 		tableSelectedProvider.getColumnModel().getColumn(1).setResizable(false);
 		tableSelectedProvider.getColumnModel().getColumn(2).setResizable(false);
 		tableSelectedProvider.getColumnModel().getColumn(3).setResizable(false);
-		tableSelectedProvider.getColumnModel().getColumn(4).setResizable(false);
 //		scrollPane.setViewportView(table);
 //		scrollPane.setColumnHeaderView(table);
 
