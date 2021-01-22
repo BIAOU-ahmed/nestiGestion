@@ -5,6 +5,7 @@ import java.sql.Date;
 import java.sql.SQLException;
 import java.util.*;
 
+import dao.AdministratorDAO;
 import dao.ConditioningDAO;
 import dao.OrderDAO;
 import dao.ProviderDAO;
@@ -59,6 +60,11 @@ public class Order {
 		this.idAdministrator = idAdministrator;
 	}
 
+	public Provider getProvider() {
+
+		return (new ProviderDAO()).find("idProvider", this.idProvider);
+	}
+	
 	public int getIdProvider() {
 		return idProvider;
 	}
