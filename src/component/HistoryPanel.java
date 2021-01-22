@@ -2,6 +2,7 @@ package component;
 
 import java.awt.Font;
 
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -54,6 +55,9 @@ public class HistoryPanel extends JPanel implements Activatable{
 		JComboBox comboBoxStateHistory = new JComboBox();
 		comboBoxStateHistory.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		comboBoxStateHistory.setBounds(520, 100, 150, 40);
+		DefaultComboBoxModel<String> stateHistoryModel = new DefaultComboBoxModel<String>(
+				new String[] { "Toutes", "En cours", "Reçue" });
+		comboBoxStateHistory.setModel(stateHistoryModel);
 		this.add(comboBoxStateHistory);
 
 		JLabel lblStateHistory = new JLabel("Etat livraison");

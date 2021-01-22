@@ -287,19 +287,13 @@ public class OrderPanel extends JPanel implements Activatable {
 		if (!comboBoxProviderOrder.getSelectedItem().toString().isEmpty()) {
 			var provider = (new ProviderDAO()).find("compagnyName", comboBoxProviderOrder.getSelectedItem().toString());
 
-
 			var article = (new SellDAO()).findALLBy("idProvider", provider.getId());//
 
-			comboBoxArticleOrder.addItem(a.getId() + " - " + a.getConditioning().getConditioningName() + " de "
-					+ +a.getAmount() + " " + a.getProduct().getProductName());
-
-
-			comboBoxArticleOrder.removeAllItems();
 			article.forEach(a -> {
 
-				comboBoxArticleOrder.addItem(a.getArticle().getId() + " - "
-						+ a.getArticle().getProduct().getProductName() + " "
-						+ a.getArticle().getConditioning().getConditioningName() + " " + a.getArticle().getAmount());
+				comboBoxArticleOrder.addItem(
+						a.getArticle().getId() + " - " + a.getArticle().getConditioning().getConditioningName() + " de "
+								+ a.getArticle().getAmount() + " " + a.getArticle().getProduct().getProductName());
 
 			});
 		}

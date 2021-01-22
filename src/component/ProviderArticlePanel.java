@@ -145,24 +145,6 @@ public class ProviderArticlePanel extends JPanel {
 		btnDelete.setBounds(500, 600, 150, 40);
 		add(btnDelete);
 
-
-		List<Provider> providertList = (new ProviderDAO()).findALL();//
-		comboBoxProvider.addItem("");
-		providertList.forEach(p -> {
-
-			comboBoxProvider.addItem(p.getCompanyName());
-
-		});
-
-		List<Article> articleList = (new ArticleDAO()).findALL();//
-		articleList.forEach(a -> {
-
-			comboBoxArticle.addItem(a.getId() + " - " + a.getProduct().getProductName() + " "
-					+ a.getConditioning().getConditioningName() + " " + a.getAmount());
-
-		});
-
-
 		btnAdd.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -309,6 +291,7 @@ public class ProviderArticlePanel extends JPanel {
 
 	public void refreshProvider() {
 		var provider = (new ProviderDAO()).findALL();//
+		comboBoxProvider.addItem("");
 		provider.forEach(p -> {
 
 			comboBoxProvider.addItem(p.getCompanyName());
@@ -326,5 +309,5 @@ public class ProviderArticlePanel extends JPanel {
 
 		});
 	}
-
+	
 }

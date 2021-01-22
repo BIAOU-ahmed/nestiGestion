@@ -33,6 +33,7 @@ public class ProductPanel extends JPanel {
 	protected JComboBox unityCombo;
 	protected JTable productList;
 	Management mainController;
+	protected DefaultTableModel productModel;
 
 	/**
 	 * @return the mainController
@@ -72,7 +73,7 @@ public class ProductPanel extends JPanel {
 
 		this.add(scrollPaneProductList);
 
-		DefaultTableModel productModel = new DefaultTableModel(new Object[][] {,},
+		productModel = new DefaultTableModel(new Object[][] {,},
 				new String[] { "Identifiant", "Libellé", "Type", "Unité", "Nb d'articles créés" });
 		productList = new JTable() {
 			public boolean isCellEditable(int row, int column) {
@@ -147,7 +148,7 @@ public class ProductPanel extends JPanel {
 
 		productList.addMouseListener(
 				new ProductListListener(productModel, productList, textFieldProductName, comboBoxType, unityCombo));
-		
+
 		JLabel lblTitleProduct = new JLabel("Gestion des Produits");
 		lblTitleProduct.setFont(new Font("Tahoma", Font.PLAIN, 24));
 		lblTitleProduct.setHorizontalAlignment(SwingConstants.CENTER);
@@ -187,8 +188,7 @@ public class ProductPanel extends JPanel {
 					updateProduct.setProductName(textFieldProductName.getText());
 					updateProduct.setType(comboBoxType.getSelectedItem().toString());
 					updateProduct.update(unityCombo);
-					List<Product> updateProducts = (new ProductDAO()).findALL();//
-					Useful.display(updateProducts, productModel);
+					refreshTable();
 //					libeleTxt.setText((String) productModel.getValueAt(row, 1));
 ////					String t = ((String) productModel.getValueAt(row, 1));
 //					String p = (String) productModel.getValueAt(row, 1);
@@ -220,9 +220,7 @@ public class ProductPanel extends JPanel {
 
 			}
 		});
-
-		List<Product> updateProducts = (new ProductDAO()).findALL();//
-		Useful.display(updateProducts, productModel);
+		refreshTable();
 	}
 
 	public void refreshMeasurement() {
@@ -246,4 +244,10 @@ public class ProductPanel extends JPanel {
 	public void setProductList(JTable productList) {
 		this.productList = productList;
 	}
+
+	public void refreshTable() {
+		List<Product> updateProducts = (new ProductDAO()).findALL();//
+		Useful.display(updateProducts, productModel);
+	}
+
 }

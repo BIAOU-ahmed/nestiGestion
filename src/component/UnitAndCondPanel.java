@@ -12,6 +12,8 @@ import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 
 import view.Management;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class UnitAndCondPanel extends JPanel {
 
@@ -130,6 +132,11 @@ public class UnitAndCondPanel extends JPanel {
 		lblCondTable.setBounds(905, 350, 300, 50);
 		this.add(lblCondTable);
 
+		btnAddCond.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+			}
+		});
 		
 	}
 
