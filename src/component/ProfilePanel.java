@@ -13,6 +13,7 @@ import javax.swing.JTextField;
 import dao.AdministratorDAO;
 import model.Administrator;
 import tools.AppSettings;
+import view.Management;
 
 public class ProfilePanel extends JPanel {
 
@@ -22,7 +23,7 @@ public class ProfilePanel extends JPanel {
 	
 	private JPasswordField passwordField;
 	
-	public ProfilePanel() {
+	public ProfilePanel(Management c) {
 
 		// JPanel this = new JPanel();
 		// tabbedPane.addTab("Profil", null, this, null);

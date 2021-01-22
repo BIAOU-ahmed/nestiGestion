@@ -11,12 +11,14 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 
+import view.Management;
+
 public class UnitAndCondPanel extends JPanel {
 
 	/**
 	 * Create the panel.
 	 */
-	public UnitAndCondPanel() {
+	public UnitAndCondPanel(Management c) {
 
 		setLayout(null);
 

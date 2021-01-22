@@ -14,17 +14,21 @@ import javax.swing.table.DefaultTableModel;
 
 import dao.ConditioningDAO;
 import dao.ProviderDAO;
+
+import view.Management;
+
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
-public class HistoryPanel extends JPanel {
+
+public class HistoryPanel extends JPanel implements Activatable{
 	private JTable tableSelectedOrder;
 	protected JComboBox comboBoxProviderHistory;
 
 	/**
 	 * Create the panel.
 	 */
-	public HistoryPanel() {
+	public HistoryPanel(Management c) {
 
 		this.setLayout(null);
 
@@ -159,5 +163,12 @@ public class HistoryPanel extends JPanel {
 			comboBoxProviderHistory.addItem(p.getCompanyName());
 
 		});
+	}
+
+	@Override
+	public void onActivate() {
+		// TODO Auto-generated method stub
+//		HistoryPanel();
+		
 	}
 }
