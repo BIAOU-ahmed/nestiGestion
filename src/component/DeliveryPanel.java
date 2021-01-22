@@ -15,6 +15,8 @@ import javax.swing.table.DefaultTableModel;
 import dao.ArticleDAO;
 import dao.ProductDAO;
 import dao.ProviderDAO;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class DeliveryPanel extends JPanel {
 	JComboBox comboBoxArticleDelivery;
@@ -45,6 +47,15 @@ public class DeliveryPanel extends JPanel {
 		this.add(comboBoxOrderNumberDelivery);
 
 		JTextField textFieldAmountReceived = new JTextField();
+		textFieldAmountReceived.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				char testChar = e.getKeyChar();
+				if (!(Character.isDigit(testChar))) {
+					e.consume();
+				}
+			}
+		});
 		textFieldAmountReceived.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		textFieldAmountReceived.setHorizontalAlignment(SwingConstants.CENTER);
 		textFieldAmountReceived.setBounds(325, 320, 75, 40);
@@ -52,6 +63,15 @@ public class DeliveryPanel extends JPanel {
 		textFieldAmountReceived.setColumns(10);
 
 		JTextField textFieldAmountExpected = new JTextField();
+		textFieldAmountExpected.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				char testChar = e.getKeyChar();
+				if (!(Character.isDigit(testChar))) {
+					e.consume();
+				}
+			}
+		});
 		textFieldAmountExpected.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		textFieldAmountExpected.setHorizontalAlignment(SwingConstants.CENTER);
 		textFieldAmountExpected.setBounds(400, 320, 75, 40);
@@ -59,6 +79,25 @@ public class DeliveryPanel extends JPanel {
 		textFieldAmountExpected.setColumns(10);
 
 		JTextField textFieldDeliveryDate = new JTextField();
+		textFieldDeliveryDate.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if (e.getKeyCode() != KeyEvent.VK_BACK_SPACE || e.getKeyCode() != KeyEvent.VK_DELETE) {
+					var dateSize = textFieldDeliveryDate.getText();
+					var dateFormat = formatDeliveryDate(dateSize);
+					// textFieldPhoneNumberProvider.setText(String.format("(%d{2})(%d{2})(%d+)",
+					// textSize));
+					textFieldDeliveryDate.setText(dateFormat);
+				}
+			}
+			@Override
+			public void keyTyped(KeyEvent e) {
+				char testChar = e.getKeyChar();
+				if (!(Character.isDigit(testChar)) || (textFieldDeliveryDate.getText().length() >= 8)) {
+					e.consume();
+				}
+			}
+		});
 		textFieldDeliveryDate.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		textFieldDeliveryDate.setBounds(150, 470, 200, 40);
 		this.add(textFieldDeliveryDate);
@@ -156,5 +195,20 @@ public class DeliveryPanel extends JPanel {
 
 		});
 	}
+	private String formatDeliveryDate(String dateSize) {
+		// TODO Auto-generated method stub
+		String result = "";
+		int i = 0;
+		for (char c : dateSize.toCharArray()) {
 
+			if (Character.isDigit(c)) {
+				if (i % 2 == 0 && i != 0) {
+					result += "/";
+				}
+				result += c;
+				i++;
+			}
+		}
+		return result;
+	}
 }
