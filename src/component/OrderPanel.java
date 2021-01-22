@@ -23,6 +23,7 @@ import dao.ArticleDAO;
 import dao.OrderDAO;
 import dao.OrderLineDAO;
 import dao.ProviderDAO;
+import dao.SellDAO;
 import model.Order;
 import model.OrderLine;
 import model.Provider;
@@ -33,7 +34,6 @@ import view.Management;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-
 
 public class OrderPanel extends JPanel implements Activatable {
 
@@ -177,6 +177,7 @@ public class OrderPanel extends JPanel implements Activatable {
 		JButton btnAddOrder = new JButton("Ajouter");
 		btnAddOrder.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		btnAddOrder.addActionListener(new ActionListener() {
+
 			public void actionPerformed(ActionEvent arg0) {
 
 				order = new Order();
@@ -193,7 +194,7 @@ public class OrderPanel extends JPanel implements Activatable {
 				order.setProviderFromName(comboBoxProviderOrder.getSelectedItem().toString());
 				order.setState("w");
 				var article = comboBoxArticleOrder.getSelectedItem().toString().split(" - ");
-			
+
 //				var ordDAO = new OrderDAO();
 
 				if (comboBoxOrderNumberOrder.getSelectedItem().toString().isEmpty()) {
@@ -212,15 +213,16 @@ public class OrderPanel extends JPanel implements Activatable {
 				} else {
 					System.out.println("toto " + comboBoxOrderNumberOrder.getSelectedItem().toString() + "toto");
 				}
-				
-				//verifier si la ligne de commande existe deja pour cette commande
+
+				// verifier si la ligne de commande existe deja pour cette commande
 				System.out.println(Integer.parseInt(article[0]));
 				orderLine.setIdArticle(Integer.parseInt(article[0]));
 				orderLine.setIdOrders(Integer.parseInt(comboBoxOrderNumberOrder.getSelectedItem().toString()));
 				orderLine.setAmount(Integer.parseInt(textFieldQtyOrder.getText()));
 				orderLine.create();
-				
-				List<OrderLine> updateLine = (new OrderLineDAO()).findALLBy("idOrders", Integer.parseInt(comboBoxOrderNumberOrder.getSelectedItem().toString()));//
+
+				List<OrderLine> updateLine = (new OrderLineDAO()).findALLBy("idOrders",
+						Integer.parseInt(comboBoxOrderNumberOrder.getSelectedItem().toString()));//
 				Useful.displayOrderLine(updateLine, modelOrder);
 			}
 		});
@@ -237,11 +239,44 @@ public class OrderPanel extends JPanel implements Activatable {
 		btnDeleteOrder.setBounds(345, 600, 120, 40);
 		this.add(btnDeleteOrder);
 
+		comboBoxProviderOrder.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (!comboBoxProviderOrder.getSelectedItem().toString().isEmpty()) {
+					var orderLis = (new OrderDAO()).getActiveOrders();
+
+					comboBoxOrderNumberOrder.removeAllItems();
+					comboBoxOrderNumberOrder.addItem("");
+					orderLis.forEach(o -> {
+						var provider = (new ProviderDAO()).find("compagnyName",
+								comboBoxProviderOrder.getSelectedItem().toString());
+						if (o.getIdProvider() == provider.getId()) {
+							comboBoxOrderNumberOrder.addItem(Integer.toString(o.getId()));
+						}
+
+					});
+				} else {
+
+					var orderLis = (new OrderDAO()).getActiveOrders();
+
+					comboBoxOrderNumberOrder.removeAllItems();
+					comboBoxOrderNumberOrder.addItem("");
+					orderLis.forEach(o -> {
+						comboBoxOrderNumberOrder.addItem(Integer.toString(o.getId()));
+					});
+
+				}
+				refreshArticle();
+
+			}
+		});
+
 	}
 
 	public void refreshProvider() {
 		var provider = (new ProviderDAO()).findALL();//
 		comboBoxProviderOrder.removeAllItems();
+		comboBoxProviderOrder.addItem("");
 		provider.forEach(p -> {
 
 			comboBoxProviderOrder.addItem(p.getCompanyName());
@@ -250,14 +285,20 @@ public class OrderPanel extends JPanel implements Activatable {
 	}
 
 	public void refreshArticle() {
-		var article = (new ArticleDAO()).findALL();//
-		comboBoxArticleOrder.removeAllItems();
-		article.forEach(a -> {
+		if (!comboBoxProviderOrder.getSelectedItem().toString().isEmpty()) {
+			var provider = (new ProviderDAO()).find("compagnyName", comboBoxProviderOrder.getSelectedItem().toString());
 
-			comboBoxArticleOrder.addItem(a.getId() + " - " + a.getProduct().getProductName() + " "
-					+ a.getConditioning().getConditioningName() + " " + a.getAmount());
+			var article = (new SellDAO()).findALLBy("idProvider", provider.getId());//
 
-		});
+			comboBoxArticleOrder.removeAllItems();
+			article.forEach(a -> {
+
+				comboBoxArticleOrder.addItem(a.getArticle().getId() + " - "
+						+ a.getArticle().getProduct().getProductName() + " "
+						+ a.getArticle().getConditioning().getConditioningName() + " " + a.getArticle().getAmount());
+
+			});
+		}
 	}
 
 	/**

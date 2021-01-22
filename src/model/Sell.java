@@ -108,12 +108,19 @@ public class Sell {
 
 		System.out.println(sell.getIdArticle() + "provi" + sell.getIdProvider());
 
-		try {
-			(new SellDAO()).insert(sell);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		var selExist = (new SellDAO()).findByProviderArticle(sell);
+
+		if (selExist == null) {
+			try {
+				(new SellDAO()).insert(sell);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		} else {
+			JOptionPane.showMessageDialog(null, "exist");
 		}
+
 	}
 
 	public void update() {
@@ -123,7 +130,7 @@ public class Sell {
 		updatesell.setIdProvider(idProvider);
 		updatesell.setPrice(price);
 		updatesell.setUpdateDate(updateDate);
-		
+
 		try {
 			(new SellDAO()).update(updatesell);
 			JOptionPane.showMessageDialog(null, "Sell update succesfully");
@@ -132,14 +139,15 @@ public class Sell {
 			e.printStackTrace();
 		}
 	}
+
 	public void delete() {
 		var deleteSell = new Sell();
-		
+
 		deleteSell.setIdArticle(idArticle);
 		deleteSell.setIdProvider(idProvider);
 		deleteSell.setPrice(price);
 		deleteSell.setUpdateDate(updateDate);
-		
+
 		try {
 			(new SellDAO()).delete(deleteSell);
 			JOptionPane.showMessageDialog(null, "Sell deleted succesfully");
@@ -149,7 +157,6 @@ public class Sell {
 		}
 	}
 
-	
 	public Object[] toRow() {
 		Object[] sell = {
 				getIdArticle() + " - " + getArticle().getProduct().getProductName() + " "
@@ -158,15 +165,15 @@ public class Sell {
 		return sell;
 
 	}
+
 	public Object[] toRowForProvider() {
-		Object[] sell = {getIdArticle(),
-				getArticle().getProduct().getProductName() ,getArticle().getConditioning().getConditioningName(),getArticle().getWeight(),
-						getPrice() };
+		Object[] sell = { getIdArticle(), getArticle().getProduct().getProductName(),
+				getArticle().getConditioning().getConditioningName(), getArticle().getWeight(), getPrice() };
 		return sell;
-		
+
 	}
 
-	private Article getArticle() {
+	public Article getArticle() {
 		// TODO Auto-generated method stub
 		return (new ArticleDAO()).find("idArticle", this.idArticle);
 	}
