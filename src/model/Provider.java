@@ -206,8 +206,14 @@ public class Provider {
 	}
 
 	public Object[] toRow() {
+	var status = "Disponible";
 	
-		Object[] product = { getId(), getCompanyName(), getContactLastName(), getContactFirstName(), getContactPhoneNumber(),getProviderState() };
+	System.out.println(getProviderState());
+	System.out.println((getProviderState().equals("b")));
+	if(getProviderState().equals("b")) {
+		status = "Inactif";
+	}
+		Object[] product = { getId(), getCompanyName(), getContactLastName(), getContactFirstName(), getContactPhoneNumber(),status };
 		return product;
 	}
 	

@@ -78,6 +78,11 @@ public class ArticleDAO extends BaseDAO<Article> {
 			PreparedStatement find = DBConnection.get()
 					.prepareStatement("SELECT * FROM " + getTableName() + " WHERE idProduct = ? AND idConditioning =? AND amount = ?");
 
+			
+			System.out.println("up id "+article.getId());
+			System.out.println("up cond "+article.getIdConditioning());
+			System.out.println("up amont "+article.getAmount());
+			
 			find.setObject(1, article.getIdProduct());
 			find.setObject(2, article.getIdConditioning());
 			find.setObject(3, article.getAmount());

@@ -12,19 +12,30 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 
 import dao.ConditioningDAO;
+import dao.OrderDAO;
+import dao.OrderLineDAO;
 import dao.ProviderDAO;
-
+import model.Order;
+import model.OrderLine;
+import tools.Useful;
 import view.Management;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.List;
 
-
-public class HistoryPanel extends JPanel implements Activatable{
+public class HistoryPanel extends Tab {
 	private JTable tableSelectedOrder;
 	protected JComboBox comboBoxProviderHistory;
+	JComboBox comboBoxStateHistory;
+	DefaultTableModel model;
+	JTable tableOrder;
+	JTextField textFieldOrderNumberHistory;
 
 	/**
 	 * Create the panel.
@@ -33,7 +44,79 @@ public class HistoryPanel extends JPanel implements Activatable{
 
 		this.setLayout(null);
 
-		
+		refreshTab();
+
+	}
+
+	public void refreshProvider() {
+		var provider = (new ProviderDAO()).findALL();//
+		comboBoxProviderHistory.removeAllItems();
+		comboBoxProviderHistory.addItem("");
+		provider.forEach(p -> {
+
+			comboBoxProviderHistory.addItem(p.getCompanyName());
+
+		});
+	}
+
+	public void refreshOrdersTable() {
+//		if(comboBoxStateHistory.getSelectedIndex()==0) {
+		var provider = (new ProviderDAO()).find("compagnyName", comboBoxProviderHistory.getSelectedItem().toString());
+		List<Order> orders = (new OrderDAO()).findALLBy("state", "a");//
+
+		model.setRowCount(0);
+		orders.forEach(s -> {
+			Object[] row1 = null;
+			var t = false;
+			if (provider != null) {
+				if (s.getIdProvider() == provider.getId()) {
+
+					if (comboBoxStateHistory.getSelectedIndex() != 0) {
+
+						if (s.getDisplayState().equals(comboBoxStateHistory.getSelectedItem().toString())) {
+							row1 = s.toRow();
+//							System.out.println("state "+s.getDisplayState());
+//							model.addRow(row1);
+						}
+					} else {
+						row1 = s.toRow();
+
+						// Ajout d'une rang�e
+
+					}
+
+				}
+			} else {
+//				row1 = s.toRow();
+
+				if (comboBoxStateHistory.getSelectedIndex() != 0) {
+
+					if (s.getDisplayState().equals(comboBoxStateHistory.getSelectedItem().toString())) {
+						row1 = s.toRow();
+//						System.out.println("state "+s.getDisplayState());
+//						model.addRow(row1);
+					}
+				} else {
+					row1 = s.toRow();
+
+					// Ajout d'une rang�e
+
+				}
+			}
+			if (row1 != null) {
+				model.addRow(row1);
+			}
+
+		});
+
+//			Useful.displayOrder(ordes, model,provider.getId());
+//		}
+	}
+
+	@Override
+	public void refreshTab() {
+		super.refreshTab();
+
 		JLabel lblTitleHistory = new JLabel("Historique des commandes");
 		lblTitleHistory.setHorizontalAlignment(SwingConstants.CENTER);
 		lblTitleHistory.setFont(new Font("Tahoma", Font.PLAIN, 24));
@@ -52,7 +135,7 @@ public class HistoryPanel extends JPanel implements Activatable{
 		this.add(comboBoxProviderHistory);
 		refreshProvider();
 
-		JComboBox comboBoxStateHistory = new JComboBox();
+		comboBoxStateHistory = new JComboBox();
 		comboBoxStateHistory.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		comboBoxStateHistory.setBounds(520, 100, 150, 40);
 		DefaultComboBoxModel<String> stateHistoryModel = new DefaultComboBoxModel<String>(
@@ -72,16 +155,8 @@ public class HistoryPanel extends JPanel implements Activatable{
 		lblOrderNumberHistory.setBounds(270, 70, 200, 30);
 		this.add(lblOrderNumberHistory);
 
-		JTextField textFieldOrderNumberHistory = new JTextField();
-		textFieldOrderNumberHistory.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyTyped(KeyEvent e) {
-				char testChar = e.getKeyChar();
-				if (!(Character.isDigit(testChar))) {
-					e.consume();
-				}
-			}
-		});
+		textFieldOrderNumberHistory = new JTextField();
+
 		textFieldOrderNumberHistory.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		textFieldOrderNumberHistory.setBounds(270, 100, 200, 40);
 		this.add(textFieldOrderNumberHistory);
@@ -99,7 +174,7 @@ public class HistoryPanel extends JPanel implements Activatable{
 		scrollPaneOrder.setBounds(20, 170, 650, 550);
 		this.add(scrollPaneOrder);
 
-		JTable tableOrder = new JTable() {
+		tableOrder = new JTable() {
 			public boolean isCellEditable(int row, int column) {
 				return false;
 			}
@@ -107,8 +182,15 @@ public class HistoryPanel extends JPanel implements Activatable{
 		tableOrder.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		tableOrder.setFillsViewportHeight(true);
 
-		DefaultTableModel model = new DefaultTableModel(new Object[][] {,}, new String[] { "N° commande",
-				"Fournisseur", "Montant €", "Date commande", "Date livraison", "Statut" });
+		model = (DefaultTableModel) tableOrder.getModel();
+		model.addColumn("N° commande");
+		model.addColumn("Fournisseur");
+		model.addColumn("Montant €");
+		model.addColumn("Date commande");
+		model.addColumn("Date livraison");
+		model.addColumn("Statut");
+//				new DefaultTableModel(new Object[][] {,}, new String[] { "", "", "",
+//				"", "", "" });
 
 		tableOrder.setModel(model);
 		tableOrder.getColumnModel().getColumn(0).setResizable(false);
@@ -118,19 +200,19 @@ public class HistoryPanel extends JPanel implements Activatable{
 		tableOrder.getColumnModel().getColumn(4).setResizable(false);
 		tableOrder.getColumnModel().getColumn(5).setResizable(false);
 		scrollPaneOrder.setViewportView(tableOrder);
-		
+
 		JScrollPane scrollPaneSelectedOrder = new JScrollPane();
 		scrollPaneSelectedOrder.setBounds(800, 100, 550, 500);
 		add(scrollPaneSelectedOrder);
-		
+
 		tableSelectedOrder = new JTable() {
 			public boolean isCellEditable(int row, int column) {
 				return false;
 			}
 		};
 		tableSelectedOrder.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		DefaultTableModel modelSelected = new DefaultTableModel(new Object[][] {,}, new String[] { "Identifiant",
-				"Article", "Qté commandée", "Qté reçue", "Prix €" });
+		DefaultTableModel modelSelected = new DefaultTableModel(new Object[][] {,},
+				new String[] { "Identifiant", "Article", "Qté commandée", "Qté reçue", "Prix €" });
 
 		tableSelectedOrder.setModel(modelSelected);
 		tableSelectedOrder.getColumnModel().getColumn(0).setResizable(false);
@@ -139,23 +221,40 @@ public class HistoryPanel extends JPanel implements Activatable{
 		tableSelectedOrder.getColumnModel().getColumn(3).setResizable(false);
 		tableSelectedOrder.getColumnModel().getColumn(4).setResizable(false);
 		scrollPaneSelectedOrder.setViewportView(tableSelectedOrder);
-		
+
+		refreshOrdersTable();
+
+		setUpListener();
+		Useful.sort(model, tableOrder);
 	}
-	
-	public void refreshProvider() {
-		var provider = (new ProviderDAO()).findALL();//
-		comboBoxProviderHistory.removeAllItems();
-		provider.forEach(p -> {
 
-			comboBoxProviderHistory.addItem(p.getCompanyName());
+	public void setUpListener() {
 
+		comboBoxProviderHistory.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+				refreshOrdersTable();
+			}
 		});
-	}
 
-	@Override
-	public void onActivate() {
-		// TODO Auto-generated method stub
-//		HistoryPanel();
-		
+		comboBoxStateHistory.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+				refreshOrdersTable();
+			}
+		});
+
+		textFieldOrderNumberHistory.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				char testChar = e.getKeyChar();
+				if (!(Character.isDigit(testChar))) {
+					e.consume();
+				}
+			}
+		});
+
 	}
 }

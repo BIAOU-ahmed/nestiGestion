@@ -15,8 +15,15 @@ import model.Administrator;
 import tools.AppSettings;
 import view.Management;
 
-public class ProfilePanel extends JPanel {
+public class ProfilePanel extends Tab{
 
+	JButton btnCancelUsernameProfile;
+	JButton btnAdminProfile;
+	JButton btnCancelPasswordProfile;
+	JButton btnEditUsernameProfile;
+	JButton btnEditPasswordProfile;
+	JTextField textFieldUsernameProfile;
+	
 	/**
 	 * Create the panel.
 	 */
@@ -28,7 +35,17 @@ public class ProfilePanel extends JPanel {
 		// JPanel this = new JPanel();
 		// tabbedPane.addTab("Profil", null, this, null);
 		this.setLayout(null);
+		refreshTab();
 
+		
+
+		
+		
+	}
+
+	@Override
+	public void refreshTab() {
+		super.refreshTab();
 		JLabel lblTitleProfile = new JLabel("Profil");
 		lblTitleProfile.setFont(new Font("Tahoma", Font.PLAIN, 24));
 		lblTitleProfile.setBounds(681, 96, 59, 29);
@@ -49,7 +66,7 @@ public class ProfilePanel extends JPanel {
 		lblDateProfile.setBounds(622, 609, 159, 14);
 		this.add(lblDateProfile);
 
-		JTextField textFieldUsernameProfile = new JTextField();
+		textFieldUsernameProfile = new JTextField();
 		textFieldUsernameProfile.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		textFieldUsernameProfile.setBounds(395, 233, 280, 36);
 		this.add(textFieldUsernameProfile);
@@ -67,11 +84,43 @@ public class ProfilePanel extends JPanel {
 		// Decryptage
 		passwordField.setText(admin.getPassword());
 
-		JButton btnAdminProfile = new JButton("Gestion Admin");
+		btnAdminProfile = new JButton("Gestion Admin");
 		btnAdminProfile.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		btnAdminProfile.setBounds(622, 508, 148, 36);
 		this.add(btnAdminProfile);
 		btnAdminProfile.setVisible(false);
+		
+	
+		
+
+		btnCancelUsernameProfile = new JButton("Annuler");
+		btnCancelUsernameProfile.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		btnCancelUsernameProfile.setBounds(897, 233, 148, 36);
+		this.add(btnCancelUsernameProfile);
+		btnCancelUsernameProfile.setVisible(false);
+		
+
+		btnCancelPasswordProfile = new JButton("Annuler");
+		btnCancelPasswordProfile.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		btnCancelPasswordProfile.setBounds(897, 392, 148, 36);
+		this.add(btnCancelPasswordProfile);
+		btnCancelPasswordProfile.setVisible(false);
+
+		btnEditUsernameProfile = new JButton("Modifier");
+		btnEditUsernameProfile.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		btnEditUsernameProfile.setBounds(726, 233, 148, 36);
+		this.add(btnEditUsernameProfile);
+		
+
+		btnEditPasswordProfile = new JButton("Modifier");
+		btnEditPasswordProfile.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		btnEditPasswordProfile.setBounds(726, 392, 148, 36);
+		this.add(btnEditPasswordProfile);
+		setUpListener();
+	}
+
+	
+	public void setUpListener(){
 		
 		btnAdminProfile.addMouseListener(new MouseAdapter() {
 
@@ -82,31 +131,6 @@ public class ProfilePanel extends JPanel {
 			}
 
 		});
-		
-
-		JButton btnCancelUsernameProfile = new JButton("Annuler");
-		btnCancelUsernameProfile.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		btnCancelUsernameProfile.setBounds(897, 233, 148, 36);
-		this.add(btnCancelUsernameProfile);
-		btnCancelUsernameProfile.setVisible(false);
-		
-
-		JButton btnCancelPasswordProfile = new JButton("Annuler");
-		btnCancelPasswordProfile.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		btnCancelPasswordProfile.setBounds(897, 392, 148, 36);
-		this.add(btnCancelPasswordProfile);
-		btnCancelPasswordProfile.setVisible(false);
-
-		JButton btnEditUsernameProfile = new JButton("Modifier");
-		btnEditUsernameProfile.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		btnEditUsernameProfile.setBounds(726, 233, 148, 36);
-		this.add(btnEditUsernameProfile);
-		
-
-		JButton btnEditPasswordProfile = new JButton("Modifier");
-		btnEditPasswordProfile.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		btnEditPasswordProfile.setBounds(726, 392, 148, 36);
-		this.add(btnEditPasswordProfile);
 		
 		btnEditUsernameProfile.addMouseListener(new MouseAdapter() {
 
@@ -174,7 +198,5 @@ public class ProfilePanel extends JPanel {
 
 		});
 		
-		
 	}
-
 }

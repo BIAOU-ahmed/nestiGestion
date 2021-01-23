@@ -158,10 +158,14 @@ public class Article {
 		article.setIdAdministrator(getIdAdministrator());
 		article.setIdProduct(getIdProduct());
 		article.setIdConditioning(getIdConditioning());
+		System.out.println("up "+article.getId());
+		System.out.println("up "+article.getIdConditioning());
+		System.out.println("up "+article.getAmount());
 		var art = (new ArticleDAO()).find(article);
-		System.out.println("exist id "+ art.getId() );
-		System.out.println("actual id "+ article.getId() );
-		if (art != null && art.getId() == article.getId()) {
+//		System.out.println("up "+art.getId());
+//		System.out.println("exist id "+ art.getId() );
+//		System.out.println("actual id "+ article.getId() );
+		if (art == null || art.getId() == article.getId()) {
 			try {
 				(new ArticleDAO()).update(article);
 			} catch (SQLException e) {
