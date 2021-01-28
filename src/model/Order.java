@@ -1,6 +1,5 @@
 package model;
 
-
 import java.sql.Date;
 import java.sql.SQLException;
 import java.util.*;
@@ -8,51 +7,62 @@ import java.util.*;
 import dao.AdministratorDAO;
 import dao.ConditioningDAO;
 import dao.OrderDAO;
+import dao.OrderLineDAO;
 import dao.ProviderDAO;
+import dao.SellDAO;
 
 /**
  * 
  */
 public class Order {
 
-    /**
-     * Default constructor
-     */
-	
+	/**
+	 * Default constructor
+	 */
+
 	private int idAdministrator;
 	private int idProvider;
-	
+
 	/**
-     * 
-     */
-    public int id;
+	 * 
+	 */
+	public int id;
 
-    /**
-     * 
-     */
-    public Date orderDate;
+	/**
+	 * 
+	 */
+	public Date orderDate;
 
-    /**
-     * 
-     */
-    public String state;
+	/**
+	 * 
+	 */
+	public String state;
 
-
-
-	
-    public Order() {
-    	java.util.Date sqlDate = new java.util.Date();
+	public Order() {
+		java.util.Date sqlDate = new java.util.Date();
 //		Date createDate = new Date(sqlDate.getTime());
-    	setOrderDate(new Date(sqlDate.getTime()));
-    }
+		setOrderDate(new Date(sqlDate.getTime()));
+	}
 
-    
-    public void setProviderFromName(String providerName) {
+	Double price = 0.0;
+
+	public Double getPrice() {
+		var allOrderLine = (new OrderLineDAO()).findALLBy("idOrders", getId());
+
+		allOrderLine.forEach(OrderLine -> {
+
+			price += OrderLine.getPrice();
+		});
+
+		return price;
+	}
+
+	public void setProviderFromName(String providerName) {
 		var provider = (new ProviderDAO()).find("compagnyName", providerName);
 		this.idProvider = provider.getId();
 	}
-    
-    public int getIdAdministrator() {
+
+	public int getIdAdministrator() {
 		return idAdministrator;
 	}
 
@@ -64,7 +74,7 @@ public class Order {
 
 		return (new ProviderDAO()).find("idProvider", this.idProvider);
 	}
-	
+
 	public int getIdProvider() {
 		return idProvider;
 	}
@@ -93,6 +103,27 @@ public class Order {
 		return state;
 	}
 
+	boolean isAllDelevery = true;
+	String displayState = "En cours";
+
+	public String getDisplayState() {
+
+		var allOrderLine = (new OrderLineDAO()).findALLBy("idOrders", getId());
+
+		allOrderLine.forEach(OrderLine -> {
+			if (OrderLine.getDeliveryDate() == null) {
+				isAllDelevery = false;
+			}
+
+		});
+		if (isAllDelevery) {
+			displayState = "Reçue";
+		}
+		
+		System.out.println("state in order"+displayState);
+		return displayState;
+	}
+
 	public void setState(String state) {
 		this.state = state;
 	}
@@ -103,7 +134,7 @@ public class Order {
 		order.setState(getState());
 		order.setIdProvider(getIdProvider());
 		order.setIdAdministrator(getIdAdministrator());
-	
+
 		try {
 			(new OrderDAO()).insert(order);
 			cretedOrder.setId(order.getId());
@@ -113,15 +144,11 @@ public class Order {
 		}
 	}
 
+	public Object[] toRow() {
 
-
-
-    
-    public Object[] toRow() {
-    	
-    	Object[] order = { "numéro de commande", "fournisseur", "montant", "date commande", "date livraison", "statut"};
-    	return order;
-    }
-
+		Object[] order = { getId(), getProvider().getCompanyName(), getPrice(), getOrderDate(), " date livr ",
+				getDisplayState() };
+		return order;
+	}
 
 }

@@ -1,4 +1,5 @@
 /bin/
+/src/test/
 Config.java
 .settings/
 .classpath

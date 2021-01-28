@@ -15,14 +15,25 @@ import view.Management;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class UnitAndCondPanel extends JPanel {
-
+public class UnitAndCondPanel extends Tab {
+	JButton btnAddUnit;
+	JButton btnModifyUnit;
+	JButton btnModifyCond;
+	JButton btnAddCond;
+	Management mainContent;
+	
 	/**
 	 * Create the panel.
 	 */
 	public UnitAndCondPanel(Management c) {
-
+		mainContent=c;
 		setLayout(null);
+		refreshTab();
+
+	}
+
+	@Override
+	public void refreshTab() {
 
 		JLabel lblTitleUnit = new JLabel("Unit\u00E9 de mesure");
 		lblTitleUnit.setFont(new Font("Tahoma", Font.PLAIN, 24));
@@ -72,7 +83,7 @@ public class UnitAndCondPanel extends JPanel {
 			}
 		};
 		scrollPaneUnit.setViewportView(tableUnit);
-		
+
 		DefaultTableModel unitModel = new DefaultTableModel(new Object[][] {,},
 				new String[] { "Identifiant", "Unite" });
 
@@ -91,7 +102,7 @@ public class UnitAndCondPanel extends JPanel {
 			}
 		};
 		scrollPaneCond.setViewportView(tableCond);
-		
+
 		DefaultTableModel condModel = new DefaultTableModel(new Object[][] {,},
 				new String[] { "Identifiant", "Conditionnement" });
 
@@ -100,26 +111,23 @@ public class UnitAndCondPanel extends JPanel {
 		tableCond.getColumnModel().getColumn(1).setResizable(false);
 		scrollPaneCond.setViewportView(tableCond);
 
-		JButton btnAddUnit = new JButton("Cr\u00E9er");
-		btnAddUnit.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
+		btnAddUnit = new JButton("Cr\u00E9er");
+
 		btnAddUnit.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		btnAddUnit.setBounds(150, 250, 150, 30);
 		this.add(btnAddUnit);
 
-		JButton btnModifyUnit = new JButton("Modifier");
+		btnModifyUnit = new JButton("Modifier");
 		btnModifyUnit.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		btnModifyUnit.setBounds(400, 250, 150, 30);
 		this.add(btnModifyUnit);
 
-		JButton btnAddCond = new JButton("Cr\u00E9er");
+		btnAddCond = new JButton("Cr\u00E9er");
 		btnAddCond.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		btnAddCond.setBounds(855, 250, 150, 30);
 		this.add(btnAddCond);
 
-		JButton btnModifyCond = new JButton("Modifier");
+		btnModifyCond = new JButton("Modifier");
 		btnModifyCond.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		btnModifyCond.setBounds(1105, 250, 150, 30);
 		this.add(btnModifyCond);
@@ -135,30 +143,26 @@ public class UnitAndCondPanel extends JPanel {
 		lblCondTable.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		lblCondTable.setBounds(905, 350, 300, 50);
 		this.add(lblCondTable);
+		setUpListener();
+	}
+
+	public void setUpListener() {
+
+		btnAddUnit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
 
 		btnAddCond.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				
+
 			}
 		});
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
+
 		btnAddUnit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+
 			}
 		});
 	}
-
 }

@@ -10,6 +10,7 @@ import java.util.List;
 
 import model.Article;
 import model.Order;
+import model.OrderLine;
 import tools.DBConnection;
 
 /**
@@ -100,4 +101,21 @@ public class OrderDAO extends BaseDAO<Order>{
 //		return order;
 
 	}
+	
+	public  void update (Order order) throws SQLException {
+        String sql = "UPDATE " + getTableName()
+			+ " SET state = ? "
+			+ "WHERE idOrders = ?;";
+
+        var updateUser = DBConnection.get().prepareStatement(sql);
+        System.out.println("id "+order.getId());
+        System.out.println("state "+order.getState());
+       
+        updateUser.setInt(2, order.getId());
+        updateUser.setString(1, order.getState());
+       
+        updateUser.executeUpdate();
+
+    }
+	
 }

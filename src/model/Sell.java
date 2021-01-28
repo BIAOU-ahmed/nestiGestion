@@ -9,6 +9,7 @@ import javax.swing.JOptionPane;
 import dao.AdministratorDAO;
 import dao.ArticleDAO;
 import dao.ConditioningDAO;
+import dao.OrderLineDAO;
 import dao.ProviderDAO;
 import dao.SellDAO;
 
@@ -167,15 +168,38 @@ public class Sell {
 	}
 
 	public Object[] toRowForProvider() {
-		Object[] sell = { getIdArticle(), getArticle().getProduct().getProductName(),
-				getArticle().getConditioning().getConditioningName(), getArticle().getWeight(), getPrice() };
+		Object[] sell = { getIdArticle(), getArticle().getConditioning().getConditioningName()+ " de "+ getArticle().getAmount()+" "+ getArticle().getProduct().getProductName(),
+				 getArticle().getWeight(), getPrice() };
 		return sell;
 
 	}
 
 	public Article getArticle() {
-		// TODO Auto-generated method stub
+		
 		return (new ArticleDAO()).find("idArticle", this.idArticle);
 	}
+	
+	public Provider getProvider() {
+		
+		return (new ProviderDAO()).find(" 	idProvider", this.idProvider);
+	}
 
+	
+	
+	public Object[] toRowForArticle() {
+		
+		int amounReceive = 0;
+		int amount = 0;
+		try {
+			amount = (new OrderLineDAO()).getAmountOrderred(getIdArticle(),getIdProvider());
+			amounReceive = (new OrderLineDAO()).getAmountReceive(getIdArticle(),getIdProvider());
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	
+		Object[] product = { getProvider().getCompanyName(),amount, amounReceive,"ee", getPrice()};
+		return product;
+	}
+	
 }

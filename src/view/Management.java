@@ -9,8 +9,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JTabbedPane;
 import java.awt.Dimension;
-
-import component.Activatable;
+import component.Tab;
 import component.ArticlePanel;
 import component.DeliveryPanel;
 import component.HistoryPanel;
@@ -161,25 +160,28 @@ public class Management extends JFrame {
 		panelProfile = new ProfilePanel(this);
 		tabbedPane.addTab("Profil", null, panelProfile, null);
 		var me = this;
+		
 		tabbedPane.addChangeListener((e) -> {
-			var component = tabbedPane.getSelectedComponent();
-			var i = tabbedPane.getSelectedIndex();
-			var title = tabbedPane.getTitleAt(i);
-			try {
-				var newComponent = component.getClass().getConstructor(me.getClass()).newInstance(me);
-				
-//				tabbedPane.remove(i);
-				tabbedPane.setComponentAt(i, newComponent);
-				tabbedPane.setTitleAt(i, title);
-				
-				
-			} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
-					| InvocationTargetException | NoSuchMethodException | SecurityException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
+			var component = (Tab) tabbedPane.getSelectedComponent();
+			component.refreshTab();
+			
+//			var i = tabbedPane.getSelectedIndex();
+//			var title = tabbedPane.getTitleAt(i);
+//			try {
+//				var newComponent = component.getClass().getConstructor(me.getClass()).newInstance(me);
+//				
+////				tabbedPane.remove(i);
+//				tabbedPane.setComponentAt(i, newComponent);
+//				tabbedPane.setTitleAt(i, title);
+//				
+//				
+//			} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
+//					| InvocationTargetException | NoSuchMethodException | SecurityException e1) {
+//				// TODO Auto-generated catch block
+//				e1.printStackTrace();
+//			}
 
-			System.out.println(component.getClass());
+//			System.out.println(component.getClass());
 
 //			if(tabbedPane.getSelectedComponent().equals(panelOrder)) {
 //				System.out.println("test");
@@ -188,4 +190,6 @@ public class Management extends JFrame {
 		});
 
 	}
+	
+	
 }
