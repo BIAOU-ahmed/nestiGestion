@@ -25,6 +25,7 @@ import dao.OrderDAO;
 import dao.OrderLineDAO;
 import dao.ProviderDAO;
 import dao.SellDAO;
+import listener.OrderNumberListener;
 import model.Order;
 import model.OrderLine;
 import model.Provider;
@@ -37,12 +38,25 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.InputMethodListener;
+import java.awt.event.InputMethodEvent;
+import java.awt.event.ItemListener;
+import java.awt.event.ItemEvent;
 
-public class OrderPanel extends JPanel implements Activatable {
+public class OrderPanel extends Tab {
 
 	Order order = null;
 	JComboBox<String> comboBoxProviderOrder;
 	JComboBox<String> comboBoxArticleOrder;
+	JComboBox<String> comboBoxOrderNumberOrder;
+	JTextField textFieldTotalPrice;
+	DefaultTableModel modelOrder;
+	JTextField textFieldQtyOrder;
+	JButton btnAddOrder;
+	JTable tableOrder;
+	JButton btnOrderOrder;
+	JButton btnUpdateOrder;
+	JButton btnDeleteOrder;
 
 	/**
 	 * Create the panel.
@@ -50,6 +64,101 @@ public class OrderPanel extends JPanel implements Activatable {
 	public OrderPanel(Management c) {
 
 		this.setLayout(null);
+		refreshTab();
+		
+
+
+//		comboBoxOrderNumberOrder.addItemListener(new ItemListener() {
+//			public void itemStateChanged(ItemEvent e) {
+//				if (e.getStateChange() == ItemEvent.SELECTED) {
+//					System.out.println("IN");
+//					if (!comboBoxOrderNumberOrder.getSelectedItem().toString().isEmpty()) {
+//						var order = (new OrderDAO()).find("idOrders",
+//								comboBoxOrderNumberOrder.getSelectedItem().toString());
+//
+//						comboBoxProviderOrder.setSelectedItem(order.getProvider().getCompanyName());
+//
+//					} else {
+//
+//						comboBoxProviderOrder.setSelectedIndex(0);
+//
+//					}
+//				}
+//				refreshArticle();
+//			}
+//		});
+//		refreshTable();
+
+		Useful.sort(modelOrder, tableOrder);
+	}
+
+	public void refreshProvider() {
+		var provider = (new ProviderDAO()).findALLBy("providerState", "a");//
+		comboBoxProviderOrder.removeAllItems();
+		comboBoxProviderOrder.addItem("");
+		provider.forEach(p -> {
+
+			comboBoxProviderOrder.addItem(p.getCompanyName());
+
+		});
+	}
+
+	public void refreshArticle() {
+		if (!comboBoxProviderOrder.getSelectedItem().toString().isEmpty()) {
+			var provider = (new ProviderDAO()).find("compagnyName", comboBoxProviderOrder.getSelectedItem().toString());
+
+			var article = (new SellDAO()).findALLBy("idProvider", provider.getId());//
+
+			comboBoxArticleOrder.removeAllItems();
+
+			article.forEach(a -> {
+
+				comboBoxArticleOrder.addItem(
+						a.getArticle().getId() + " - " + a.getArticle().getConditioning().getConditioningName() + " de "
+								+ a.getArticle().getAmount() + " " + a.getArticle().getProduct().getProductName());
+
+			});
+		} else {
+			comboBoxArticleOrder.removeAllItems();
+		}
+		textFieldQtyOrder.setText("");
+	}
+
+	public void refreshTable() {
+//		JComboBox<String> comboBoxArticleOrder, JComboBox<String> comboBoxOrderNumberOrder
+		if (comboBoxOrderNumberOrder.getSelectedItem() != null) {
+			if (!comboBoxOrderNumberOrder.getSelectedItem().toString().isEmpty()) {
+//				System.out.println("refresh table");
+				List<OrderLine> updateLine = (new OrderLineDAO()).findALLBy("idOrders",
+						Integer.parseInt(comboBoxOrderNumberOrder.getSelectedItem().toString()));//
+				Useful.displayOrderLine(updateLine, modelOrder);
+				updateTotalPrice();
+			}
+		} else {
+			modelOrder.setRowCount(0);
+			textFieldTotalPrice.setText("");
+		}
+
+	}
+
+	/**
+	 * @return the comboBoxProviderOrder
+	 */
+	public JComboBox getComboBoxProviderOrder() {
+		return comboBoxProviderOrder;
+	}
+
+	/**
+	 * @return the comboBoxArticleOrder
+	 */
+	public JComboBox getComboBoxArticleOrder() {
+		return comboBoxArticleOrder;
+	}
+
+	@Override
+	public void refreshTab() {
+		// TODO Auto-generated method stub
+		super.refreshTab();
 
 		var orderList = (new OrderDAO()).getActiveOrders();
 
@@ -93,7 +202,8 @@ public class OrderPanel extends JPanel implements Activatable {
 		lblTitle2Order.setBounds(100, 320, 300, 40);
 		this.add(lblTitle2Order);
 
-		var comboBoxOrderNumberOrder = new JComboBox<String>();
+		comboBoxOrderNumberOrder = new JComboBox<String>();
+
 		comboBoxOrderNumberOrder.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		comboBoxOrderNumberOrder.setBounds(900, 30, 250, 40);
 
@@ -118,9 +228,9 @@ public class OrderPanel extends JPanel implements Activatable {
 		comboBoxArticleOrder.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		comboBoxArticleOrder.setBounds(50, 450, 250, 40);
 		this.add(comboBoxArticleOrder);
-		refreshArticle();
+//		refreshArticle();
 
-		JTextField textFieldQtyOrder = new JTextField();
+		textFieldQtyOrder = new JTextField();
 		textFieldQtyOrder.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent e) {
@@ -140,14 +250,14 @@ public class OrderPanel extends JPanel implements Activatable {
 		scrollPaneOrder.setBounds(500, 90, 850, 550);
 		this.add(scrollPaneOrder);
 
-		JTable tableOrder = new JTable() {
+		tableOrder = new JTable() {
 			public boolean isCellEditable(int row, int column) {
 				return false;
 			}
 		};
 		scrollPaneOrder.setViewportView(tableOrder);
 
-		DefaultTableModel modelOrder = new DefaultTableModel(new Object[][] {,},
+		modelOrder = new DefaultTableModel(new Object[][] {,},
 				new String[] { "Identifiant", "Article", "Quantite Commande", "Prix €" });
 
 		tableOrder.setModel(modelOrder);
@@ -157,12 +267,13 @@ public class OrderPanel extends JPanel implements Activatable {
 		tableOrder.getColumnModel().getColumn(3).setResizable(false);
 		scrollPaneOrder.setViewportView(tableOrder);
 
-		JButton btnOrderOrder = new JButton("Commander");
+		btnOrderOrder = new JButton("Commander");
+
 		btnOrderOrder.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		btnOrderOrder.setBounds(1200, 670, 150, 40);
 		this.add(btnOrderOrder);
 
-		JTextField textFieldTotalPrice = new JTextField();
+		textFieldTotalPrice = new JTextField();
 		textFieldTotalPrice.setHorizontalAlignment(SwingConstants.CENTER);
 		textFieldTotalPrice.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		textFieldTotalPrice.setBounds(1050, 670, 100, 40);
@@ -176,8 +287,56 @@ public class OrderPanel extends JPanel implements Activatable {
 		lblTotalPriceOrder.setBounds(900, 670, 150, 40);
 		this.add(lblTotalPriceOrder);
 
-		JButton btnAddOrder = new JButton("Ajouter");
-		btnAddOrder.addMouseListener(new MouseAdapter() {
+		btnAddOrder = new JButton("Ajouter");
+//		btnAddOrder.addMouseListener(new MouseAdapter() {
+//			@Override
+//			public void mouseClicked(MouseEvent e) {
+//				var qty = textFieldQtyOrder.getText().isEmpty();
+//
+//				if (qty == false) {
+//					textFieldQtyOrder.setText("");
+//				} else {
+//					JOptionPane.showMessageDialog(null, "Tous les champs ne sont pas remplis.");
+//				}
+//			}
+//		});
+		btnAddOrder.setFont(new Font("Tahoma", Font.PLAIN, 16));
+
+		btnAddOrder.setBounds(35, 600, 120, 40);
+		this.add(btnAddOrder);
+
+		btnUpdateOrder = new JButton("Modifier");
+
+//		btnUpdateOrder.addMouseListener(new MouseAdapter() {
+//			@Override
+//			public void mouseClicked(MouseEvent e) {
+//				var qty = textFieldQtyOrder.getText().isEmpty();
+//
+//				if (qty == false) {
+//					
+//					textFieldQtyOrder.setText("");
+//				} else {
+//					JOptionPane.showMessageDialog(null, "Tous les champs ne sont pas remplis.");
+//				}
+//			}
+//		});
+		btnUpdateOrder.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		btnUpdateOrder.setBounds(190, 600, 120, 40);
+		this.add(btnUpdateOrder);
+
+		btnDeleteOrder = new JButton("Supprimer");
+
+		btnDeleteOrder.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		btnDeleteOrder.setBounds(345, 600, 120, 40);
+		this.add(btnDeleteOrder);
+
+		setUpListener();
+	}
+
+	
+	public void setUpListener() {
+		
+		btnDeleteOrder.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				var qty = textFieldQtyOrder.getText().isEmpty();
@@ -189,10 +348,61 @@ public class OrderPanel extends JPanel implements Activatable {
 				}
 			}
 		});
-		btnAddOrder.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		btnAddOrder.addActionListener(new ActionListener() {
 
-			public void actionPerformed(ActionEvent arg0) {
+		btnOrderOrder.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (comboBoxOrderNumberOrder.getSelectedIndex() != 0) {
+					var order = new Order();
+					order.setId(Integer.parseInt(comboBoxOrderNumberOrder.getSelectedItem().toString()));
+					order.setState("a");
+
+					try {
+						(new OrderDAO()).update(order);
+						refreshProvider();
+
+					} catch (SQLException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+
+				}
+			}
+		});
+
+		btnUpdateOrder.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+				if (!tableOrder.getSelectionModel().isSelectionEmpty()) {
+					var qty = textFieldQtyOrder.getText().isEmpty();
+
+					if (qty == false) {
+
+						int row = tableOrder.getSelectedRow();
+						var orderLine = new OrderLine();
+						orderLine.setIdArticle(
+								Integer.parseInt(Integer.toString((Integer) tableOrder.getValueAt(row, 0))));
+						orderLine.setIdOrders(Integer.parseInt(comboBoxOrderNumberOrder.getSelectedItem().toString()));
+						orderLine.setAmount(Integer.parseInt(textFieldQtyOrder.getText()));
+						System.out.println("to update order line");
+						orderLine.update();
+
+						textFieldQtyOrder.setText("");
+						refreshTable();
+					} else {
+						JOptionPane.showMessageDialog(null, "Tous les champs ne sont pas remplis.");
+					}
+
+				} else {
+					JOptionPane.showMessageDialog(null, "select.");
+				}
+			}
+		});
+
+		btnAddOrder.addActionListener(arg0 -> {
+
+			var qty = textFieldQtyOrder.getText().isEmpty();
+
+			if (qty == false) {
 
 				order = new Order();
 
@@ -209,10 +419,10 @@ public class OrderPanel extends JPanel implements Activatable {
 				order.setState("w");
 				var article = comboBoxArticleOrder.getSelectedItem().toString().split(" - ");
 
-//				var ordDAO = new OrderDAO();
+//					var ordDAO = new OrderDAO();
 
 				if (comboBoxOrderNumberOrder.getSelectedItem().toString().isEmpty()) {
-//						ordDAO.insert(order);
+//							ordDAO.insert(order);
 					admin.createOrder(order);
 					var orderLis = (new OrderDAO()).getActiveOrders();
 
@@ -235,64 +445,40 @@ public class OrderPanel extends JPanel implements Activatable {
 				orderLine.setAmount(Integer.parseInt(textFieldQtyOrder.getText()));
 				orderLine.create();
 
-				List<OrderLine> updateLine = (new OrderLineDAO()).findALLBy("idOrders",
-						Integer.parseInt(comboBoxOrderNumberOrder.getSelectedItem().toString()));//
-				Useful.displayOrderLine(updateLine, modelOrder);
+//					List<OrderLine> updateLine = (new OrderLineDAO()).findALLBy("idOrders",
+//							Integer.parseInt(comboBoxOrderNumberOrder.getSelectedItem().toString()));//
+//					Useful.displayOrderLine(updateLine, modelOrder);
+				refreshTable();
+				textFieldQtyOrder.setText("");
+			} else {
+				JOptionPane.showMessageDialog(null, "Tous les champs ne sont pas remplis.");
 			}
+
 		});
-		btnAddOrder.setBounds(35, 600, 120, 40);
-		this.add(btnAddOrder);
 
-		JButton btnUpdateOrder = new JButton("Modifier");
-		btnUpdateOrder.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				var qty = textFieldQtyOrder.getText().isEmpty();
+		comboBoxProviderOrder.addActionListener(e -> {
+			if (comboBoxProviderOrder.getSelectedItem() != null) {
 
-				if (qty == false) {
-					textFieldQtyOrder.setText("");
-				} else {
-					JOptionPane.showMessageDialog(null, "Tous les champs ne sont pas remplis.");
-				}
-			}
-		});
-		btnUpdateOrder.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		btnUpdateOrder.setBounds(190, 600, 120, 40);
-		this.add(btnUpdateOrder);
-
-		JButton btnDeleteOrder = new JButton("Supprimer");
-		btnDeleteOrder.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				var qty = textFieldQtyOrder.getText().isEmpty();
-
-				if (qty == false) {
-					textFieldQtyOrder.setText("");
-				} else {
-					JOptionPane.showMessageDialog(null, "Tous les champs ne sont pas remplis.");
-				}
-			}
-		});
-		btnDeleteOrder.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		btnDeleteOrder.setBounds(345, 600, 120, 40);
-		this.add(btnDeleteOrder);
-
-		comboBoxProviderOrder.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
 				if (!comboBoxProviderOrder.getSelectedItem().toString().isEmpty()) {
 					var orderLis = (new OrderDAO()).getActiveOrders();
 
+					var provider = (new ProviderDAO()).find("compagnyName",
+							comboBoxProviderOrder.getSelectedItem().toString());
+					System.out.println("test " + comboBoxProviderOrder.getSelectedItem().toString());
+					var t = comboBoxOrderNumberOrder.getSelectedItem().toString();
 					comboBoxOrderNumberOrder.removeAllItems();
 					comboBoxOrderNumberOrder.addItem("");
+
 					orderLis.forEach(o -> {
-						var provider = (new ProviderDAO()).find("compagnyName",
-								comboBoxProviderOrder.getSelectedItem().toString());
+
 						if (o.getIdProvider() == provider.getId()) {
 							comboBoxOrderNumberOrder.addItem(Integer.toString(o.getId()));
 						}
 
 					});
+//						textFieldQtyOrder.setText("");
+					comboBoxOrderNumberOrder.setSelectedItem(t);
+
 				} else {
 
 					var orderLis = (new OrderDAO()).getActiveOrders();
@@ -305,80 +491,76 @@ public class OrderPanel extends JPanel implements Activatable {
 
 				}
 				refreshArticle();
-
 			}
+
 		});
 
-		comboBoxOrderNumberOrder.addActionListener(new ActionListener() {
+		comboBoxOrderNumberOrder.addActionListener(new OrderNumberListener(this));
+//				new ActionListener() {
+//			@Override
+//			public void actionPerformed(ActionEvent e) {
+//				if (comboBoxProviderOrder.getSelectedItem().toString().isEmpty()) {
+//					if (comboBoxOrderNumberOrder.getSelectedItem() != null) {
+//
+//						if (!comboBoxOrderNumberOrder.getSelectedItem().toString().isEmpty()) {
+//							var order = (new OrderDAO()).find("idOrders",
+//									comboBoxOrderNumberOrder.getSelectedItem().toString());
+////							System.out.println("order number act");
+//
+//							comboBoxProviderOrder.setSelectedItem(order.getProvider().getCompanyName());
+//
+//						} else {
+//
+//							comboBoxProviderOrder.setSelectedIndex(0);
+//
+//						}
+//
+//						refreshArticle();
+//					}
+//
+//				}
+//				refreshTable();
+//			}
+//		});
+
+		tableOrder.addMouseListener(new MouseAdapter() {
 			@Override
-			public void actionPerformed(ActionEvent e) {
-				if (!comboBoxOrderNumberOrder.getSelectedItem().toString().isEmpty()) {
-					var order = (new OrderDAO()).find("idOrders",
-							comboBoxOrderNumberOrder.getSelectedItem().toString());
-
-					comboBoxProviderOrder.setSelectedItem(order.getProvider().getCompanyName());
-
-				} else {
-
-					comboBoxProviderOrder.setSelectedIndex(0);
+			public void mouseClicked(MouseEvent e) {
+//				System.out.println("testttt");
+				if (!tableOrder.getSelectionModel().isSelectionEmpty()) {
+					int row = tableOrder.getSelectedRow();
+//					(Integer.toString((Integer)modelOrder.getValueAt(row, 0))
+					comboBoxArticleOrder.setSelectedItem((Integer.toString((Integer) tableOrder.getValueAt(row, 0)))
+							+ " - " + (tableOrder.getValueAt(row, 1).toString()));
+					textFieldQtyOrder.setText(tableOrder.getValueAt(row, 2).toString());
 
 				}
-				refreshArticle();
-
 			}
 		});
-
+		
+	}
+	/**
+	 * @return the comboBoxOrderNumberOrder
+	 */
+	public JComboBox<String> getComboBoxOrderNumberOrder() {
+		return comboBoxOrderNumberOrder;
 	}
 
-	public void refreshProvider() {
-		var provider = (new ProviderDAO()).findALL();//
-		comboBoxProviderOrder.removeAllItems();
-		comboBoxProviderOrder.addItem("");
-		provider.forEach(p -> {
-
-			comboBoxProviderOrder.addItem(p.getCompanyName());
-
-		});
+	/**
+	 * @return the modelOrder
+	 */
+	public DefaultTableModel getModelOrder() {
+		return modelOrder;
 	}
 
-	public void refreshArticle() {
-		if (!comboBoxProviderOrder.getSelectedItem().toString().isEmpty()) {
-			var provider = (new ProviderDAO()).find("compagnyName", comboBoxProviderOrder.getSelectedItem().toString());
-
-			var article = (new SellDAO()).findALLBy("idProvider", provider.getId());//
-
-			comboBoxArticleOrder.removeAllItems();
-
-			article.forEach(a -> {
-
-				comboBoxArticleOrder.addItem(
-						a.getArticle().getId() + " - " + a.getArticle().getConditioning().getConditioningName() + " de "
-								+ a.getArticle().getAmount() + " " + a.getArticle().getProduct().getProductName());
-
-			});
-		} else {
-			comboBoxArticleOrder.removeAllItems();
+	public void updateTotalPrice() {
+		System.out.println(modelOrder.getRowCount());
+		var totalPrice = 0.0;
+		for (int i = 0; i < modelOrder.getRowCount(); i++) {
+//			System.out.println(modelOrder.getValueAt(i, 3));
+			totalPrice += (Double) modelOrder.getValueAt(i, 3);
 		}
+
+		textFieldTotalPrice.setText(Double.toString(totalPrice) + " €");
 	}
-
-	/**
-	 * @return the comboBoxProviderOrder
-	 */
-	public JComboBox getComboBoxProviderOrder() {
-		return comboBoxProviderOrder;
-	}
-
-	/**
-	 * @return the comboBoxArticleOrder
-	 */
-	public JComboBox getComboBoxArticleOrder() {
-		return comboBoxArticleOrder;
-	}
-
-	@Override
-	public void onActivate() {
-		// TODO Auto-generated method stub
-
-	}
-
 }

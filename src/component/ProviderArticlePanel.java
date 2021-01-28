@@ -36,17 +36,73 @@ import view.Management;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
-public class ProviderArticlePanel extends JPanel {
+public class ProviderArticlePanel extends Tab{
 
 	JComboBox comboBoxProvider;
 	JComboBox comboBoxArticle;
-
+	JTable tableArticleProvider;
+	JButton btnAdd;
+	JButton btnModify;
+	JButton btnDelete;
+	JTextField textFieldPrice;
+	DefaultTableModel providerModel;
+	Management mainContent;
+	
 	/**
 	 * Create the panel.
 	 */
 	public ProviderArticlePanel(Management c) {
-
+		mainContent =c;
 		this.setLayout(null);
+
+		refreshTab();
+
+
+//		refreshTable(comboBoxProvider, providerModel);
+	}
+
+	public void refreshTable(JComboBox<String> comboBoxProvider, DefaultTableModel providerModel) {
+
+		var sell = new Sell();
+		List<Sell> sells = null;
+
+		if (!comboBoxProvider.getSelectedItem().toString().isEmpty()) {
+			sell.setProviderFromName(comboBoxProvider.getSelectedItem().toString());
+			var providerId = sell.getIdProvider();
+			sells = (new SellDAO()).findALLBy("idProvider", providerId);//
+		} else {
+			sells = new ArrayList<Sell>();
+		}
+
+		Useful.displaySell(sells, providerModel);
+
+	}
+
+	public void refreshProvider() {
+		var provider = (new ProviderDAO()).findALL();//
+		comboBoxProvider.addItem("");
+		provider.forEach(p -> {
+
+			comboBoxProvider.addItem(p.getCompanyName());
+
+		});
+	}
+
+	public void refreshArticle() {
+		var article = (new ArticleDAO()).findALL();//
+
+		article.forEach(a -> {
+
+			comboBoxArticle.addItem(a.getId() + " - " + a.getConditioning().getConditioningName() + " de "
+					+ +a.getAmount() + " " + a.getProduct().getProductName());
+
+		});
+	}
+
+	@Override
+	public void refreshTab() {
+		super.refreshTab();
+		
 
 		JLabel lblTitleProviderArticle = new JLabel("Gestion Articles Fournisseurs");
 		lblTitleProviderArticle.setFont(new Font("Tahoma", Font.PLAIN, 24));
@@ -72,31 +128,20 @@ public class ProviderArticlePanel extends JPanel {
 		this.add(comboBoxProvider);
 		refreshProvider();
 
-		JTextField textFieldPrice = new JTextField();
-		textFieldPrice.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyTyped(KeyEvent e) {
-				
-				char testChar = e.getKeyChar();
-
-				if ((!(Character.isDigit(testChar)) && !(e.getKeyChar() == KeyEvent.VK_PERIOD))
-						|| ((textFieldPrice.getText().indexOf(".") != -1) && (e.getKeyChar() == KeyEvent.VK_PERIOD))) {
-					e.consume();
-				}
-			}
-		});
+		textFieldPrice = new JTextField();
+	
 		textFieldPrice.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		textFieldPrice.setHorizontalAlignment(SwingConstants.CENTER);
 		textFieldPrice.setBounds(250, 480, 200, 40);
 		this.add(textFieldPrice);
 		textFieldPrice.setColumns(10);
 
-		JButton btnAdd = new JButton("Ajouter");
+		btnAdd = new JButton("Ajouter");
 		btnAdd.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		btnAdd.setBounds(50, 600, 150, 40);
 		this.add(btnAdd);
 
-		JButton btnModify = new JButton("Modifier");
+		btnModify = new JButton("Modifier");
 		btnModify.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		btnModify.setBounds(275, 600, 150, 40);
 		this.add(btnModify);
@@ -108,7 +153,7 @@ public class ProviderArticlePanel extends JPanel {
 		scrollPaneArticleProvider.setBounds(700, 100, 600, 550);
 		this.add(scrollPaneArticleProvider);
 
-		JTable tableArticleProvider = new JTable() {
+		tableArticleProvider = new JTable() {
 			public boolean isCellEditable(int row, int column) {
 				return false;
 			}
@@ -116,7 +161,7 @@ public class ProviderArticlePanel extends JPanel {
 		tableArticleProvider.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		scrollPaneArticleProvider.setViewportView(tableArticleProvider);
 
-		DefaultTableModel providerModel = new DefaultTableModel(new Object[][] {,},
+		providerModel = new DefaultTableModel(new Object[][] {,},
 				new String[] { "Article", "Prix (en Euros)" });
 
 		tableArticleProvider.setModel(providerModel);
@@ -142,11 +187,29 @@ public class ProviderArticlePanel extends JPanel {
 		lblTableTitle.setBounds(700, 50, 600, 30);
 		this.add(lblTableTitle);
 
-		JButton btnDelete = new JButton("Supprimer");
+		btnDelete = new JButton("Supprimer");
 		btnDelete.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		btnDelete.setBounds(500, 600, 150, 40);
 		add(btnDelete);
+		setUpListener();
+	}
+	
+	
+	public void setUpListener(){
+		
+		textFieldPrice.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				
+				char testChar = e.getKeyChar();
 
+				if ((!(Character.isDigit(testChar)) && !(e.getKeyChar() == KeyEvent.VK_PERIOD))
+						|| ((textFieldPrice.getText().indexOf(".") != -1) && (e.getKeyChar() == KeyEvent.VK_PERIOD))) {
+					e.consume();
+				}
+			}
+		});
+		
 
 		btnAdd.addActionListener(new ActionListener() {
 			@Override
@@ -271,46 +334,6 @@ public class ProviderArticlePanel extends JPanel {
 				}
 			}
 		});
-
-//		refreshTable(comboBoxProvider, providerModel);
+		
 	}
-
-	public void refreshTable(JComboBox<String> comboBoxProvider, DefaultTableModel providerModel) {
-
-		var sell = new Sell();
-		List<Sell> sells = null;
-
-		if (!comboBoxProvider.getSelectedItem().toString().isEmpty()) {
-			sell.setProviderFromName(comboBoxProvider.getSelectedItem().toString());
-			var providerId = sell.getIdProvider();
-			sells = (new SellDAO()).findALLBy("idProvider", providerId);//
-		} else {
-			sells = new ArrayList<Sell>();
-		}
-
-		Useful.displaySell(sells, providerModel);
-
-	}
-
-	public void refreshProvider() {
-		var provider = (new ProviderDAO()).findALL();//
-		comboBoxProvider.addItem("");
-		provider.forEach(p -> {
-
-			comboBoxProvider.addItem(p.getCompanyName());
-
-		});
-	}
-
-	public void refreshArticle() {
-		var article = (new ArticleDAO()).findALL();//
-
-		article.forEach(a -> {
-
-			comboBoxArticle.addItem(a.getId() + " - " + a.getConditioning().getConditioningName() + " de "
-					+ +a.getAmount() + " " + a.getProduct().getProductName());
-
-		});
-	}
-	
 }

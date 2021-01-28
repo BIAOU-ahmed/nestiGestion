@@ -1,12 +1,14 @@
 package dao;
 
 import java.sql.Date;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import model.Article;
 import model.Order;
 import model.OrderLine;
+import model.Product;
 import tools.DBConnection;
 
 /**
@@ -60,4 +62,69 @@ public class OrderLineDAO extends BaseDAO<OrderLine>{
 //		return order;
 
 	}
+	
+	
+	public int getAmountOrderred(int idArticle,int idProvider) throws SQLException {
+		
+		String query = "SELECT SUM(ol.amount) as amount FROM order_line ol INNER JOIN orders o ON ol.idOrders=o.idOrders WHERE ol.idArticle=? AND o.idProvider=?";
+				PreparedStatement declaration = DBConnection.get().prepareStatement(query);
+
+		declaration.setInt(1, idArticle);
+		declaration.setInt(2, idProvider);
+//		declaration.setString(3, password);
+		ResultSet resultat = declaration.executeQuery();
+		int price = 0;
+		if (resultat.next()) {
+			price = resultat.getInt("amount");
+		}
+		return price;
+		
+		
+	}
+	
+	public int getAmountReceive(int idArticle,int idProvider) throws SQLException {
+		
+		String query = "SELECT SUM(ol.amountReceive) as amount FROM order_line ol INNER JOIN orders o ON ol.idOrders=o.idOrders WHERE ol.idArticle=? AND o.idProvider=?";
+		PreparedStatement declaration = DBConnection.get().prepareStatement(query);
+		
+		declaration.setInt(1, idArticle);
+		declaration.setInt(2, idProvider);
+//		declaration.setString(3, password);
+		ResultSet resultat = declaration.executeQuery();
+		int price = 0;
+		if (resultat.next()) {
+			price = resultat.getInt("amount");
+		}
+		return price;
+		
+		
+	}
+	
+	
+	public  void update (OrderLine line) throws SQLException {
+        String sql = "UPDATE " + getTableName()
+			+ " SET amount = ?, amountReceive = ?,deliveryDate =? "
+			+ "WHERE idArticle = ? AND idOrders = ? ;";
+
+        var updateUser = DBConnection.get().prepareStatement(sql);
+        
+        System.out.println("orderLine idArt"+line.getIdArticle());
+		System.out.println("orderLine idOrder"+line.getIdOrders());
+		System.out.println("orderLine amount"+line.getAmount());
+        updateUser.setInt(1,  line.getAmount());
+        updateUser.setInt(2,  line.getAmountReceive());
+        updateUser.setDate(3, (Date) line.getDeliveryDate());
+        updateUser.setInt(4,  line.getIdArticle());
+        updateUser.setInt(5,  line.getIdOrders());
+//        updateUser.setString(3,  user.getFirstName());
+//        updateUser.setString(4,  user.getLastName());
+//        updateUser.setString(5,  user.getCity());
+//        updateUser.setString(6,  user.getPasswordHash());
+//        updateUser.setString(7,  user.getRegistrationDate());
+//        updateUser.setInt(8,  user.getUserId());
+//        
+        updateUser.executeUpdate();
+
+    }
+	
 }

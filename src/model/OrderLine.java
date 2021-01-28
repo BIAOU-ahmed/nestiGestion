@@ -139,16 +139,34 @@ public class OrderLine {
 			e.printStackTrace();
 		}
 	}
+	public void update() {
+		OrderLine orderLine = new OrderLine();
+		orderLine.setIdArticle(idArticle);
+		orderLine.setIdOrders(idOrders);
+		orderLine.setAmount(amount);
+		
+//		System.out.println("orderLine idArt"+orderLine.getIdArticle());
+//		System.out.println("orderLine idOrder"+orderLine.getIdOrders());
+//		System.out.println("orderLine amount"+orderLine.getAmount());
+		try {
+			(new OrderLineDAO()).update(orderLine);
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
+	
 	public Object[] toRow() {
 
-		Object[] orderLine = { "id", "produit", "conditionnement", "qté commandée", "prix" };
+		Object[] orderLine = { getArticle().getId(), getArticle().getConditioning().getConditioningName()+ " de "+ getArticle().getAmount()+" "+ getArticle().getProduct().getProductName(), getAmount(),getAmountReceive(), getPrice() };
 		return orderLine;
 	}
 
 	public Object[] toRow2() {
 
-		Object[] orderLine = { "id", getArticle().getProduct().getProductName(), getArticle().getConditioning().getConditioningName(), getAmount(), getPrice()};
+		Object[] orderLine = { getArticle().getId(),getArticle().getConditioning().getConditioningName()+ " de "+ getArticle().getAmount()+" "+ getArticle().getProduct().getProductName(), getAmount(), getPrice()};
 		return orderLine;
 	}
 }
