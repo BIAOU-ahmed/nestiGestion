@@ -1,6 +1,7 @@
 package dao;
 
 import java.sql.Date;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -61,6 +62,44 @@ public class OrderLineDAO extends BaseDAO<OrderLine>{
 //		return order;
 
 	}
+	
+	
+	public int getAmountOrderred(int idArticle,int idProvider) throws SQLException {
+		
+		String query = "SELECT SUM(ol.amount) as amount FROM order_line ol INNER JOIN orders o ON ol.idOrders=o.idOrders WHERE ol.idArticle=? AND o.idProvider=?";
+				PreparedStatement declaration = DBConnection.get().prepareStatement(query);
+
+		declaration.setInt(1, idArticle);
+		declaration.setInt(2, idProvider);
+//		declaration.setString(3, password);
+		ResultSet resultat = declaration.executeQuery();
+		int price = 0;
+		if (resultat.next()) {
+			price = resultat.getInt("amount");
+		}
+		return price;
+		
+		
+	}
+	
+	public int getAmountReceive(int idArticle,int idProvider) throws SQLException {
+		
+		String query = "SELECT SUM(ol.amountReceive) as amount FROM order_line ol INNER JOIN orders o ON ol.idOrders=o.idOrders WHERE ol.idArticle=? AND o.idProvider=?";
+		PreparedStatement declaration = DBConnection.get().prepareStatement(query);
+		
+		declaration.setInt(1, idArticle);
+		declaration.setInt(2, idProvider);
+//		declaration.setString(3, password);
+		ResultSet resultat = declaration.executeQuery();
+		int price = 0;
+		if (resultat.next()) {
+			price = resultat.getInt("amount");
+		}
+		return price;
+		
+		
+	}
+	
 	
 	public  void update (OrderLine line) throws SQLException {
         String sql = "UPDATE " + getTableName()

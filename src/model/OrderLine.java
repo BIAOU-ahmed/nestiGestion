@@ -160,7 +160,7 @@ public class OrderLine {
 	
 	public Object[] toRow() {
 
-		Object[] orderLine = { "id", "produit", "conditionnement", "qté commandée", "prix" };
+		Object[] orderLine = { getArticle().getId(), getArticle().getConditioning().getConditioningName()+ " de "+ getArticle().getAmount()+" "+ getArticle().getProduct().getProductName(), getAmount(),getAmountReceive(), getPrice() };
 		return orderLine;
 	}
 

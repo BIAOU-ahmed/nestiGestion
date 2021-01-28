@@ -3,6 +3,8 @@
  */
 package tools;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 
 import javax.swing.JTable;
@@ -96,6 +98,17 @@ public  class Useful {
 			
 		});
 	}
+	public static void displayOrderLineByOrder(List<OrderLine> line,DefaultTableModel model) {
+//		 = (new ProductDAO()).findALL();//
+		model.setRowCount(0);
+		line.forEach(s -> {
+			
+			Object[] row1 = s.toRow();
+			// Ajout d'une rang�e
+			model.addRow(row1);
+			
+		});
+	}
 	public static void displayOrder(List<Order> order,DefaultTableModel model,int idProvider) {
 //		 = (new ProductDAO()).findALL();//
 		model.setRowCount(0);
@@ -115,5 +128,12 @@ public  class Useful {
 		tableOrder.setRowSorter(sorter);
 	}
 	
+	
+	public static double parseDouble(double number,int nbDecimal) {
+		 BigDecimal bigDecimal = new BigDecimal(number);
+		    bigDecimal = bigDecimal.setScale(nbDecimal, RoundingMode.HALF_UP);
+		    return bigDecimal.doubleValue();
+		
+	}
 	
 }

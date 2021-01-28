@@ -46,12 +46,13 @@ public class ProviderArticlePanel extends Tab{
 	JButton btnDelete;
 	JTextField textFieldPrice;
 	DefaultTableModel providerModel;
+	Management mainContent;
 	
 	/**
 	 * Create the panel.
 	 */
 	public ProviderArticlePanel(Management c) {
-
+		mainContent =c;
 		this.setLayout(null);
 
 		refreshTab();

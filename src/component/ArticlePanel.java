@@ -24,6 +24,7 @@ import dao.ArticleDAO;
 import dao.ConditioningDAO;
 import dao.MeasurementDAO;
 import dao.ProductDAO;
+import dao.SellDAO;
 import model.Article;
 import model.Conditioning;
 import model.Measurement;
@@ -35,7 +36,7 @@ import javax.swing.SwingConstants;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
-public class ArticlePanel extends Tab{
+public class ArticlePanel extends Tab {
 	protected JComboBox comboBoxProductArticle;
 	protected JComboBox comboBoxConditioningArticle;
 	Management mainController;
@@ -49,6 +50,7 @@ public class ArticlePanel extends Tab{
 	JButton btnOrdering;
 	JButton btnOrderArticle;
 	JComboBox<String> comboBoxStatutArticle;
+	DefaultTableModel providerListArticleModel;
 
 	/**
 	 * Create the panel.
@@ -61,12 +63,6 @@ public class ArticlePanel extends Tab{
 
 		refreshTab();
 
-
-		
-		
-	
-
-		Useful.sort(articleModel, tableArticle);
 	}
 
 	public void refreshTable() {
@@ -112,7 +108,7 @@ public class ArticlePanel extends Tab{
 	public void refreshTab() {
 		// TODO Auto-generated method stub
 		super.refreshTab();
-		
+
 		JLabel lblSearchArticle = new JLabel("Rechercher");
 		lblSearchArticle.setFont(new Font("Tahoma", Font.PLAIN, 24));
 		lblSearchArticle.setBounds(947, 23, 120, 29);
@@ -178,14 +174,14 @@ public class ArticlePanel extends Tab{
 		this.add(lblStatusArticle);
 
 		textFieldWeightArticle = new JTextField();
-		
+
 		textFieldWeightArticle.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		textFieldWeightArticle.setBounds(246, 215, 131, 40);
 		this.add(textFieldWeightArticle);
 		textFieldWeightArticle.setColumns(10);
 
 		textFieldQtyArticle = new JTextField();
-		
+
 		textFieldQtyArticle.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		textFieldQtyArticle.setBounds(39, 214, 152, 40);
 		this.add(textFieldQtyArticle);
@@ -253,7 +249,7 @@ public class ArticlePanel extends Tab{
 		tableProviderListArticle.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		scrollPaneProviderListArticle.setViewportView(tableProviderListArticle);
 
-		DefaultTableModel providerListArticleModel = new DefaultTableModel(new Object[][] {,},
+		providerListArticleModel = new DefaultTableModel(new Object[][] {,},
 				new String[] { "Entreprise", "Qté commandée", "Qté reçue", "Stock", "Prix €" });
 
 		tableProviderListArticle.setModel(providerListArticleModel);
@@ -265,6 +261,7 @@ public class ArticlePanel extends Tab{
 		add(lblTitleArticle);
 
 		btnOrdering = new JButton("Passer une commande");
+
 		btnOrdering.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		btnOrdering.setBounds(220, 680, 200, 40);
 		add(btnOrdering);
@@ -276,10 +273,7 @@ public class ArticlePanel extends Tab{
 //		scrollPane.setViewportView(table);
 //		scrollPane.setColumnHeaderView(table);
 
-		btnOrderArticle = new JButton("Passer une commande");
-		btnOrderArticle.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		btnOrderArticle.setBounds(214, 687, 203, 35);
-
+		setUpListener();
 		refreshConditioning();
 
 //		var productList = (new ProductDAO()).findALL();//
@@ -287,12 +281,12 @@ public class ArticlePanel extends Tab{
 //		mainController.getPanelProduct().getProductList().getModel().addTableModelListener(e->refreshProduct(productList));
 
 		refreshTable();
-		setUpListener();
-		
+
+		Useful.sort(articleModel, tableArticle);
 	}
-	
+
 	public void setUpListener() {
-		
+
 		textFieldWeightArticle.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent e) {
@@ -302,7 +296,7 @@ public class ArticlePanel extends Tab{
 				}
 			}
 		});
-		
+
 		textFieldQtyArticle.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent e) {
@@ -312,7 +306,7 @@ public class ArticlePanel extends Tab{
 				}
 			}
 		});
-		
+
 		tableArticle.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -320,24 +314,38 @@ public class ArticlePanel extends Tab{
 				if (!tableArticle.getSelectionModel().isSelectionEmpty()) {
 					int row = tableArticle.getSelectedRow();
 
-					comboBoxStatutArticle.setSelectedItem((String) tableArticle.getValueAt(row, 7));
-//					textFieldWeightArticle.setText((String) articleModel.getValueAt(row, 4));
-					comboBoxProductArticle.setSelectedItem((String) tableArticle.getValueAt(row, 1));
+					if (tableArticle.getValueAt(row, 7).toString().equals("Brouillon")) {
+						comboBoxStatutArticle.setSelectedItem((String) tableArticle.getValueAt(row, 7));
+//						textFieldWeightArticle.setText((String) articleModel.getValueAt(row, 4));
+						comboBoxProductArticle.setSelectedItem((String) tableArticle.getValueAt(row, 1));
 
-					comboBoxConditioningArticle.setSelectedItem((String) tableArticle.getValueAt(row, 3));
-					textFieldQtyArticle.setText(Integer.toString((Integer) tableArticle.getValueAt(row, 2)));
-					textFieldWeightArticle.setText(Double.toString((Double) tableArticle.getValueAt(row, 4)));
+						comboBoxConditioningArticle.setSelectedItem((String) tableArticle.getValueAt(row, 3));
+						textFieldQtyArticle.setText(Integer.toString((Integer) tableArticle.getValueAt(row, 2)));
+						textFieldWeightArticle.setText(Double.toString((Double) tableArticle.getValueAt(row, 4)));
+					}
+
+					var listSell = (new SellDAO()).findALLBy("idArticle", (Integer) tableArticle.getValueAt(row, 0));
+
+					providerListArticleModel.setRowCount(0);
+
+					listSell.forEach(s -> {
+
+						Object[] row1 = s.toRowForArticle();
+						// Ajout d'une rang�e
+						providerListArticleModel.addRow(row1);
+
+					});
 
 				}
 			}
 		});
-		
+
 		btnEditArticle.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
+
 				if (!tableArticle.getSelectionModel().isSelectionEmpty()) {
-					
+
 					var qty = textFieldQtyArticle.getText().isEmpty();
 					var weight = textFieldWeightArticle.getText().isEmpty();
 
@@ -349,9 +357,9 @@ public class ArticlePanel extends Tab{
 						var admin = (new AdministratorDAO()).find("idAdministrator", adminId);
 						System.out.println("art " + ((Integer) tableArticle.getValueAt(row, 0)));
 						if (comboBoxStatutArticle.getSelectedItem().toString().equals("Retiré")) {
-							state = "w";
+							state = "b";
 						}
-						
+
 						article.setId((Integer) tableArticle.getValueAt(row, 0));
 						article.setWeight(Double.parseDouble(textFieldWeightArticle.getText()));
 						article.setAmount(Integer.parseInt(textFieldQtyArticle.getText()));
@@ -363,62 +371,80 @@ public class ArticlePanel extends Tab{
 
 						// vider les champ apres modification
 						refreshTable();
-						
+
 						textFieldQtyArticle.setText("");
 						textFieldWeightArticle.setText("");
 					} else {
 						JOptionPane.showMessageDialog(null, "Tous les champs ne sont pas remplis.");
 					}
-					
-					
+
 				}
 			}
 		});
 		
-		
-		btnAddArticle.addMouseListener(new MouseAdapter() {
+
+		btnOrdering.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+				if (!tableProviderListArticle.getSelectionModel().isSelectionEmpty()) {
+					
+					int row = tableArticle.getSelectedRow();
+
+					String article = tableArticle.getValueAt(row, 0).toString() + " - "
+							+ tableArticle.getValueAt(row, 3).toString() + " de "
+							+ tableArticle.getValueAt(row, 2).toString()+" " + tableArticle.getValueAt(row, 1).toString();
+					System.out.println("article "+article);
+					int providerRow = tableProviderListArticle.getSelectedRow();
+					mainController.getTabbedPane().setSelectedIndex(2);
+					mainController.getPanelOrder().getComboBoxProviderOrder()
+							.setSelectedItem(tableProviderListArticle.getValueAt(providerRow, 0));
+
+					mainController.getPanelOrder().getComboBoxArticleOrder().setSelectedItem(article);
+
+				}
+
+			}
+		});
+
+		btnAddArticle.addActionListener(new ActionListener() {
 			@Override
-			public void mouseClicked(MouseEvent e) {
+			public void actionPerformed(ActionEvent e) {
+
 				var qty = textFieldQtyArticle.getText().isEmpty();
 				var weight = textFieldWeightArticle.getText().isEmpty();
 
 				if (qty == false && weight == false) {
+
+					Article article = new Article();
+					var state = "a";
+					var adminId = Integer.parseInt(AppSettings.get("loginUser"));
+					var admin = (new AdministratorDAO()).find("idAdministrator", adminId);
+
+					article.setWeight(Useful.parseDouble(Double.parseDouble(textFieldWeightArticle.getText()),2));
+					article.setAmount(Integer.parseInt(textFieldQtyArticle.getText()));
+					if (comboBoxStatutArticle.getSelectedItem().toString().equals("Retiré")) {
+						state = "b";
+					}
+					article.setArticleState(state);
+					java.util.Date sqlDate = new java.util.Date();
+					Date createDate = new Date(sqlDate.getTime());
+					article.setCreatedAt(createDate);
+					article.setIdAdministrator(adminId);
+					article.setProductFromName(comboBoxProductArticle.getSelectedItem().toString());
+					article.setConditioningFromName(comboBoxConditioningArticle.getSelectedItem().toString());
+					admin.createArticle(article);
+
+					List<Article> updateProducts = (new ArticleDAO()).findALL();//
+					Useful.displayArticle(updateProducts, articleModel);
+
 					textFieldQtyArticle.setText("");
 					textFieldWeightArticle.setText("");
 				} else {
 					JOptionPane.showMessageDialog(null, "Tous les champs ne sont pas remplis.");
 				}
-			}
-		});
-		btnAddArticle.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-
-				Article article = new Article();
-				var state = "a";
-				var adminId = Integer.parseInt(AppSettings.get("loginUser"));
-				var admin = (new AdministratorDAO()).find("idAdministrator", adminId);
-
-				article.setWeight(Double.parseDouble(textFieldWeightArticle.getText()));
-				article.setAmount(Integer.parseInt(textFieldQtyArticle.getText()));
-				if (comboBoxStatutArticle.getSelectedItem().toString().equals("Retiré")) {
-					state = "w";
-				}
-				article.setArticleState(state);
-				java.util.Date sqlDate = new java.util.Date();
-				Date createDate = new Date(sqlDate.getTime());
-				article.setCreatedAt(createDate);
-				article.setIdAdministrator(adminId);
-				article.setProductFromName(comboBoxProductArticle.getSelectedItem().toString());
-				article.setConditioningFromName(comboBoxConditioningArticle.getSelectedItem().toString());
-				admin.createArticle(article);
-
-				List<Article> updateProducts = (new ArticleDAO()).findALL();//
-				Useful.displayArticle(updateProducts, articleModel);
 
 			}
 		});
-		
-		
+
 	}
 }

@@ -9,6 +9,7 @@ import dao.AdministratorDAO;
 import dao.ArticleDAO;
 import dao.ConditioningDAO;
 import dao.MeasurementDAO;
+import dao.OrderLineDAO;
 import dao.ProductDAO;
 
 /**
@@ -90,6 +91,27 @@ public class Article {
 		this.idAdministrator = idAdministrator;
 	}
 
+	double stock = 0.0;
+
+	public double getStock() {
+		var allOrderLineToThis = getAllOrderLines();
+		allOrderLineToThis.forEach(orderLine -> {
+			stock += orderLine.getAmountReceive();
+		});
+		return stock;
+	}
+
+	public double getPrice() {
+		double price = 0.0;
+		try {
+			price = (new ArticleDAO()).getMaxPrice(id);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return price;
+	}
+
 	/**
 	 * @return the idProduct
 	 */
@@ -121,7 +143,8 @@ public class Article {
 	/**
 	 * 
 	 */
-	public void create() {
+	public boolean create() {
+		var flag = false;
 		Article article = new Article();
 		article.setWeight(getWeight());
 		article.setAmount(getAmount());
@@ -135,6 +158,7 @@ public class Article {
 		if ((new ArticleDAO()).find(article) == null) {
 			try {
 				(new ArticleDAO()).insert(article);
+				flag = true;
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -142,13 +166,19 @@ public class Article {
 		} else {
 			JOptionPane.showMessageDialog(null, "Article alrady exist");
 		}
+		return flag;
+	}
 
+	public List<OrderLine> getAllOrderLines() {
+
+		return (new OrderLineDAO()).findALLBy("idArticle", getId());
 	}
 
 	/**
 	 * 
 	 */
-	public void update() {
+	public boolean update() {
+		var flag = false;
 		Article article = new Article();
 		article.setWeight(getWeight());
 		article.setAmount(getAmount());
@@ -158,9 +188,9 @@ public class Article {
 		article.setIdAdministrator(getIdAdministrator());
 		article.setIdProduct(getIdProduct());
 		article.setIdConditioning(getIdConditioning());
-		System.out.println("up "+article.getId());
-		System.out.println("up "+article.getIdConditioning());
-		System.out.println("up "+article.getAmount());
+//		System.out.println("up " + article.getId());
+//		System.out.println("up " + article.getIdConditioning());
+//		System.out.println("up " + article.getAmount());
 		var art = (new ArticleDAO()).find(article);
 //		System.out.println("up "+art.getId());
 //		System.out.println("exist id "+ art.getId() );
@@ -168,6 +198,7 @@ public class Article {
 		if (art == null || art.getId() == article.getId()) {
 			try {
 				(new ArticleDAO()).update(article);
+				flag = true;
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -175,13 +206,44 @@ public class Article {
 		} else {
 			JOptionPane.showMessageDialog(null, "other Article alrady exist");
 		}
+		
+		return flag;
 	}
 
 	/**
 	 * 
 	 */
-	public void delete() {
-		// TODO implement here
+	public boolean delete() {
+		var flag = false;
+		Article article = new Article();
+		article.setWeight(getWeight());
+		article.setAmount(getAmount());
+		article.setArticleState(getArticleState());
+		article.setId(id);
+		article.setCreatedAt(getCreatedAt());
+		article.setIdAdministrator(getIdAdministrator());
+		article.setIdProduct(getIdProduct());
+		article.setIdConditioning(getIdConditioning());
+//		System.out.println("up " + article.getId());
+//		System.out.println("up " + article.getIdConditioning());
+//		System.out.println("up " + article.getAmount());
+		var art = (new ArticleDAO()).find(article);
+//		System.out.println("up "+art.getId());
+//		System.out.println("exist id "+ art.getId() );
+//		System.out.println("actual id "+ article.getId() );
+		if (art != null) {
+			try {
+				(new ArticleDAO()).delete(article);
+				flag = true;
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		} else {
+			JOptionPane.showMessageDialog(null, "other Article alrady exist");
+		}
+		
+		return flag;
 	}
 
 	/**
@@ -256,11 +318,13 @@ public class Article {
 
 	public Object[] toRow() {
 		var status = "Disponible";
-		if(getArticleState().equals("w")) {
+		if (getArticleState().equals("b")) {
 			status = "retiré";
+		} else if (getAllOrderLines().size() == 0) {
+			status = "Brouillon";
 		}
 		Object[] article = { getId(), getProduct().getProductName(), getAmount(),
-				getConditioning().getConditioningName(), getWeight(), "12 €", "54", status };
+				getConditioning().getConditioningName(), getWeight(), getPrice(), getStock(), status };
 		return article;
 
 	}

@@ -18,8 +18,10 @@ import dao.ConditioningDAO;
 import dao.OrderDAO;
 import dao.OrderLineDAO;
 import dao.ProviderDAO;
+import dao.SellDAO;
 import model.Order;
 import model.OrderLine;
+import model.Sell;
 import tools.Useful;
 import view.Management;
 
@@ -27,6 +29,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.List;
 
 public class HistoryPanel extends Tab {
@@ -36,7 +40,10 @@ public class HistoryPanel extends Tab {
 	DefaultTableModel model;
 	JTable tableOrder;
 	JTextField textFieldOrderNumberHistory;
-
+	DefaultTableModel modelSelected;
+	JTextField textFieldTotalPriceHistory;
+	
+	
 	/**
 	 * Create the panel.
 	 */
@@ -162,7 +169,7 @@ public class HistoryPanel extends Tab {
 		this.add(textFieldOrderNumberHistory);
 		textFieldOrderNumberHistory.setColumns(10);
 
-		JTextField textFieldTotalPriceHistory = new JTextField();
+		textFieldTotalPriceHistory = new JTextField();
 		textFieldTotalPriceHistory.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		textFieldTotalPriceHistory.setHorizontalAlignment(SwingConstants.CENTER);
 		textFieldTotalPriceHistory.setBounds(1200, 600, 150, 40);
@@ -211,7 +218,7 @@ public class HistoryPanel extends Tab {
 			}
 		};
 		tableSelectedOrder.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		DefaultTableModel modelSelected = new DefaultTableModel(new Object[][] {,},
+		modelSelected = new DefaultTableModel(new Object[][] {,},
 				new String[] { "Identifiant", "Article", "Qté commandée", "Qté reçue", "Prix €" });
 
 		tableSelectedOrder.setModel(modelSelected);
@@ -230,6 +237,23 @@ public class HistoryPanel extends Tab {
 
 	public void setUpListener() {
 
+		
+		tableOrder.addMouseListener(new MouseAdapter() {
+
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (!tableOrder.getSelectionModel().isSelectionEmpty()) {
+					int row = tableOrder.getSelectedRow();
+					
+					List<OrderLine> orderLines = (new OrderLineDAO()).findALLBy("idOrders",
+							((Integer) tableOrder.getValueAt(row, 0)));//
+					Useful.displayOrderLineByOrder(orderLines, modelSelected);
+					textFieldTotalPriceHistory.setText(tableOrder.getValueAt(row, 2).toString()+" €");
+
+				}
+			}
+		});
+		
 		comboBoxProviderHistory.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {

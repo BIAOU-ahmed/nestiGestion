@@ -9,6 +9,7 @@ import javax.swing.JOptionPane;
 import dao.AdministratorDAO;
 import dao.ArticleDAO;
 import dao.ConditioningDAO;
+import dao.OrderLineDAO;
 import dao.ProviderDAO;
 import dao.SellDAO;
 
@@ -174,8 +175,31 @@ public class Sell {
 	}
 
 	public Article getArticle() {
-		// TODO Auto-generated method stub
+		
 		return (new ArticleDAO()).find("idArticle", this.idArticle);
 	}
+	
+	public Provider getProvider() {
+		
+		return (new ProviderDAO()).find(" 	idProvider", this.idProvider);
+	}
 
+	
+	
+	public Object[] toRowForArticle() {
+		
+		int amounReceive = 0;
+		int amount = 0;
+		try {
+			amount = (new OrderLineDAO()).getAmountOrderred(getIdArticle(),getIdProvider());
+			amounReceive = (new OrderLineDAO()).getAmountReceive(getIdArticle(),getIdProvider());
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	
+		Object[] product = { getProvider().getCompanyName(),amount, amounReceive,"ee", getPrice()};
+		return product;
+	}
+	
 }
