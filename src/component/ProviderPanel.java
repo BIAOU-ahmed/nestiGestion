@@ -214,15 +214,7 @@ public class ProviderPanel extends Tab {
 		this.add(ProviderSearchLabel);
 
 		ProviderSearchBarField = new JTextField();
-		ProviderSearchBarField.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyReleased(KeyEvent e) {
-				var list = (new ProviderDAO()).findAllLike("compagnyName", ProviderSearchBarField.getText());
-//				System.out.println(list.size());
-				Useful.displayProvider(list, providerModel);
-
-			}
-		});
+		
 		ProviderSearchBarField.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		ProviderSearchBarField.setBounds(771, 62, 595, 35);
 		this.add(ProviderSearchBarField);
@@ -309,6 +301,17 @@ public class ProviderPanel extends Tab {
 			}
 
 		});
+		
+		ProviderSearchBarField.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				var list = (new ProviderDAO()).findAllLike("compagnyName", ProviderSearchBarField.getText());
+//				System.out.println(list.size());
+				Useful.displayProvider(list, providerModel);
+
+			}
+		});
+		
 		
 		ProviderTable.addMouseListener(new MouseAdapter() {
 

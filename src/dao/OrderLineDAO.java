@@ -108,9 +108,6 @@ public class OrderLineDAO extends BaseDAO<OrderLine>{
 
         var updateUser = DBConnection.get().prepareStatement(sql);
         
-        System.out.println("orderLine idArt"+line.getIdArticle());
-		System.out.println("orderLine idOrder"+line.getIdOrders());
-		System.out.println("orderLine amount"+line.getAmount());
         updateUser.setInt(1,  line.getAmount());
         updateUser.setInt(2,  line.getAmountReceive());
         updateUser.setDate(3, (Date) line.getDeliveryDate());

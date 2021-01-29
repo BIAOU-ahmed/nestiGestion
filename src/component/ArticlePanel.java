@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.DefaultComboBoxModel;
@@ -23,6 +24,7 @@ import dao.AdministratorDAO;
 import dao.ArticleDAO;
 import dao.ConditioningDAO;
 import dao.MeasurementDAO;
+import dao.OrderDAO;
 import dao.ProductDAO;
 import dao.SellDAO;
 import model.Article;
@@ -51,7 +53,9 @@ public class ArticlePanel extends Tab {
 	JButton btnOrderArticle;
 	JComboBox<String> comboBoxStatutArticle;
 	DefaultTableModel providerListArticleModel;
-
+	
+	JTextField textFieldSearchArticle;
+	
 	/**
 	 * Create the panel.
 	 */
@@ -65,9 +69,18 @@ public class ArticlePanel extends Tab {
 
 	}
 
-	public void refreshTable() {
-		List<Article> updateProducts = (new ArticleDAO()).findALL();//
-		Useful.displayArticle(updateProducts, articleModel);
+	public void refreshTable(List<Article> products) {
+//		List<Article> updateProducts = (new ArticleDAO()).findALL();//
+		articleModel.setRowCount(0);
+		products.forEach(p -> {
+			
+			Object[] row1 = p.toRow();
+			// Ajout d'une rang�e
+			articleModel.addRow(row1);
+
+		});
+		
+//		Useful.displayArticle(updateProducts, articleModel);
 	}
 
 	public void refreshProduct() {
@@ -114,7 +127,7 @@ public class ArticlePanel extends Tab {
 		lblSearchArticle.setBounds(947, 23, 120, 29);
 		this.add(lblSearchArticle);
 
-		JTextField textFieldSearchArticle = new JTextField();
+		textFieldSearchArticle = new JTextField();
 		textFieldSearchArticle.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		textFieldSearchArticle.setBounds(643, 63, 726, 40);
 		this.add(textFieldSearchArticle);
@@ -279,8 +292,8 @@ public class ArticlePanel extends Tab {
 //		var productList = (new ProductDAO()).findALL();//
 		refreshProduct();
 //		mainController.getPanelProduct().getProductList().getModel().addTableModelListener(e->refreshProduct(productList));
-
-		refreshTable();
+		List<Article> productsList = (new ArticleDAO()).findALL();
+		refreshTable(productsList);
 
 		Useful.sort(articleModel, tableArticle);
 	}
@@ -355,7 +368,7 @@ public class ArticlePanel extends Tab {
 						Article article = new Article();
 						var adminId = Integer.parseInt(AppSettings.get("loginUser"));
 						var admin = (new AdministratorDAO()).find("idAdministrator", adminId);
-						System.out.println("art " + ((Integer) tableArticle.getValueAt(row, 0)));
+//						System.out.println("art " + ((Integer) tableArticle.getValueAt(row, 0)));
 						if (comboBoxStatutArticle.getSelectedItem().toString().equals("Retiré")) {
 							state = "b";
 						}
@@ -370,7 +383,8 @@ public class ArticlePanel extends Tab {
 						admin.updateArticle(article);
 
 						// vider les champ apres modification
-						refreshTable();
+						List<Article> productsList = (new ArticleDAO()).findALL();
+						refreshTable(productsList);
 
 						textFieldQtyArticle.setText("");
 						textFieldWeightArticle.setText("");
@@ -393,7 +407,7 @@ public class ArticlePanel extends Tab {
 					String article = tableArticle.getValueAt(row, 0).toString() + " - "
 							+ tableArticle.getValueAt(row, 3).toString() + " de "
 							+ tableArticle.getValueAt(row, 2).toString()+" " + tableArticle.getValueAt(row, 1).toString();
-					System.out.println("article "+article);
+//					System.out.println("article "+article);
 					int providerRow = tableProviderListArticle.getSelectedRow();
 					mainController.getTabbedPane().setSelectedIndex(2);
 					mainController.getPanelOrder().getComboBoxProviderOrder()
@@ -406,6 +420,25 @@ public class ArticlePanel extends Tab {
 			}
 		});
 
+		textFieldSearchArticle.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				List<Article> productsList = (new ArticleDAO()).findALL();
+				var list = new ArrayList<Article>();
+				productsList.forEach(a->{
+					var productName = a.getProduct().getProductName();
+					if(productName.indexOf(textFieldSearchArticle.getText()) != -1) {
+						list.add(a);
+					}
+				});
+				
+//				System.out.println(list.size());
+				
+				refreshTable(list);
+
+			}
+		});
+		
 		btnAddArticle.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -424,6 +457,7 @@ public class ArticlePanel extends Tab {
 					article.setAmount(Integer.parseInt(textFieldQtyArticle.getText()));
 					if (comboBoxStatutArticle.getSelectedItem().toString().equals("Retiré")) {
 						state = "b";
+						
 					}
 					article.setArticleState(state);
 					java.util.Date sqlDate = new java.util.Date();

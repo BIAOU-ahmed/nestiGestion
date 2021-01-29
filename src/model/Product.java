@@ -212,7 +212,9 @@ public class Product extends DBConnection {
 
 //			System.out.println("ingrd");
 		}else {
-			Utensil utensil = (new UtensilDAO()).find("idProduct", id);
+			
+			var utensil = (new UtensilDAO()).find("idProduct", product.getId());
+			
 			if(utensil == null) {
 				
 				try {

@@ -161,6 +161,7 @@ public class OrderPanel extends Tab {
 		super.refreshTab();
 
 		var orderList = (new OrderDAO()).getActiveOrders();
+	
 
 //		if(orderList.size()==0) {
 //			orderList.add(new Order()); 
@@ -349,6 +350,7 @@ public class OrderPanel extends Tab {
 			}
 		});
 
+		
 		btnOrderOrder.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (comboBoxOrderNumberOrder.getSelectedIndex() != 0) {

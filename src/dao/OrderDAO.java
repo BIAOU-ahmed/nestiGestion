@@ -108,8 +108,8 @@ public class OrderDAO extends BaseDAO<Order>{
 			+ "WHERE idOrders = ?;";
 
         var updateUser = DBConnection.get().prepareStatement(sql);
-        System.out.println("id "+order.getId());
-        System.out.println("state "+order.getState());
+//        System.out.println("id "+order.getId());
+//        System.out.println("state "+order.getState());
        
         updateUser.setInt(2, order.getId());
         updateUser.setString(1, order.getState());

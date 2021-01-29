@@ -21,6 +21,7 @@ public class OrderNumberListener implements ActionListener {
 	public OrderNumberListener(OrderPanel panel) {
 		this.panel = panel;
 	}
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		

@@ -1,6 +1,8 @@
 package model;
 
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 import dao.ArticleDAO;
@@ -39,10 +41,11 @@ public class OrderLine {
 		return (new OrderDAO()).find("idOrders", this.idOrders);
 
 	}
+
 	public Article getArticle() {
-		
+
 		return (new ArticleDAO()).find("idArticle", this.idArticle);
-		
+
 	}
 
 	public Double getPrice() {
@@ -51,7 +54,7 @@ public class OrderLine {
 		sell.setIdArticle(idArticle);
 		sell.setIdProvider(getOrder().getIdProvider());
 		(new SellDAO()).getSell(sell);
-		price = sell.getPrice()*amount;
+		price = sell.getPrice() * amount;
 		return price;
 	}
 
@@ -139,34 +142,56 @@ public class OrderLine {
 			e.printStackTrace();
 		}
 	}
+
 	public void update() {
 		OrderLine orderLine = new OrderLine();
 		orderLine.setIdArticle(idArticle);
 		orderLine.setIdOrders(idOrders);
 		orderLine.setAmount(amount);
-		
+		orderLine.setAmountReceive(amountReceive);
+		orderLine.setDeliveryDate(deliveryDate);
+
 //		System.out.println("orderLine idArt"+orderLine.getIdArticle());
 //		System.out.println("orderLine idOrder"+orderLine.getIdOrders());
 //		System.out.println("orderLine amount"+orderLine.getAmount());
 		try {
 			(new OrderLineDAO()).update(orderLine);
-			
+
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
-	
 	public Object[] toRow() {
 
-		Object[] orderLine = { getArticle().getId(), getArticle().getConditioning().getConditioningName()+ " de "+ getArticle().getAmount()+" "+ getArticle().getProduct().getProductName(), getAmount(),getAmountReceive(), getPrice() };
+		Object[] orderLine = {
+				getArticle().getId(), getArticle().getConditioning().getConditioningName() + " de "
+						+ getArticle().getAmount() + " " + getArticle().getProduct().getProductName(),
+				getAmount(), getAmountReceive(), getPrice() };
+		return orderLine;
+	}
+
+	public Object[] toRowForDelevery() {
+		DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+		String deleveryDate = null;
+		if(getDeliveryDate() != null) {
+			deleveryDate=formatter.format(getDeliveryDate());
+		}
+		Object[] orderLine = { getArticle().getId(),
+				getArticle().getConditioning().getConditioningName() + " de " + getArticle().getAmount() + " "
+						+ getArticle().getProduct().getProductName(),
+				getAmount(), getAmountReceive(), getPrice(), formatter.format(getOrder().getOrderDate()),
+				deleveryDate};
 		return orderLine;
 	}
 
 	public Object[] toRow2() {
 
-		Object[] orderLine = { getArticle().getId(),getArticle().getConditioning().getConditioningName()+ " de "+ getArticle().getAmount()+" "+ getArticle().getProduct().getProductName(), getAmount(), getPrice()};
+		Object[] orderLine = {
+				getArticle().getId(), getArticle().getConditioning().getConditioningName() + " de "
+						+ getArticle().getAmount() + " " + getArticle().getProduct().getProductName(),
+				getAmount(), getPrice() };
 		return orderLine;
 	}
 }

@@ -20,29 +20,40 @@ import tools.Useful;
  * @author ahmed
  *
  */
-public class AddProductListener implements ActionListener{
+public class AddProductListener implements ActionListener {
 	JTextField libeleTxt;
 	JComboBox typeCombo;
 	JComboBox unityCombo;
 	DefaultTableModel productModel;
-	public AddProductListener(JTextField libeleTxt,JComboBox typeCombo,JComboBox unityCombo,DefaultTableModel productModel) {
+
+	public AddProductListener(JTextField libeleTxt, JComboBox typeCombo, JComboBox unityCombo,
+			DefaultTableModel productModel) {
 		this.libeleTxt = libeleTxt;
 		this.typeCombo = typeCombo;
 		this.unityCombo = unityCombo;
 		this.productModel = productModel;
 	}
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if(libeleTxt.getText().isEmpty()) {
+
+		var libele = this.libeleTxt.getText().isEmpty();
+		var type = this.typeCombo.getSelectedItem().toString().isEmpty();
+		System.out.println(libele);
+		System.out.println(type);
+		if (libele || type) {
+
 			JOptionPane.showMessageDialog(null, "Required camp is empty");
-		}else {
+		} else {
 			var myProduct = new Product();
 			myProduct.create(libeleTxt, typeCombo, unityCombo);
 			List<Product> updateProducts = (new ProductDAO()).findALL();//
 			Useful.display(updateProducts, productModel);
-			
+			libeleTxt.setText("");
+			typeCombo.setSelectedIndex(0);
+
 		}
-		
+
 	}
 
 }

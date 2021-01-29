@@ -258,6 +258,9 @@ public class ProductPanel extends Tab {
 					updateProduct.setType(comboBoxType.getSelectedItem().toString());
 					updateProduct.update(unityCombo);
 					refreshTable();
+					
+					textFieldProductName.setText("");
+					comboBoxType.setSelectedIndex(0);
 //					libeleTxt.setText((String) productModel.getValueAt(row, 1));
 ////					String t = ((String) productModel.getValueAt(row, 1));
 //					String p = (String) productModel.getValueAt(row, 1);
