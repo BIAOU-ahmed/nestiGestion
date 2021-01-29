@@ -28,6 +28,7 @@ public class Order {
 	 */
 	public int id;
 
+	
 	/**
 	 * 
 	 */
@@ -120,7 +121,7 @@ public class Order {
 			displayState = "Reçue";
 		}
 		
-		System.out.println("state in order"+displayState);
+//		System.out.println("state in order"+displayState);
 		return displayState;
 	}
 

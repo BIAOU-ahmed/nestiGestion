@@ -8,6 +8,7 @@ import javax.swing.JOptionPane;
 
 import dao.ArticleDAO;
 import dao.IngredientDAO;
+import dao.OrderDAO;
 import dao.ProviderDAO;
 
 /**
@@ -98,6 +99,17 @@ public class Provider {
 			e.printStackTrace();
 		}
     	
+    }
+    boolean result = false;
+    public boolean haveOrderStanding() {
+    	
+    	var listOrders = (new OrderDAO()).findALLBy("idProvider", getId());
+    	listOrders.forEach(o->{
+    		if(o.getDisplayState().equals("En cours")) {
+    			result = true;
+    		}
+    	});
+    	return result;
     }
 
     /**
@@ -208,8 +220,8 @@ public class Provider {
 	public Object[] toRow() {
 	var status = "Disponible";
 	
-	System.out.println(getProviderState());
-	System.out.println((getProviderState().equals("b")));
+//	System.out.println(getProviderState());
+//	System.out.println((getProviderState().equals("b")));
 	if(getProviderState().equals("b")) {
 		status = "Inactif";
 	}

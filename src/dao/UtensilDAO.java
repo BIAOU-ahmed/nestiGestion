@@ -25,21 +25,21 @@ public class UtensilDAO extends BaseDAO<Utensil> {
 	
 	//INSERT INTO `product` (`idProduct`, `productName`) VALUES (NULL, 'testProduct');
 	
-//	@Override
-//	 public Measurement getFromResultSet(ResultSet rs) throws SQLException
-//	    {
-//		Ingredient result = null;
-//
-//	        if (rs != null && !rs.isClosed() && rs.next()) {
-//	        	
-//	        	result = new Ingredient();
-//	        	result.setId(rs.getInt("idMeasurement"));
-//		        	
-//	        	
-//	        }
-//	        
-//	        return result;
-//	    }
+	@Override
+	 public Utensil getFromResultSet(ResultSet rs) throws SQLException
+	    {
+		Utensil result = null;
+
+	        if (rs != null && !rs.isClosed() && rs.next()) {
+	        	
+	        	result = new Utensil();
+	        	result.setId(rs.getInt("idProduct"));
+		        	
+	        	
+	        }
+	        
+	        return result;
+	    }
 	 
 	public void insert (Utensil utensil) throws SQLException {
         var sql = "INSERT INTO "+ getTableName() +"(`idProduct`) VALUES (?);"; // Don't insert ID, let database auto-increment it.

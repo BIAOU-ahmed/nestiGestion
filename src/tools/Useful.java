@@ -35,6 +35,7 @@ public  class Useful {
 			model.addRow(row1);
 
 		});
+		
 	}
 	
 	//make one function to display all

@@ -52,11 +52,7 @@ public class ArticleDAO extends BaseDAO<Article> {
 
 	public void insert(Article article) throws SQLException {
 		var sql = "INSERT INTO " + getTableName()
-				+ "(`weight`,`amount`,`articleState`,`createdAt`,`idAdministrator`,`idProduct`,`idConditioning`) VALUES (?,?,?,?,?,?,?);"; // Don't
-																																			// insert
-																																			// ID,
-																																			// let
-																																			// database
+				+ "(`weight`,`amount`,`articleState`,`createdAt`,`idAdministrator`,`idProduct`,`idConditioning`) VALUES (?,?,?,?,?,?,?);"; 
 		// auto-increment it.
 
 		var insertArticle = DBConnection.get().prepareStatement(sql);
@@ -93,7 +89,7 @@ public class ArticleDAO extends BaseDAO<Article> {
 		if (resultat.next()) {
 			price = resultat.getDouble("price");
 		}
-		System.out.println(price);
+//		System.out.println(price);
 		return price;
 
 //		SELECT Max(s.price),p.compagnyName FROM provider p INNER JOIN orders o ON p.idProvider = o.idProvider INNER JOIN order_line ol ON o.idOrders = ol.idOrders INNER JOIN sell s ON p.idProvider = s.idProvider WHERE ol.idArticle = 1 AND s.idArticle = 1

@@ -31,6 +31,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import java.util.List;
 
 public class HistoryPanel extends Tab {
@@ -66,10 +67,10 @@ public class HistoryPanel extends Tab {
 		});
 	}
 
-	public void refreshOrdersTable() {
+	public void refreshOrdersTable(List<Order> orders) {
 //		if(comboBoxStateHistory.getSelectedIndex()==0) {
 		var provider = (new ProviderDAO()).find("compagnyName", comboBoxProviderHistory.getSelectedItem().toString());
-		List<Order> orders = (new OrderDAO()).findALLBy("state", "a");//
+//		List<Order> orders = (new OrderDAO()).findALLBy("state", "a");//
 
 		model.setRowCount(0);
 		orders.forEach(s -> {
@@ -228,8 +229,8 @@ public class HistoryPanel extends Tab {
 		tableSelectedOrder.getColumnModel().getColumn(3).setResizable(false);
 		tableSelectedOrder.getColumnModel().getColumn(4).setResizable(false);
 		scrollPaneSelectedOrder.setViewportView(tableSelectedOrder);
-
-		refreshOrdersTable();
+		List<Order> orders = (new OrderDAO()).findALLBy("state", "a");
+		refreshOrdersTable(orders);
 
 		setUpListener();
 		Useful.sort(model, tableOrder);
@@ -254,19 +255,38 @@ public class HistoryPanel extends Tab {
 			}
 		});
 		
+		textFieldOrderNumberHistory.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				var list = (new OrderDAO()).findAllLike("idOrders", textFieldOrderNumberHistory.getText());
+				var newList = new ArrayList<Order>();
+				
+				list.forEach(o->{
+					if(o.getState().equals("a")) {
+						newList.add(o);
+					}
+				});
+				
+//				System.out.println(list.size());
+				refreshOrdersTable(newList);
+
+			}
+		});
+		
+		
 		comboBoxProviderHistory.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-
-				refreshOrdersTable();
+				List<Order> orders = (new OrderDAO()).findALLBy("state", "a");
+				refreshOrdersTable(orders);
 			}
 		});
 
 		comboBoxStateHistory.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-
-				refreshOrdersTable();
+				List<Order> orders = (new OrderDAO()).findALLBy("state", "a");
+				refreshOrdersTable(orders);
 			}
 		});
 
