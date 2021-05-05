@@ -5,6 +5,13 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
+
+import dao.AdministratorDAO;
+import model.Administrator;
+import model.SuperAdmin;
+import tools.AppSettings;
+import tools.Useful;
+
 import javax.swing.JLabel;
 import javax.swing.JButton;
 import javax.swing.SwingConstants;
@@ -15,6 +22,10 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JPasswordField;
 import javax.swing.JRadioButton;
+import java.awt.event.ActionListener;
+import java.sql.Date;
+import java.awt.event.ActionEvent;
+import javax.swing.DefaultComboBoxModel;
 
 public class AdminManagement extends JFrame {
 
@@ -44,6 +55,8 @@ public class AdminManagement extends JFrame {
 	 * Create the frame.
 	 */
 	public AdminManagement() {
+		var adminId = Integer.parseInt(AppSettings.get("loginUser"));
+		SuperAdmin admin1 = (SuperAdmin) (new AdministratorDAO()).find("userId", adminId);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1440, 810);
 		contentPane = new JPanel();
@@ -75,7 +88,37 @@ public class AdminManagement extends JFrame {
 		lblRights.setBounds(200, 360, 300, 40);
 		contentPane.add(lblRights);
 
+		JComboBox comboBoxRights = new JComboBox();
+		comboBoxRights.setModel(new DefaultComboBoxModel(new String[] { "Admin", "Super Admin" }));
+		comboBoxRights.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		comboBoxRights.setBounds(200, 400, 300, 40);
+		contentPane.add(comboBoxRights);
+
 		JButton btnCreate = new JButton("Cr\u00E9er");
+		btnCreate.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+				if (Useful.isUserNameValid(textFieldUserName.getText())
+						&& Useful.isPasswordValid(String.valueOf(passwordField.getPassword()))) {
+					Administrator admin = new Administrator();
+					var userName = textFieldUserName.getText();
+					var password = String.valueOf(passwordField.getPassword());
+					admin.setUserName(userName);
+					admin.setPassword(password);
+					admin.setAdminState("a");
+					java.util.Date sqlDate = new java.util.Date();
+					Date createDate = new Date(sqlDate.getTime());
+					admin.setCreatedAt(createDate);
+					admin1.createAccount(admin);
+
+//					if (comboBoxRights.getToolTipText().equals("Admin")) {
+//						// 2
+//					} else if (comboBoxRights.getToolTipText().equals("Super Admin")) {
+//						// 1
+//					}
+				}
+			}
+		});
 		btnCreate.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		btnCreate.setBounds(100, 520, 100, 40);
 		contentPane.add(btnCreate);
@@ -86,11 +129,6 @@ public class AdminManagement extends JFrame {
 		textFieldUserName.setBounds(200, 200, 300, 40);
 		contentPane.add(textFieldUserName);
 		textFieldUserName.setColumns(10);
-
-		JComboBox comboBoxRights = new JComboBox();
-		comboBoxRights.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		comboBoxRights.setBounds(200, 400, 300, 40);
-		contentPane.add(comboBoxRights);
 
 		JButton btnUpdate = new JButton("Modifier");
 		btnUpdate.setFont(new Font("Tahoma", Font.PLAIN, 16));
