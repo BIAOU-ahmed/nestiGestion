@@ -1,7 +1,10 @@
 package model;
 
 
+import java.sql.SQLException;
 import java.util.*;
+
+import dao.AdministratorDAO;
 
 /**
  * 
@@ -17,8 +20,17 @@ public class SuperAdmin extends Administrator {
     /**
      * 
      */
-    public void createAccount() {
+    public void createAccount(Administrator admin, int role) {
         // TODO implement here
+    	try {
+			(new AdministratorDAO()).insert(admin);
+			if (role == 1) {
+				(new SuperAdminDAO()).insert(admin);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
 
     /**
@@ -35,4 +47,5 @@ public class SuperAdmin extends Administrator {
         // TODO implement here
     }
 
+    
 }
