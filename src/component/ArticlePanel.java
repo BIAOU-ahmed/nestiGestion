@@ -58,21 +58,23 @@ public class ArticlePanel extends Tab {
 	
 	/**
 	 * Create the panel.
+	 * @param c
 	 */
 	public ArticlePanel(Management c) {
 		mainController = c;
-//		comboBoxProductArticle = comboBoxProductArticles;
-//		tabbedPane.addTab("Gestion Article", null, this, null);
 		this.setLayout(null);
 
 		refreshTab();
 
 	}
 
-	public void refreshTable(List<Article> products) {
-//		List<Article> updateProducts = (new ArticleDAO()).findALL();//
+	/**
+	 * refresh the article list table
+	 * @param articles
+	 */
+	public void refreshTable(List<Article> articles) {
 		articleModel.setRowCount(0);
-		products.forEach(p -> {
+		articles.forEach(p -> {
 			
 			Object[] row1 = p.toRow();
 			// Ajout d'une rang�e
@@ -80,9 +82,11 @@ public class ArticlePanel extends Tab {
 
 		});
 		
-//		Useful.displayArticle(updateProducts, articleModel);
 	}
 
+	/**
+	 * refresh the selectable list of products
+	 */
 	public void refreshProduct() {
 		var productList = (new ProductDAO()).findALL();//
 		comboBoxProductArticle.removeAllItems();
@@ -93,6 +97,9 @@ public class ArticlePanel extends Tab {
 		});
 	}
 
+	/**
+	 * refresh the selectable list of conditions 
+	 */
 	public void refreshConditioning() {
 		var conditioning = (new ConditioningDAO()).findALL();//
 		comboBoxConditioningArticle.removeAllItems();
@@ -117,9 +124,13 @@ public class ArticlePanel extends Tab {
 		this.comboBoxProductArticle = comboBoxProductArticle;
 	}
 
+	/**
+	 * this function allows to refresh all the elements of the tab so that
+	 *  in the event of change in the data base on another tab one can 
+	 *  recover the data on the current tab
+	 */
 	@Override
 	public void refreshTab() {
-		// TODO Auto-generated method stub
 		super.refreshTab();
 
 		JLabel lblSearchArticle = new JLabel("Rechercher");
@@ -298,6 +309,10 @@ public class ArticlePanel extends Tab {
 		Useful.sort(articleModel, tableArticle);
 	}
 
+	/**
+	 * this function allows you to add an event listener 
+	 * on all the elements on which you want to put an event
+	 */
 	public void setUpListener() {
 
 		textFieldWeightArticle.addKeyListener(new KeyAdapter() {

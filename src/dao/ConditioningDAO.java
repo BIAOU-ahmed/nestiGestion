@@ -10,6 +10,7 @@ import model.*;
 import tools.DBConnection;
 
 /**
+ * This class contain all query of the conditioning
  * @author ahmed
  *
  */
@@ -24,6 +25,12 @@ public class ConditioningDAO extends BaseDAO<Conditioning> {
 	
 	//INSERT INTO `product` (`idProduct`, `productName`) VALUES (NULL, 'testProduct');
 	
+	/**
+	 * this functions get a resultSet in parameter and 
+	 * return an object of type administrator
+	 * @param resultSet the query ResultSet
+	 * @return the conditioning
+	 */
 	@Override
 	 public Conditioning getFromResultSet(ResultSet rs) throws SQLException
 	    {
@@ -52,6 +59,12 @@ public class ConditioningDAO extends BaseDAO<Conditioning> {
 //  
 //    }
 //	INSERT INTO `conditioning` (`idConditioning`, `conditionningName`) VALUES (NULL, 'paquet'), (NULL, 'lot');
+	
+	/**
+	 * this function update the conditioning pass in parameter in the database
+	 * @param conditioning
+	 * @throws SQLException
+	 */
 	public  void update (Product product) throws SQLException {
         String sql = "UPDATE " + getTableName()
 			+ " SET username = ?,email = ?,first_name = ?,last_name = ?,city = ?,password_hash = ?,registration_date = ?"

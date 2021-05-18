@@ -17,20 +17,19 @@ public class Conditioning {
     /**
      * 
      */
-    public int id;
+    private int id;
 
     /**
      * 
      */
-    public String conditioningName;
+    private String conditioningName;
 
 
 
     /**
      * 
      */
-    public void createConditioner() {
-        // TODO implement here
+    private void createConditioner() {
     }
 
 
@@ -69,6 +68,10 @@ public class Conditioning {
 		this.conditioningName = conditioningName;
 	}
 
+	/**
+	 * object to display
+	 * @return
+	 */
 	public Object[] toRow() {
 		Object[] conditioning = { getId(), getConditioningName()};
 		return conditioning;

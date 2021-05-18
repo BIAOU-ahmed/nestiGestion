@@ -26,52 +26,72 @@ public class Article {
 	/**
 	 * 
 	 */
-	public int id;
+	private int id;
 
 	/**
 	 * 
 	 */
-	public double weight;
+	private double weight;
 
 	/**
 	 * 
 	 */
-	public int amount;
+	private int amount;
 
 	/**
 	 * 
 	 */
-	public String articleState;
+	private String articleState;
 
 	/**
 	 * 
 	 */
-	public Date createdAt;
+	private Date createdAt;
 	private int idAdministrator;
 	private int idProduct;
 
 	private int idConditioning;
 
+	/**
+	 * 
+	 * @param productName
+	 */
 	public void setProductFromName(String productName) {
 		var product = (new ProductDAO()).find("productName", productName);
 		this.idProduct = product.getId();
 	}
 
+	/**
+	 * 
+	 * @return Product
+	 */
 	public Product getProduct() {
 
 		return (new ProductDAO()).find("idProduct", this.idProduct);
 	}
 
+	/**
+	 * 
+	 * @param conditioningName
+	 */
 	public void setConditioningFromName(String conditioningName) {
 		var Conditioning = (new ConditioningDAO()).find("conditioningName", conditioningName);
 		this.idConditioning = Conditioning.getId();
 	}
 
+	/**
+	 * 
+	 * @return Conditioning
+	 */
 	public Conditioning getConditioning() {
 
 		return (new ConditioningDAO()).find("idConditioning", this.idConditioning);
 	}
 
+	/**
+	 * 
+	 * @return Administrator
+	 */
 	public Administrator getAdministrator() {
 
 		return (new AdministratorDAO()).find("idAdministrator", this.idAdministrator);
@@ -93,6 +113,10 @@ public class Article {
 
 	double stock = 0.0;
 
+	/**
+	 * get the stock of the article
+	 * @return stock
+	 */
 	public double getStock() {
 		var allOrderLineToThis = getAllOrderLines();
 		allOrderLineToThis.forEach(orderLine -> {
@@ -101,12 +125,15 @@ public class Article {
 		return stock;
 	}
 
+	/**
+	 * get the price of the article
+	 * @return price
+	 */
 	public double getPrice() {
 		double price = 0.0;
 		try {
 			price = (new ArticleDAO()).getMaxPrice(id);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return price;
@@ -140,8 +167,10 @@ public class Article {
 		this.idConditioning = idConditioning;
 	}
 
-	/**
-	 * 
+	
+	/**create a new article in the database 
+	 * after check is not already exist
+	 * @return boolean
 	 */
 	public boolean create() {
 		var flag = false;
@@ -160,7 +189,6 @@ public class Article {
 				(new ArticleDAO()).insert(article);
 				flag = true;
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		} else {
@@ -169,13 +197,19 @@ public class Article {
 		return flag;
 	}
 
+	/**
+	 * get all order lines with this article
+	 * @return array of OrderLine
+	 */
 	public List<OrderLine> getAllOrderLines() {
 
 		return (new OrderLineDAO()).findALLBy("idArticle", getId());
 	}
 
+	
 	/**
-	 * 
+	 * update the article and check the new values not already exist with another article id 
+	 * @return boolean
 	 */
 	public boolean update() {
 		var flag = false;
@@ -200,7 +234,6 @@ public class Article {
 				(new ArticleDAO()).update(article);
 				flag = true;
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		} else {
@@ -210,8 +243,10 @@ public class Article {
 		return flag;
 	}
 
+	
 	/**
-	 * 
+	 * delete the article
+	 * @return
 	 */
 	public boolean delete() {
 		var flag = false;
@@ -236,7 +271,6 @@ public class Article {
 				(new ArticleDAO()).delete(article);
 				flag = true;
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		} else {
@@ -316,6 +350,10 @@ public class Article {
 		this.createdAt = createdAt;
 	}
 
+	/**
+	 * prepare the object to put in the table which is display for user
+	 * @return object of type article
+	 */
 	public Object[] toRow() {
 		var status = "Disponible";
 		if (getArticleState().equals("b")) {

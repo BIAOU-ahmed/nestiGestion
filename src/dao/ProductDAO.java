@@ -11,6 +11,7 @@ import model.*;
 import tools.DBConnection;
 
 /**
+ * This class contain all query of the product
  * @author ahmed
  *
  */
@@ -25,6 +26,12 @@ public class ProductDAO extends BaseDAO<Product> {
 	
 	//INSERT INTO `product` (`idProduct`, `productName`) VALUES (NULL, 'testProduct');
 	
+	/**
+	 * this functions get a resultSet in parameter and 
+	 * return an object of type Product
+	 * @param resultSet the query ResultSet
+	 * @return the Product
+	 */
 	@Override
 	 public Product getFromResultSet(ResultSet rs) throws SQLException
 	    {
@@ -42,6 +49,11 @@ public class ProductDAO extends BaseDAO<Product> {
 	        return result;
 	    }
 	
+	/**
+	 * insert the product received as a parameter in the database
+	 * @param product
+	 * @throws SQLException
+	 */
 	public void insert (Product product) throws SQLException {
         String sql = "INSERT INTO `product` (`productName`) VALUES (?);"; // Don't insert ID, let database auto-increment it.
 
@@ -52,7 +64,11 @@ public class ProductDAO extends BaseDAO<Product> {
         insertProduct.executeUpdate();
   
     }
-	
+	/**
+	 * updates the Product received as a parameter in the database
+	 * @param product
+	 * @throws SQLException
+	 */
 	public  void update (Product product) throws SQLException {
         String sql = "UPDATE " + getTableName()
 			+ " SET productName = ?"

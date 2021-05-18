@@ -72,8 +72,12 @@ public class ProviderPanel extends Tab {
 		refreshTab();
 	}
 
+	/**
+	 * this is a function that formats what the user enters into a correct phone number format
+	 * @param textSize
+	 * @return formated phone number
+	 */
 	private String formatPhoneNumber(String textSize) {
-		// TODO Auto-generated method stub
 		String result = "";
 		int i = 0;
 		for (char c : textSize.toCharArray()) {
@@ -90,6 +94,9 @@ public class ProviderPanel extends Tab {
 		return result;
 	}
 
+	/**
+	 * refresh table of provider
+	 */
 	public void refreshTable() {
 		List<Provider> updateProvider = (new ProviderDAO()).findALL();//
 		Useful.displayProvider(updateProvider, providerModel);
@@ -274,7 +281,11 @@ public class ProviderPanel extends Tab {
 		refreshTable();
 		setUpListener();
 	}
-
+	
+	/**
+	 * this function allows you to add an event listener 
+	 * on all the elements on which you want to put an event
+	 */
 	public void setUpListener() {
 
 		

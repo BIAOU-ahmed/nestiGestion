@@ -15,6 +15,7 @@ import model.*;
 import tools.DBConnection;
 
 /**
+ * This class contain all query of the article
  * @author ahmed
  *
  */
@@ -29,6 +30,12 @@ public class ArticleDAO extends BaseDAO<Article> {
 	// INSERT INTO `product` (`idProduct`, `productName`) VALUES (NULL,
 	// 'testProduct');
 
+	/**
+	 * this functions get a query in parameter and 
+	 * return an object of type article
+	 * @param resultSet the query ResultSet
+	 * @return the article
+	 */
 	@Override
 	public Article getFromResultSet(ResultSet rs) throws SQLException {
 		Article result = null;
@@ -50,6 +57,12 @@ public class ArticleDAO extends BaseDAO<Article> {
 		return result;
 	}
 
+	/**
+	 * this function take the object administrator in parameter and 
+	 * insert it in the database
+	 * @param article
+	 * @throws SQLException
+	 */
 	public void insert(Article article) throws SQLException {
 		var sql = "INSERT INTO " + getTableName()
 				+ "(`weight`,`amount`,`articleState`,`createdAt`,`idAdministrator`,`idProduct`,`idConditioning`) VALUES (?,?,?,?,?,?,?);"; 
@@ -76,9 +89,19 @@ public class ArticleDAO extends BaseDAO<Article> {
 
 	}
 
+	/**
+	 * this function take on article id in parameter and return 
+	 * the max price of the article
+	 * @param IdArticle
+	 * @return article price
+	 * @throws SQLException
+	 */
 	public double getMaxPrice(int IdArticle) throws SQLException {
 
-		String query = "SELECT Max(s.price) as price FROM provider p INNER JOIN orders o ON p.idProvider = o.idProvider INNER JOIN order_line ol ON o.idOrders = ol.idOrders INNER JOIN sell s ON p.idProvider = s.idProvider WHERE ol.idArticle = ? AND s.idArticle = ?";
+		String query = "SELECT Max(s.price) as price FROM provider p INNER JOIN orders o "
+				+ "ON p.idProvider = o.idProvider INNER JOIN order_line ol "
+				+ "ON o.idOrders = ol.idOrders INNER JOIN sell s "
+				+ "ON p.idProvider = s.idProvider WHERE ol.idArticle = ? AND s.idArticle = ?";
 		PreparedStatement declaration = DBConnection.get().prepareStatement(query);
 
 		declaration.setInt(1, IdArticle);
@@ -95,6 +118,13 @@ public class ArticleDAO extends BaseDAO<Article> {
 //		SELECT Max(s.price),p.compagnyName FROM provider p INNER JOIN orders o ON p.idProvider = o.idProvider INNER JOIN order_line ol ON o.idOrders = ol.idOrders INNER JOIN sell s ON p.idProvider = s.idProvider WHERE ol.idArticle = 1 AND s.idArticle = 1
 	}
 
+	/**
+	 * this function take an article in parameter and 
+	 * find the article in the database if the article 
+	 * is found is returned if not null is returned
+	 * @param article
+	 * @return article
+	 */
 	public Article find(Article article) {
 
 		Article result = null;
@@ -122,6 +152,11 @@ public class ArticleDAO extends BaseDAO<Article> {
 		return result;
 	}
 
+	/**
+	 * this function update the article pass in parameter in the database
+	 * @param article
+	 * @throws SQLException
+	 */
 	public void update(Article article) throws SQLException {
 		String sql = "UPDATE " + getTableName()
 				+ " SET idConditioning = ?, amount =?, articleState =?, weight=? WHERE idArticle = ?;";
@@ -137,6 +172,11 @@ public class ArticleDAO extends BaseDAO<Article> {
 
 	}
 
+	/**
+	 * this delete the article passed in the database
+	 * @param article
+	 * @throws SQLException
+	 */
 	public void delete(Article article) throws SQLException {
 		var sql = "DELETE FROM "  + getTableName()
 		+ " WHERE  	amount = ? AND idProduct = ? AND idConditioning =?"; // Don't insert ID, let database auto-increment it.

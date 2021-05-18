@@ -67,6 +67,9 @@ public class ProductPanel extends Tab {
 
 	}
 
+	/**
+	 * refresh the measurement combo box
+	 */
 	public void refreshMeasurement() {
 		var unitys = (new MeasurementDAO()).findALL();//
 		unitys.forEach(m -> {
@@ -89,6 +92,9 @@ public class ProductPanel extends Tab {
 		this.productList = productList;
 	}
 
+	/**
+	 * refresh products table
+	 */
 	public void refreshTable() {
 		List<Product> updateProducts = (new ProductDAO()).findALL();//
 		Useful.display(updateProducts, productModel);
@@ -201,6 +207,10 @@ public class ProductPanel extends Tab {
 		setUpListener();
 	}
 
+	/**
+	 * this function allows you to add an event listener 
+	 * on all the elements on which you want to put an event
+	 */
 	public void setUpListener() {
 		
 		

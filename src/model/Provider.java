@@ -59,7 +59,7 @@ public class Provider {
 
 
     /**
-     * 
+     * create new provider in database
      */
     public void create() {
     	Provider newProvider = new Provider();
@@ -79,7 +79,7 @@ public class Provider {
     }
 
     /**
-     * 
+     * update the provider in database
      */
     public void update() {
     	Provider updatedProvider = new Provider();
@@ -95,12 +95,15 @@ public class Provider {
 		try {
 			(new ProviderDAO()).update(updatedProvider);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
     	
     }
     boolean result = false;
+    /**
+     * this function allows to know if an order has been placed with this supplier
+     * @return true | false
+     */
     public boolean haveOrderStanding() {
     	
     	var listOrders = (new OrderDAO()).findALLBy("idProvider", getId());

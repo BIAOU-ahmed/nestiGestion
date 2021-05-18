@@ -61,6 +61,11 @@ public class ProviderArticlePanel extends Tab{
 //		refreshTable(comboBoxProvider, providerModel);
 	}
 
+	/**
+	 * refresh the table of items sold by the supplier select 
+	 * @param comboBoxProvider
+	 * @param providerModel
+	 */
 	public void refreshTable(JComboBox<String> comboBoxProvider, DefaultTableModel providerModel) {
 
 		var sell = new Sell();
@@ -78,6 +83,9 @@ public class ProviderArticlePanel extends Tab{
 
 	}
 
+	/**
+	 * refresh provider combo box
+	 */
 	public void refreshProvider() {
 		var provider = (new ProviderDAO()).findALL();//
 		comboBoxProvider.addItem("");
@@ -88,6 +96,9 @@ public class ProviderArticlePanel extends Tab{
 		});
 	}
 
+	/**
+	 * refresh articles combo box
+	 */
 	public void refreshArticle() {
 		var article = (new ArticleDAO()).findALL();//
 
@@ -195,6 +206,10 @@ public class ProviderArticlePanel extends Tab{
 	}
 	
 	
+	/**
+	 * this function allows you to add an event listener 
+	 * on all the elements on which you want to put an event
+	 */
 	public void setUpListener(){
 		
 		textFieldPrice.addKeyListener(new KeyAdapter() {

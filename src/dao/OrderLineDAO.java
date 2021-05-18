@@ -12,7 +12,8 @@ import model.Product;
 import tools.DBConnection;
 
 /**
- * @author jason
+ * This class contain all query of the order
+ * @author jason, ahmed
  *
  */
 
@@ -25,6 +26,12 @@ public class OrderLineDAO extends BaseDAO<OrderLine>{
 	}
 	
 	
+	/**
+	 * this functions get a resultSet in parameter and 
+	 * return an object of type OrderLine
+	 * @param resultSet the query ResultSet
+	 * @return the OrderLine
+	 */
 	@Override
 	public OrderLine getFromResultSet(ResultSet rs) throws SQLException {
 		OrderLine result = null;
@@ -42,15 +49,17 @@ public class OrderLineDAO extends BaseDAO<OrderLine>{
 		return result;
 	}
 
+	/**
+	 * insert new order line in database
+	 * @param orderLine
+	 * @throws SQLException
+	 */
 	public void insert(OrderLine orderLine) throws SQLException {
 		var sql = "INSERT INTO " + getTableName() + "(`idArticle`,`idOrders`,`amount`) VALUES (?,?,?);"; // Don't insert ID, let database
 																					// auto-increment it.
 
 		var insertOrderLine = DBConnection.get().prepareStatement(sql);
 
-//		System.out.println("admin "+article.getIdAdministrator());
-//		System.out.println("product "+article.getIdProduct());
-//		System.out.println("condi "+article.getIdConditioning());
 		insertOrderLine.setInt(1, orderLine.getIdArticle());
 		insertOrderLine.setInt(2, orderLine.getIdOrders());
 		insertOrderLine.setInt(3, orderLine.getAmount());
@@ -59,11 +68,15 @@ public class OrderLineDAO extends BaseDAO<OrderLine>{
 		insertOrderLine.executeUpdate();
 		
 
-//		return order;
-
 	}
 	
-	
+	/**
+	 * this function is to get the total of order passed with an provider
+	 * @param idArticle
+	 * @param idProvider
+	 * @return the amount ordered
+	 * @throws SQLException
+	 */
 	public int getAmountOrderred(int idArticle,int idProvider) throws SQLException {
 		
 		String query = "SELECT SUM(ol.amount) as amount FROM order_line ol INNER JOIN orders o ON ol.idOrders=o.idOrders WHERE ol.idArticle=? AND o.idProvider=?";
@@ -73,34 +86,47 @@ public class OrderLineDAO extends BaseDAO<OrderLine>{
 		declaration.setInt(2, idProvider);
 //		declaration.setString(3, password);
 		ResultSet resultat = declaration.executeQuery();
-		int price = 0;
+		int amount = 0;
 		if (resultat.next()) {
-			price = resultat.getInt("amount");
+			amount = resultat.getInt("amount");
 		}
-		return price;
+		return amount;
 		
 		
 	}
 	
+	/**
+	 * this function allows you to retrieve the total number of
+	 * items received from all that you have ordered from the supplier
+	 * @param idArticle
+	 * @param idProvider
+	 * @return amount receive
+	 * @throws SQLException
+	 */
 	public int getAmountReceive(int idArticle,int idProvider) throws SQLException {
 		
-		String query = "SELECT SUM(ol.amountReceive) as amount FROM order_line ol INNER JOIN orders o ON ol.idOrders=o.idOrders WHERE ol.idArticle=? AND o.idProvider=?";
+		String query = "SELECT SUM(ol.amountReceive) as amount FROM order_line ol INNER JOIN orders o "
+				+ "ON ol.idOrders=o.idOrders WHERE ol.idArticle=? AND o.idProvider=?";
 		PreparedStatement declaration = DBConnection.get().prepareStatement(query);
 		
 		declaration.setInt(1, idArticle);
 		declaration.setInt(2, idProvider);
 //		declaration.setString(3, password);
 		ResultSet resultat = declaration.executeQuery();
-		int price = 0;
+		int amount = 0;
 		if (resultat.next()) {
-			price = resultat.getInt("amount");
+			amount = resultat.getInt("amount");
 		}
-		return price;
+		return amount;
 		
 		
 	}
 	
-	
+	/**
+	 * updates the command line received as a parameter in the database
+	 * @param line
+	 * @throws SQLException
+	 */
 	public  void update (OrderLine line) throws SQLException {
         String sql = "UPDATE " + getTableName()
 			+ " SET amount = ?, amountReceive = ?,deliveryDate =? "
@@ -113,13 +139,6 @@ public class OrderLineDAO extends BaseDAO<OrderLine>{
         updateUser.setDate(3, (Date) line.getDeliveryDate());
         updateUser.setInt(4,  line.getIdArticle());
         updateUser.setInt(5,  line.getIdOrders());
-//        updateUser.setString(3,  user.getFirstName());
-//        updateUser.setString(4,  user.getLastName());
-//        updateUser.setString(5,  user.getCity());
-//        updateUser.setString(6,  user.getPasswordHash());
-//        updateUser.setString(7,  user.getRegistrationDate());
-//        updateUser.setInt(8,  user.getUserId());
-//        
         updateUser.executeUpdate();
 
     }

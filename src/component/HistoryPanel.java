@@ -56,6 +56,9 @@ public class HistoryPanel extends Tab {
 
 	}
 
+	/**
+	 * refresh the selectable list of provider
+	 */
 	public void refreshProvider() {
 		var provider = (new ProviderDAO()).findALL();//
 		comboBoxProviderHistory.removeAllItems();
@@ -67,10 +70,12 @@ public class HistoryPanel extends Tab {
 		});
 	}
 
+	/**
+	 * the function refreshes the order table according to supplier and order status
+	 * @param orders array of orders
+	 */
 	public void refreshOrdersTable(List<Order> orders) {
-//		if(comboBoxStateHistory.getSelectedIndex()==0) {
 		var provider = (new ProviderDAO()).find("compagnyName", comboBoxProviderHistory.getSelectedItem().toString());
-//		List<Order> orders = (new OrderDAO()).findALLBy("state", "a");//
 
 		model.setRowCount(0);
 		orders.forEach(s -> {
@@ -83,31 +88,24 @@ public class HistoryPanel extends Tab {
 
 						if (s.getDisplayState().equals(comboBoxStateHistory.getSelectedItem().toString())) {
 							row1 = s.toRow();
-//							System.out.println("state "+s.getDisplayState());
-//							model.addRow(row1);
 						}
 					} else {
 						row1 = s.toRow();
 
-						// Ajout d'une rang�e
 
 					}
 
 				}
 			} else {
-//				row1 = s.toRow();
 
 				if (comboBoxStateHistory.getSelectedIndex() != 0) {
 
 					if (s.getDisplayState().equals(comboBoxStateHistory.getSelectedItem().toString())) {
 						row1 = s.toRow();
-//						System.out.println("state "+s.getDisplayState());
-//						model.addRow(row1);
 					}
 				} else {
 					row1 = s.toRow();
 
-					// Ajout d'une rang�e
 
 				}
 			}
@@ -117,8 +115,6 @@ public class HistoryPanel extends Tab {
 
 		});
 
-//			Useful.displayOrder(ordes, model,provider.getId());
-//		}
 	}
 
 	@Override
@@ -236,6 +232,10 @@ public class HistoryPanel extends Tab {
 		Useful.sort(model, tableOrder);
 	}
 
+	/**
+	 * this function allows you to add an event listener 
+	 * on all the elements on which you want to put an event
+	 */
 	public void setUpListener() {
 
 		

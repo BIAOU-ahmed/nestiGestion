@@ -11,6 +11,7 @@ import model.*;
 import tools.DBConnection;
 
 /**
+ * This class contain all query of the order
  * @author ahmed
  *
  */
@@ -25,6 +26,12 @@ public class UtensilDAO extends BaseDAO<Utensil> {
 	
 	//INSERT INTO `product` (`idProduct`, `productName`) VALUES (NULL, 'testProduct');
 	
+	/**
+	 * this functions get a resultSet in parameter and 
+	 * return an object of type Utensil
+	 * @param resultSet the query ResultSet
+	 * @return the Utensil
+	 */
 	@Override
 	 public Utensil getFromResultSet(ResultSet rs) throws SQLException
 	    {
@@ -40,9 +47,13 @@ public class UtensilDAO extends BaseDAO<Utensil> {
 	        
 	        return result;
 	    }
-	 
+	 /**
+	  * insert the product id in the utensil table 
+	  * @param utensil
+	  * @throws SQLException
+	  */
 	public void insert (Utensil utensil) throws SQLException {
-        var sql = "INSERT INTO "+ getTableName() +"(`idProduct`) VALUES (?);"; // Don't insert ID, let database auto-increment it.
+        var sql = "INSERT INTO "+ getTableName() +"(`idProduct`) VALUES (?);";
 
         PreparedStatement insertUtensil = DBConnection.get().prepareStatement(sql);
      
@@ -52,8 +63,13 @@ public class UtensilDAO extends BaseDAO<Utensil> {
   
     }
 	
+	/**
+	 * delete the utensil
+	 * @param utensil
+	 * @throws SQLException
+	 */
 	public void delete (Utensil utensil) throws SQLException {
-        var sql = "DELETE FROM `utensil` WHERE  	idProduct = ?"; // Don't insert ID, let database auto-increment it.
+        var sql = "DELETE FROM `utensil` WHERE  	idProduct = ?";
 
         var insertUtensil = DBConnection.get().prepareStatement(sql);
      

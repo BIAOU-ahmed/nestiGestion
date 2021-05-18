@@ -42,6 +42,10 @@ public class Ingredient extends Product {
 
 
 
+	/**
+	 * 
+	 * @param u
+	 */
 	public void setMeasurementFromUnit(String u) {
     	var m =(new MeasurementDAO()).find("unit",u);
     	this.measurementId = m.getId();
@@ -52,6 +56,9 @@ public class Ingredient extends Product {
     	return (new MeasurementDAO()).find("idMeasurement",this.measurementId);
     }
     
+    /**
+     * update the ingredient in the database
+     */
     public void update() {
     	
     	Ingredient ing = new Ingredient();
@@ -61,7 +68,6 @@ public class Ingredient extends Product {
     	try {
 			(new IngredientDAO()).update(ing);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
     	

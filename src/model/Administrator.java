@@ -9,146 +9,146 @@ import com.lambdaworks.crypto.SCryptUtil;
  */
 public class Administrator {
 
-    /**
-     * Default constructor
-     */
-    public Administrator() {
-    }
+	/**
+	 * Default constructor
+	 */
+	public Administrator() {
+	}
 
-    /**
-     * 
-     */
-    public int id;
+	/**
+	 * 
+	 */
+	private int id;
 
-    /**
-     * 
-     */
-    public String userName;
+	/**
+	 * 
+	 */
+	private String userName;
 
-    /**
-     * 
-     */
-    public String password;
+	/**
+	 * 
+	 */
+	private String password;
 
-    /**
-     * 
-     */
-    public String adminState;
+	/**
+	 * 
+	 */
+	private String adminState;
 
-    /**
-     * 
-     */
-    public Date createdAt;
+	/**
+	 * 
+	 */
+	private Date createdAt;
 
+	/**
+	 * 
+	 * @param plaintTextPassword
+	 * @return
+	 */
+	public boolean isPassword(String plaintTextPassword) {
+		boolean matched = SCryptUtil.check(plaintTextPassword, this.password);
+		return matched;
 
+	}
 
-    public boolean isPassword(String plaintTextPassword) {
-    	boolean matched = SCryptUtil.check(plaintTextPassword, this.password);
-    	return matched;
-    	
-    }
+	/**
+	 * 
+	 */
+	public void ordering() {
+		// TODO implement here
+	}
 
-    /**
-     * 
-     */
-    public void ordering() {
-        // TODO implement here
-    }
+	/**
+	 * 
+	 */
+	public void createArticle(Article article) {
+		article.create();
+	}
 
-    /**
-     * 
-     */
-    public void createArticle(Article article) {
-        article.create();
-    }
-    /**
-     * 
-     */
-    public void updateArticle(Article article) {
-    	article.update();
-    }
+	/**
+	 * 
+	 */
+	public void updateArticle(Article article) {
+		article.update();
+	}
 
-    /**
-     * 
-     */
-    public void createProvider(Provider provider) {
-    	provider.create();
-    }
+	/**
+	 * 
+	 */
+	public void createProvider(Provider provider) {
+		provider.create();
+	}
 
-    
-    /**
-     * 
-     */
-    public void updateProvider(Provider provider) {
-    	provider.update();
-    }
+	/**
+	 * 
+	 */
+	public void updateProvider(Provider provider) {
+		provider.update();
+	}
 
-    
-    /**
-     * 
-     */
-    public void createOrder(Order order) {
-    	order.create(order);
-    }
-    
-    /**
-     * 
-     */
-    public void deleteProvider() {
-        // TODO implement here
-    }
+	/**
+	 * 
+	 */
+	public void createOrder(Order order) {
+		order.create(order);
+	}
 
-    /**
-     * 
-     */
-    public void addProduct() {
-        // TODO implement here
-    }
+	/**
+	 * 
+	 */
+	public void deleteProvider() {
+		// TODO implement here
+	}
 
-    /**
-     * 
-     */
-    public void updateProduct() {
-        // TODO implement here
-    }
+	/**
+	 * 
+	 */
+	public void addProduct() {
+		// TODO implement here
+	}
 
-    /**
-     * 
-     */
-    public void deleteProduct() {
-        // TODO implement here
-    }
+	/**
+	 * 
+	 */
+	public void updateProduct() {
+		// TODO implement here
+	}
 
-    /**
-     * 
-     */
-    public void showProvider() {
-        // TODO implement here
-    }
+	/**
+	 * 
+	 */
+	public void deleteProduct() {
+		// TODO implement here
+	}
 
-    /**
-     * 
-     */
-    public void manageStateOrder() {
-        // TODO implement here
-    }
+	/**
+	 * 
+	 */
+	public void showProvider() {
+		// TODO implement here
+	}
 
-    /**
-     * 
-     */
-    public void updateArticleStorage() {
-        // TODO implement here
-    }
+	/**
+	 * 
+	 */
+	public void manageStateOrder() {
+		// TODO implement here
+	}
 
+	/**
+	 * 
+	 */
+	public void updateArticleStorage() {
+		// TODO implement here
+	}
 
+	/**
+	 * 
+	 */
+	public void isSuperAdmin() {
+		// TODO implement here
 
-    /**
-     * 
-     */
-    public void isSuperAdmin() {
-        // TODO implement here
-    	
-    }
+	}
 
 	/**
 	 * @return the id
@@ -220,10 +220,9 @@ public class Administrator {
 		this.createdAt = createdAt;
 	}
 
-    public Object[] toRow() {
-    	Object[] administrator = { getId(), getUserName(), "getdroits", getCreatedAt(), getAdminState()};
-    	return administrator;
-    }
-    
+	public Object[] toRow() {
+		Object[] administrator = { getId(), getUserName(), "getdroits", getCreatedAt(), getAdminState() };
+		return administrator;
+	}
 
 }

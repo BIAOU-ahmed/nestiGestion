@@ -30,13 +30,13 @@ public class Product extends DBConnection {
 	/**
 	 * 
 	 */
-	public int id;
+	protected int id;
 
 	/**
 	 * 
 	 */
-	public String productName;
-	public String type;
+	protected String productName;
+	protected String type;
 
 	/**
 	 * @return the type

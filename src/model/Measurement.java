@@ -12,12 +12,12 @@ public class Measurement {
 	 /**
      * 
      */
-    public int id;
+	private int id;
 
     /**
      * 
      */
-    public String unit;
+	private String unit;
     
     
     

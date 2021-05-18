@@ -167,6 +167,10 @@ public class ProfilePanel extends Tab {
 		setUpListener();
 	}
 
+	/**
+	 * this function allows you to add an event listener 
+	 * on all the elements on which you want to put an event
+	 */
 	public void setUpListener() {
 
 		// Bouton qui permet de lancer la page de gestion des admins, le bouton

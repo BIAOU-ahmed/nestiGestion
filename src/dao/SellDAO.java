@@ -12,6 +12,7 @@ import model.*;
 import tools.DBConnection;
 
 /**
+ * This class contain all query of the provider
  * @author ahmed
  *
  */
@@ -26,6 +27,12 @@ public class SellDAO extends BaseDAO<Sell> {
 	// INSERT INTO `product` (`idProduct`, `productName`) VALUES (NULL,
 	// 'testProduct');
 
+	/**
+	 * this functions get a resultSet in parameter and 
+	 * return an object of type Sell
+	 * @param resultSet the query ResultSet
+	 * @return the Sell
+	 */
 	@Override
 	public Sell getFromResultSet(ResultSet rs) throws SQLException {
 		Sell result = null;
@@ -37,14 +44,18 @@ public class SellDAO extends BaseDAO<Sell> {
 			result.setIdProvider(rs.getInt("idProvider"));
 			result.setPrice(rs.getDouble("price"));
 			result.setUpdateDate(rs.getDate("updateDate"));
-			
+		
 
 		}
 
 		return result;
 	}
 
-	
+	/**
+	 * find the sell by the article and provider
+	 * @param sell
+	 * @return sell
+	 */
 	public Sell findByProviderArticle(Sell sell) {
 		Sell result = null;
 
@@ -88,10 +99,14 @@ public class SellDAO extends BaseDAO<Sell> {
 		sell.setUpdateDate(result.getUpdateDate());
 		
 	}
+	
+	/**
+	 * insert the sell received as a parameter in the database
+	 * @param sell
+	 * @throws SQLException
+	 */
 	public void insert(Sell sell) throws SQLException {
-		var sql = "INSERT INTO " + getTableName() + "(idProvider, idArticle, price, updateDate) VALUES (?,?,?,?);"; // Don't insert ID, let database
-																					// auto-increment it.
-
+		var sql = "INSERT INTO " + getTableName() + "(idProvider, idArticle, price, updateDate) VALUES (?,?,?,?);"; 
 		var insertArticle = DBConnection.get().prepareStatement(sql);
 
 		System.out.println("provi"+ sell.getIdProvider() +"articl"+sell.getIdArticle());
@@ -104,6 +119,11 @@ public class SellDAO extends BaseDAO<Sell> {
 
 	}
 
+	/**
+	 * update the sell received as a parameter in the database
+	 * @param sell
+	 * @throws SQLException
+	 */
 	public void update(Sell sell) throws SQLException {
 		String sql = "UPDATE " + getTableName() + " SET price = ?,updateDate=?" + "WHERE idProvider = ? AND idArticle = ?;";
 
@@ -117,6 +137,11 @@ public class SellDAO extends BaseDAO<Sell> {
 
 	}
 	
+	/**
+	 * delete the received sell in the database
+	 * @param sell
+	 * @throws SQLException
+	 */
 	public void delete (Sell sell) throws SQLException {
         var sql = "DELETE FROM " +getTableName() +" WHERE  	idProvider = ? AND idArticle = ?"; // Don't insert ID, let database auto-increment it.
 

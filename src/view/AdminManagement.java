@@ -109,7 +109,7 @@ public class AdminManagement extends JFrame {
 					java.util.Date sqlDate = new java.util.Date();
 					Date createDate = new Date(sqlDate.getTime());
 					admin.setCreatedAt(createDate);
-					admin1.createAccount(admin);
+//					admin1.createAccount(admin);
 
 //					if (comboBoxRights.getToolTipText().equals("Admin")) {
 //						// 2

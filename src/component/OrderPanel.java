@@ -92,6 +92,9 @@ public class OrderPanel extends Tab {
 		Useful.sort(modelOrder, tableOrder);
 	}
 
+	/**
+	 * refresh the combo box of provider
+	 */
 	public void refreshProvider() {
 		var provider = (new ProviderDAO()).findALLBy("providerState", "a");//
 		comboBoxProviderOrder.removeAllItems();
@@ -103,6 +106,9 @@ public class OrderPanel extends Tab {
 		});
 	}
 
+	/**
+	 * refresh the article combo box
+	 */
 	public void refreshArticle() {
 		if (!comboBoxProviderOrder.getSelectedItem().toString().isEmpty()) {
 			var provider = (new ProviderDAO()).find("compagnyName", comboBoxProviderOrder.getSelectedItem().toString());
@@ -124,6 +130,9 @@ public class OrderPanel extends Tab {
 		textFieldQtyOrder.setText("");
 	}
 
+	/**
+	 * refresh order lines table
+	 */
 	public void refreshTable() {
 //		JComboBox<String> comboBoxArticleOrder, JComboBox<String> comboBoxOrderNumberOrder
 		if (comboBoxOrderNumberOrder.getSelectedItem() != null) {
@@ -157,7 +166,6 @@ public class OrderPanel extends Tab {
 
 	@Override
 	public void refreshTab() {
-		// TODO Auto-generated method stub
 		super.refreshTab();
 
 		var orderList = (new OrderDAO()).getActiveOrders();
@@ -335,6 +343,10 @@ public class OrderPanel extends Tab {
 	}
 
 	
+	/**
+	 * this function allows you to add an event listener 
+	 * on all the elements on which you want to put an event
+	 */
 	public void setUpListener() {
 		
 		btnDeleteOrder.addMouseListener(new MouseAdapter() {
@@ -363,7 +375,6 @@ public class OrderPanel extends Tab {
 						refreshProvider();
 
 					} catch (SQLException e1) {
-						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
 

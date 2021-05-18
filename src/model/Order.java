@@ -16,28 +16,25 @@ import dao.SellDAO;
  */
 public class Order {
 
-	/**
-	 * Default constructor
-	 */
-
+	
 	private int idAdministrator;
 	private int idProvider;
 
 	/**
 	 * 
 	 */
-	public int id;
+	private int id;
 
 	
 	/**
 	 * 
 	 */
-	public Date orderDate;
+	private Date orderDate;
 
 	/**
 	 * 
 	 */
-	public String state;
+	private String state;
 
 	public Order() {
 		java.util.Date sqlDate = new java.util.Date();
@@ -47,6 +44,10 @@ public class Order {
 
 	Double price = 0.0;
 
+	/**
+	 * get the price of the order
+	 * @return price
+	 */
 	public Double getPrice() {
 		var allOrderLine = (new OrderLineDAO()).findALLBy("idOrders", getId());
 
@@ -58,28 +59,52 @@ public class Order {
 		return price;
 	}
 
+	/**
+	 * set the provider with her name
+	 * @param providerName the provider name
+	 */
 	public void setProviderFromName(String providerName) {
 		var provider = (new ProviderDAO()).find("compagnyName", providerName);
 		this.idProvider = provider.getId();
 	}
 
+	/**
+	 * 
+	 * @return idAdministrator
+	 */
 	public int getIdAdministrator() {
 		return idAdministrator;
 	}
 
+	/**
+	 * set the id administrator
+	 * @param idAdministrator the administrator id
+	 */
 	public void setIdAdministrator(int idAdministrator) {
 		this.idAdministrator = idAdministrator;
 	}
 
+	/**
+	 * 
+	 * @return Provider
+	 */
 	public Provider getProvider() {
 
 		return (new ProviderDAO()).find("idProvider", this.idProvider);
 	}
 
+	/**
+	 * 
+	 * @return idProvider
+	 */
 	public int getIdProvider() {
 		return idProvider;
 	}
 
+	/**
+	 * set the id provider
+	 * @param idProvider the provider id
+	 */
 	public void setIdProvider(int idProvider) {
 		this.idProvider = idProvider;
 	}

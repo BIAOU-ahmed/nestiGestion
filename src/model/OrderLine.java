@@ -25,16 +25,16 @@ public class OrderLine {
 	/**
 	 * 
 	 */
-	public int amount;
+	private int amount;
 
 	private int idArticle;
 	private int idOrders;
-	public int amountReceive;
+	private int amountReceive;
 
 	/**
 	 * 
 	 */
-	public Date deliveryDate;
+	private Date deliveryDate;
 
 	public Order getOrder() {
 

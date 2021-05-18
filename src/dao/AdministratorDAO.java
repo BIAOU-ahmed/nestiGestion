@@ -13,17 +13,27 @@ import model.Product;
 import tools.DBConnection;
 
 /**
+ * This class contain all query of the administrator
  * @author ahmed
  *
  */
 public class AdministratorDAO extends BaseDAO<Administrator> {
 
+	/**
+	 * this is just the name of the table in the database
+	 */
 	@Override
 	public String getTableName() {
 
 		return "administrator";
 	}
 
+	/**
+	 * this functions get a resultSet in parameter and 
+	 * return an object of type administrator
+	 * @param resultSet the query ResultSet
+	 * @return the administrator
+	 */
 	@Override
 	public Administrator getFromResultSet(ResultSet rs) throws SQLException {
 		Administrator result = null;
@@ -42,6 +52,12 @@ public class AdministratorDAO extends BaseDAO<Administrator> {
 		return result;
 	}
 
+	/**
+	 * this function take the object administrator in parameter and 
+	 * insert it in the database
+	 * @param admin
+	 * @throws SQLException
+	 */
 	public void insert(Administrator admin) throws SQLException {
 		var sql = "INSERT INTO " + getTableName()
 				+ "(`userName`,`adminState`,`createAt`,`password`) VALUES (?,?,?,?);"; // Don't

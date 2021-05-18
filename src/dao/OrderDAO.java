@@ -14,7 +14,8 @@ import model.OrderLine;
 import tools.DBConnection;
 
 /**
- * @author jason
+ * This class contain all query of the order
+ * @author jason, ahmed
  *
  */
 
@@ -27,6 +28,12 @@ public class OrderDAO extends BaseDAO<Order>{
 	}
 	
 	
+	/**
+	 * this functions get a resultSet in parameter and 
+	 * return an object of type order
+	 * @param resultSet the query ResultSet
+	 * @return the order
+	 */
 	@Override
 	public Order getFromResultSet(ResultSet rs) throws SQLException {
 		Order result = null;
@@ -44,6 +51,10 @@ public class OrderDAO extends BaseDAO<Order>{
 		return result;
 	}
 
+	/**
+	 * this function select all order with the state'w' in the database
+	 * @return array of order
+	 */
 	public List<Order> getActiveOrders() {
 		var result = new ArrayList<Order>();
 		PreparedStatement find;
@@ -56,7 +67,6 @@ public class OrderDAO extends BaseDAO<Order>{
 			result = getAllFromResultSet(allRs);
 			
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -76,6 +86,11 @@ public class OrderDAO extends BaseDAO<Order>{
 		return result;
 	}
 	
+	/**
+	 * insert new oder in the database
+	 * @param order
+	 * @throws SQLException
+	 */
 	public void insert(Order order) throws SQLException {
 		var sql = "INSERT INTO " + getTableName() + "(`orderDate`,`state`,`idProvider`,`idAdministrator`) VALUES (?,?,?,?);"; // Don't insert ID, let database
 																					// auto-increment it.
@@ -102,6 +117,11 @@ public class OrderDAO extends BaseDAO<Order>{
 
 	}
 	
+	/**
+	 * update the order passed
+	 * @param order
+	 * @throws SQLException
+	 */
 	public  void update (Order order) throws SQLException {
         String sql = "UPDATE " + getTableName()
 			+ " SET state = ? "
