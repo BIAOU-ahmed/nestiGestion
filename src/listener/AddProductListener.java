@@ -43,7 +43,9 @@ public class AddProductListener implements ActionListener {
 		System.out.println(type);
 		if (libele || type) {
 
-			JOptionPane.showMessageDialog(null, "Required camp is empty");
+			JOptionPane.showInternalMessageDialog(null, "Tous les champs ne sont pas remplis.", "Champs vide",
+					JOptionPane.INFORMATION_MESSAGE);
+
 		} else {
 			var myProduct = new Product();
 			myProduct.create(libeleTxt, typeCombo, unityCombo);

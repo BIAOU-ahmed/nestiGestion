@@ -54,7 +54,7 @@ public class Article {
 
 	/**
 	 * 
-	 * @param productName
+	 * @param productName the name of the product
 	 */
 	public void setProductFromName(String productName) {
 		var product = (new ProductDAO()).find("productName", productName);
@@ -72,7 +72,7 @@ public class Article {
 
 	/**
 	 * 
-	 * @param conditioningName
+	 * @param conditioningName the conditioning name
 	 */
 	public void setConditioningFromName(String conditioningName) {
 		var Conditioning = (new ConditioningDAO()).find("conditioningName", conditioningName);
@@ -192,7 +192,7 @@ public class Article {
 				e.printStackTrace();
 			}
 		} else {
-			JOptionPane.showMessageDialog(null, "Article alrady exist");
+			JOptionPane.showMessageDialog(null, "L'article existe déjà");
 		}
 		return flag;
 	}
@@ -246,7 +246,7 @@ public class Article {
 	
 	/**
 	 * delete the article
-	 * @return
+	 * @return true | false
 	 */
 	public boolean delete() {
 		var flag = false;

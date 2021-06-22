@@ -4,6 +4,8 @@ import java.util.*;
 
 import com.lambdaworks.crypto.SCryptUtil;
 
+import dao.SuperAdminDAO;
+
 /**
  * 
  */
@@ -41,9 +43,9 @@ public class Administrator {
 	private Date createdAt;
 
 	/**
-	 * 
-	 * @param plaintTextPassword
-	 * @return
+	 * checks if the password entered matches the user's password
+	 * @param plaintTextPassword the non-hashed password  
+	 * @return true | false
 	 */
 	public boolean isPassword(String plaintTextPassword) {
 		boolean matched = SCryptUtil.check(plaintTextPassword, this.password);
@@ -59,35 +61,40 @@ public class Administrator {
 	}
 
 	/**
-	 * 
+	 * create a new article in the database
+	 * @param article the object article
 	 */
 	public void createArticle(Article article) {
 		article.create();
 	}
 
 	/**
-	 * 
+	 * update an article in the database
+	 * @param article the object article
 	 */
 	public void updateArticle(Article article) {
 		article.update();
 	}
 
 	/**
-	 * 
+	 * create a new provider 
+	 * @param provider the provider  
 	 */
 	public void createProvider(Provider provider) {
 		provider.create();
 	}
 
 	/**
-	 * 
+	 * update the provider passed
+	 * @param provider the provider
 	 */
 	public void updateProvider(Provider provider) {
 		provider.update();
 	}
 
 	/**
-	 * 
+	 * add new order in the database
+	 * @param order the order
 	 */
 	public void createOrder(Order order) {
 		order.create(order);
@@ -219,9 +226,19 @@ public class Administrator {
 	public void setCreatedAt(Date createdAt) {
 		this.createdAt = createdAt;
 	}
+	
+	public String getRole() {
+		String role = "Administrateur";
+		var isSuperAdmin =  (new SuperAdminDAO()).find("idAdministrator", this.getId());
+		if(isSuperAdmin == null) {
+			 role = "Super Administrateur";
+		}
+		return adminState;
+		
+	}
 
 	public Object[] toRow() {
-		Object[] administrator = { getId(), getUserName(), "getdroits", getCreatedAt(), getAdminState() };
+		Object[] administrator = { getId(), getUserName(), getRole(), getCreatedAt(), getAdminState() };
 		return administrator;
 	}
 

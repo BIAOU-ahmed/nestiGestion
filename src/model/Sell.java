@@ -32,7 +32,7 @@ public class Sell {
 
 	/**
 	 * 
-	 * @param compagnyName
+	 * @param compagnyName the name of the company 
 	 */
 	public void setProviderFromName(String compagnyName) {
 		var provider = (new ProviderDAO()).find("compagnyName", compagnyName);
@@ -197,7 +197,7 @@ public class Sell {
 	
 	/**
 	 * 
-	 * @return
+	 * @return provider
 	 */
 	public Provider getProvider() {
 		

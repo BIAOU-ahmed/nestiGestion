@@ -31,7 +31,7 @@ public class OrderDAO extends BaseDAO<Order>{
 	/**
 	 * this functions get a resultSet in parameter and 
 	 * return an object of type order
-	 * @param resultSet the query ResultSet
+	 * @param rs the query ResultSet
 	 * @return the order
 	 */
 	@Override
@@ -88,8 +88,8 @@ public class OrderDAO extends BaseDAO<Order>{
 	
 	/**
 	 * insert new oder in the database
-	 * @param order
-	 * @throws SQLException
+	 * @param order the order
+	 * @throws SQLException all SQL Exception
 	 */
 	public void insert(Order order) throws SQLException {
 		var sql = "INSERT INTO " + getTableName() + "(`orderDate`,`state`,`idProvider`,`idAdministrator`) VALUES (?,?,?,?);"; // Don't insert ID, let database
@@ -119,8 +119,8 @@ public class OrderDAO extends BaseDAO<Order>{
 	
 	/**
 	 * update the order passed
-	 * @param order
-	 * @throws SQLException
+	 * @param order the object order
+	 * @throws SQLException all SQL Exception
 	 */
 	public  void update (Order order) throws SQLException {
         String sql = "UPDATE " + getTableName()

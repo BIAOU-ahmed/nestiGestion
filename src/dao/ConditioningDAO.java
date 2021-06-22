@@ -28,7 +28,7 @@ public class ConditioningDAO extends BaseDAO<Conditioning> {
 	/**
 	 * this functions get a resultSet in parameter and 
 	 * return an object of type administrator
-	 * @param resultSet the query ResultSet
+	 * @param rs the query ResultSet
 	 * @return the conditioning
 	 */
 	@Override
@@ -48,41 +48,42 @@ public class ConditioningDAO extends BaseDAO<Conditioning> {
 	        return result;
 	    }
 	
-//	public void insert (Product product) throws SQLException {
-//        var sql = "INSERT INTO `product` (`productName`) VALUES (?);"; // Don't insert ID, let database auto-increment it.
-//
-//        var insertProduct = DBConnection.get().prepareStatement(sql);
-//     
-//        insertProduct.setString(1,product.getProductName());
-//        
-//        insertProduct.executeUpdate();
-//  
-//    }
-//	INSERT INTO `conditioning` (`idConditioning`, `conditionningName`) VALUES (NULL, 'paquet'), (NULL, 'lot');
-	
 	/**
-	 * this function update the conditioning pass in parameter in the database
-	 * @param conditioning
-	 * @throws SQLException
+	 * this function take the object Conditioning in parameter and insert it in the
+	 * database
+	 * 
+	 * @param conditioning the object Conditioning
+	 * @throws SQLException all SQL Exceptions
 	 */
-	public  void update (Product product) throws SQLException {
-        String sql = "UPDATE " + getTableName()
-			+ " SET username = ?,email = ?,first_name = ?,last_name = ?,city = ?,password_hash = ?,registration_date = ?"
-			+ "WHERE user_id = ?;";
+	public void insert(Conditioning conditioning) throws SQLException {
+		var sql = "INSERT INTO " + getTableName()
+				+ "(`conditioningName`)"
+				+ " VALUES (?);";
 
-//        var updateUser = DatabaseManager.getConnection().prepareStatement(sql);
-//        updateUser.setString(1,  user.getUsername());
-//        updateUser.setString(2,  user.getEmail());
-//        updateUser.setString(3,  user.getFirstName());
-//        updateUser.setString(4,  user.getLastName());
-//        updateUser.setString(5,  user.getCity());
-//        updateUser.setString(6,  user.getPasswordHash());
-//        updateUser.setString(7,  user.getRegistrationDate());
-//        updateUser.setInt(8,  user.getUserId());
-//        
-//        updateUser.executeUpdate();
+		var insertArticle = DBConnection.get().prepareStatement(sql);
 
-    }
+		insertArticle.setString(1, conditioning.getConditioningName());
+
+		insertArticle.executeUpdate();
+
+	}
+
+	/**
+	 * this function update the Conditioning pass in parameter in the database
+	 * @param Conditioning the object article
+	 * @throws SQLException all SQL Exception
+	 */
+	public void update(Conditioning conditioning) throws SQLException {
+		String sql = "UPDATE " + getTableName()
+				+ " SET conditioningName = ? WHERE idConditioning = ?;";
+
+		var updateUser = DBConnection.get().prepareStatement(sql);
+		updateUser.setString(1, conditioning.getConditioningName());
+		updateUser.setInt(2, conditioning.getId());
+
+		updateUser.executeUpdate();
+
+	}
 	
 	 
 }

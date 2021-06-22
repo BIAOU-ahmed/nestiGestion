@@ -128,8 +128,8 @@ public class Login extends JFrame {
 	 * information entered by the user and verify if it is correct.
 	 *  If all the information is correct the user is connected, 
 	 *  if not an error message is displayed.
-	 * @param username
-	 * @param password
+	 * @param username the login enter by the user
+	 * @param password the password enter by the user
 	 * @return true | false
 	 */
 	public boolean logIn(String username, String password) {

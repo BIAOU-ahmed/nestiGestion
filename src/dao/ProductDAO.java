@@ -29,7 +29,7 @@ public class ProductDAO extends BaseDAO<Product> {
 	/**
 	 * this functions get a resultSet in parameter and 
 	 * return an object of type Product
-	 * @param resultSet the query ResultSet
+	 * @param rs the query ResultSet
 	 * @return the Product
 	 */
 	@Override
@@ -51,8 +51,8 @@ public class ProductDAO extends BaseDAO<Product> {
 	
 	/**
 	 * insert the product received as a parameter in the database
-	 * @param product
-	 * @throws SQLException
+	 * @param product the product
+	 * @throws SQLException all SQL Exception
 	 */
 	public void insert (Product product) throws SQLException {
         String sql = "INSERT INTO `product` (`productName`) VALUES (?);"; // Don't insert ID, let database auto-increment it.
@@ -66,8 +66,8 @@ public class ProductDAO extends BaseDAO<Product> {
     }
 	/**
 	 * updates the Product received as a parameter in the database
-	 * @param product
-	 * @throws SQLException
+	 * @param product the product 
+	 * @throws SQLException all SQL Exception
 	 */
 	public  void update (Product product) throws SQLException {
         String sql = "UPDATE " + getTableName()

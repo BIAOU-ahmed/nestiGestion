@@ -43,14 +43,18 @@ public class Ingredient extends Product {
 
 
 	/**
-	 * 
-	 * @param u
+	 * set the object Measurement from the measurement name
+	 * @param u the measurement name
 	 */
 	public void setMeasurementFromUnit(String u) {
     	var m =(new MeasurementDAO()).find("unit",u);
     	this.measurementId = m.getId();
     }
 
+	/**
+	 * 
+	 * @return measurement
+	 */
     public Measurement getMeasurement() {
     	
     	return (new MeasurementDAO()).find("idMeasurement",this.measurementId);

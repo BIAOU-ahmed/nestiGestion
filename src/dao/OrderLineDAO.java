@@ -29,7 +29,7 @@ public class OrderLineDAO extends BaseDAO<OrderLine>{
 	/**
 	 * this functions get a resultSet in parameter and 
 	 * return an object of type OrderLine
-	 * @param resultSet the query ResultSet
+	 * @param rs the query ResultSet
 	 * @return the OrderLine
 	 */
 	@Override
@@ -51,8 +51,8 @@ public class OrderLineDAO extends BaseDAO<OrderLine>{
 
 	/**
 	 * insert new order line in database
-	 * @param orderLine
-	 * @throws SQLException
+	 * @param orderLine the object of type orderLine
+	 * @throws SQLException all SQL Exception
 	 */
 	public void insert(OrderLine orderLine) throws SQLException {
 		var sql = "INSERT INTO " + getTableName() + "(`idArticle`,`idOrders`,`amount`) VALUES (?,?,?);"; // Don't insert ID, let database
@@ -72,10 +72,10 @@ public class OrderLineDAO extends BaseDAO<OrderLine>{
 	
 	/**
 	 * this function is to get the total of order passed with an provider
-	 * @param idArticle
-	 * @param idProvider
+	 * @param idArticle the id of article
+	 * @param idProvider the id of provider
 	 * @return the amount ordered
-	 * @throws SQLException
+	 * @throws SQLException all SQL Exception
 	 */
 	public int getAmountOrderred(int idArticle,int idProvider) throws SQLException {
 		
@@ -98,10 +98,10 @@ public class OrderLineDAO extends BaseDAO<OrderLine>{
 	/**
 	 * this function allows you to retrieve the total number of
 	 * items received from all that you have ordered from the supplier
-	 * @param idArticle
-	 * @param idProvider
+	 * @param idArticle the id of the article
+	 * @param idProvider the id of the provider
 	 * @return amount receive
-	 * @throws SQLException
+	 * @throws SQLException all SQL Exceptions
 	 */
 	public int getAmountReceive(int idArticle,int idProvider) throws SQLException {
 		
@@ -124,8 +124,8 @@ public class OrderLineDAO extends BaseDAO<OrderLine>{
 	
 	/**
 	 * updates the command line received as a parameter in the database
-	 * @param line
-	 * @throws SQLException
+	 * @param line the orderLine
+	 * @throws SQLException all SQL Exceptions
 	 */
 	public  void update (OrderLine line) throws SQLException {
         String sql = "UPDATE " + getTableName()
@@ -142,5 +142,42 @@ public class OrderLineDAO extends BaseDAO<OrderLine>{
         updateUser.executeUpdate();
 
     }
+	
+	public OrderLine findOrderLineByOrderAndArticle(OrderLine line) {
+		OrderLine result = null;
+
+		try {
+			PreparedStatement find = DBConnection.get()
+					.prepareStatement("SELECT * FROM " + getTableName() + " WHERE idArticle = ? AND idOrders = ? ;");
+
+			find.setObject(1, line.getIdArticle());
+			find.setObject(2, line.getIdOrders());
+
+			result = getFromResultSet(find.executeQuery());
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return result;
+	}
+	
+	/**
+	 * this delete the article passed in the database
+	 * @param article the object article
+	 * @throws SQLException all SQL Exception
+	 */
+	public void delete(OrderLine line) throws SQLException {
+		var sql = "DELETE FROM "  + getTableName()
+		+ " WHERE idArticle = ? AND idOrders  =?"; 
+
+		var deleteArticle = DBConnection.get().prepareStatement(sql);
+
+		deleteArticle.setInt(1, line.getIdArticle());
+		deleteArticle.setInt(2, line.getIdOrders());
+
+		deleteArticle.executeUpdate();
+
+	}
 	
 }

@@ -3,16 +3,18 @@ package component;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.sql.Date;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -20,7 +22,6 @@ import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 
 import dao.AdministratorDAO;
-import dao.ArticleDAO;
 import dao.OrderDAO;
 import dao.OrderLineDAO;
 import dao.ProviderDAO;
@@ -28,20 +29,9 @@ import dao.SellDAO;
 import listener.OrderNumberListener;
 import model.Order;
 import model.OrderLine;
-import model.Provider;
 import tools.AppSettings;
-
 import tools.Useful;
 import view.Management;
-
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.InputMethodListener;
-import java.awt.event.InputMethodEvent;
-import java.awt.event.ItemListener;
-import java.awt.event.ItemEvent;
 
 public class OrderPanel extends Tab {
 
@@ -60,34 +50,13 @@ public class OrderPanel extends Tab {
 
 	/**
 	 * Create the panel.
+	 * @param c the management panel
 	 */
 	public OrderPanel(Management c) {
 
 		this.setLayout(null);
 		refreshTab();
 		
-
-
-//		comboBoxOrderNumberOrder.addItemListener(new ItemListener() {
-//			public void itemStateChanged(ItemEvent e) {
-//				if (e.getStateChange() == ItemEvent.SELECTED) {
-//					System.out.println("IN");
-//					if (!comboBoxOrderNumberOrder.getSelectedItem().toString().isEmpty()) {
-//						var order = (new OrderDAO()).find("idOrders",
-//								comboBoxOrderNumberOrder.getSelectedItem().toString());
-//
-//						comboBoxProviderOrder.setSelectedItem(order.getProvider().getCompanyName());
-//
-//					} else {
-//
-//						comboBoxProviderOrder.setSelectedIndex(0);
-//
-//					}
-//				}
-//				refreshArticle();
-//			}
-//		});
-//		refreshTable();
 
 		Useful.sort(modelOrder, tableOrder);
 	}
@@ -134,12 +103,10 @@ public class OrderPanel extends Tab {
 	 * refresh order lines table
 	 */
 	public void refreshTable() {
-//		JComboBox<String> comboBoxArticleOrder, JComboBox<String> comboBoxOrderNumberOrder
 		if (comboBoxOrderNumberOrder.getSelectedItem() != null) {
 			if (!comboBoxOrderNumberOrder.getSelectedItem().toString().isEmpty()) {
-//				System.out.println("refresh table");
 				List<OrderLine> updateLine = (new OrderLineDAO()).findALLBy("idOrders",
-						Integer.parseInt(comboBoxOrderNumberOrder.getSelectedItem().toString()));//
+						Integer.parseInt(comboBoxOrderNumberOrder.getSelectedItem().toString()));
 				Useful.displayOrderLine(updateLine, modelOrder);
 				updateTotalPrice();
 			}
@@ -170,10 +137,6 @@ public class OrderPanel extends Tab {
 
 		var orderList = (new OrderDAO()).getActiveOrders();
 	
-
-//		if(orderList.size()==0) {
-//			orderList.add(new Order()); 
-//		}
 
 		JLabel lblTitle1Order = new JLabel("Passer une commande");
 		lblTitle1Order.setHorizontalAlignment(SwingConstants.CENTER);
@@ -217,9 +180,6 @@ public class OrderPanel extends Tab {
 		comboBoxOrderNumberOrder.setBounds(900, 30, 250, 40);
 
 		this.add(comboBoxOrderNumberOrder);
-//		for (int i = 0; i < orderList.size(); i++) {
-//			
-//		}
 		comboBoxOrderNumberOrder.addItem("");
 		orderList.forEach(o -> {
 			comboBoxOrderNumberOrder.addItem(Integer.toString(o.getId()));
@@ -237,7 +197,6 @@ public class OrderPanel extends Tab {
 		comboBoxArticleOrder.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		comboBoxArticleOrder.setBounds(50, 450, 250, 40);
 		this.add(comboBoxArticleOrder);
-//		refreshArticle();
 
 		textFieldQtyOrder = new JTextField();
 		textFieldQtyOrder.addKeyListener(new KeyAdapter() {
@@ -297,18 +256,7 @@ public class OrderPanel extends Tab {
 		this.add(lblTotalPriceOrder);
 
 		btnAddOrder = new JButton("Ajouter");
-//		btnAddOrder.addMouseListener(new MouseAdapter() {
-//			@Override
-//			public void mouseClicked(MouseEvent e) {
-//				var qty = textFieldQtyOrder.getText().isEmpty();
-//
-//				if (qty == false) {
-//					textFieldQtyOrder.setText("");
-//				} else {
-//					JOptionPane.showMessageDialog(null, "Tous les champs ne sont pas remplis.");
-//				}
-//			}
-//		});
+
 		btnAddOrder.setFont(new Font("Tahoma", Font.PLAIN, 16));
 
 		btnAddOrder.setBounds(35, 600, 120, 40);
@@ -316,19 +264,7 @@ public class OrderPanel extends Tab {
 
 		btnUpdateOrder = new JButton("Modifier");
 
-//		btnUpdateOrder.addMouseListener(new MouseAdapter() {
-//			@Override
-//			public void mouseClicked(MouseEvent e) {
-//				var qty = textFieldQtyOrder.getText().isEmpty();
-//
-//				if (qty == false) {
-//					
-//					textFieldQtyOrder.setText("");
-//				} else {
-//					JOptionPane.showMessageDialog(null, "Tous les champs ne sont pas remplis.");
-//				}
-//			}
-//		});
+
 		btnUpdateOrder.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		btnUpdateOrder.setBounds(190, 600, 120, 40);
 		this.add(btnUpdateOrder);
@@ -354,10 +290,26 @@ public class OrderPanel extends Tab {
 			public void mouseClicked(MouseEvent e) {
 				var qty = textFieldQtyOrder.getText().isEmpty();
 
-				if (qty == false) {
+				if (!tableOrder.getSelectionModel().isSelectionEmpty()) {
+					int p = JOptionPane.showConfirmDialog(null,
+							"Voulez vous vraiment supprimer cettligne de commande ?", "Confirmation",
+							JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+
+					if (p == 0) {
+						int row = tableOrder.getSelectedRow();
+						OrderLine orderLine = new OrderLine();
+						orderLine.setIdArticle(Integer.parseInt(tableOrder.getValueAt(row, 0).toString()));
+						orderLine.setIdOrders(
+								Integer.parseInt(comboBoxOrderNumberOrder.getSelectedItem().toString()));
+						orderLine.delete();
+						refreshTable();
+						JOptionPane.showInternalMessageDialog(null, "Supprimer avec succes", "Succès", JOptionPane.INFORMATION_MESSAGE);
+					}
 					textFieldQtyOrder.setText("");
 				} else {
-					JOptionPane.showMessageDialog(null, "Tous les champs ne sont pas remplis.");
+					JOptionPane.showInternalMessageDialog(null, "Veuillez d'abord sélectionner une ligne de commande", "Sélection incorrecte", JOptionPane.INFORMATION_MESSAGE);
+					
+					
 				}
 			}
 		});
@@ -396,17 +348,19 @@ public class OrderPanel extends Tab {
 								Integer.parseInt(Integer.toString((Integer) tableOrder.getValueAt(row, 0))));
 						orderLine.setIdOrders(Integer.parseInt(comboBoxOrderNumberOrder.getSelectedItem().toString()));
 						orderLine.setAmount(Integer.parseInt(textFieldQtyOrder.getText()));
-						System.out.println("to update order line");
+
 						orderLine.update();
 
 						textFieldQtyOrder.setText("");
 						refreshTable();
 					} else {
-						JOptionPane.showMessageDialog(null, "Tous les champs ne sont pas remplis.");
+						JOptionPane.showInternalMessageDialog(null, "Tous les champs ne sont pas remplis.","Champs vide", JOptionPane.INFORMATION_MESSAGE);
 					}
 
 				} else {
-					JOptionPane.showMessageDialog(null, "select.");
+					JOptionPane.showInternalMessageDialog(null, "Veuillez d'abord sélectionner une ligne de commande", "Sélection incorrecte", JOptionPane.INFORMATION_MESSAGE);
+					
+					
 				}
 			}
 		});
@@ -432,10 +386,7 @@ public class OrderPanel extends Tab {
 				order.setState("w");
 				var article = comboBoxArticleOrder.getSelectedItem().toString().split(" - ");
 
-//					var ordDAO = new OrderDAO();
-
 				if (comboBoxOrderNumberOrder.getSelectedItem().toString().isEmpty()) {
-//							ordDAO.insert(order);
 					admin.createOrder(order);
 					var orderLis = (new OrderDAO()).getActiveOrders();
 
@@ -444,27 +395,28 @@ public class OrderPanel extends Tab {
 					orderLis.forEach(o -> {
 						comboBoxOrderNumberOrder.addItem(Integer.toString(o.getId()));
 					});
-					System.out.println("new order id " + order.getId());
 					comboBoxOrderNumberOrder.setSelectedItem(Integer.toString(order.getId()));
 
-				} else {
-					System.out.println("toto " + comboBoxOrderNumberOrder.getSelectedItem().toString() + "toto");
-				}
+				} 
 
 				// verifier si la ligne de commande existe deja pour cette commande
 				System.out.println(Integer.parseInt(article[0]));
 				orderLine.setIdArticle(Integer.parseInt(article[0]));
 				orderLine.setIdOrders(Integer.parseInt(comboBoxOrderNumberOrder.getSelectedItem().toString()));
 				orderLine.setAmount(Integer.parseInt(textFieldQtyOrder.getText()));
-				orderLine.create();
 
-//					List<OrderLine> updateLine = (new OrderLineDAO()).findALLBy("idOrders",
-//							Integer.parseInt(comboBoxOrderNumberOrder.getSelectedItem().toString()));//
-//					Useful.displayOrderLine(updateLine, modelOrder);
+				var line = (new OrderLineDAO()).findOrderLineByOrderAndArticle(orderLine);
+				if(line == null) {
+
+					orderLine.create();
+				}else {
+					JOptionPane.showInternalMessageDialog(this, "Cette article a deja été ajouter a cette commande","Duplication impossible", JOptionPane.INFORMATION_MESSAGE );
+				}
+
 				refreshTable();
 				textFieldQtyOrder.setText("");
 			} else {
-				JOptionPane.showMessageDialog(null, "Tous les champs ne sont pas remplis.");
+				JOptionPane.showMessageDialog(null, "Tous les champs ne sont pas remplis.","Champs vide", JOptionPane.INFORMATION_MESSAGE);
 			}
 
 		});
@@ -477,7 +429,7 @@ public class OrderPanel extends Tab {
 
 					var provider = (new ProviderDAO()).find("compagnyName",
 							comboBoxProviderOrder.getSelectedItem().toString());
-					System.out.println("test " + comboBoxProviderOrder.getSelectedItem().toString());
+
 					var t = comboBoxOrderNumberOrder.getSelectedItem().toString();
 					comboBoxOrderNumberOrder.removeAllItems();
 					comboBoxOrderNumberOrder.addItem("");
@@ -489,7 +441,7 @@ public class OrderPanel extends Tab {
 						}
 
 					});
-//						textFieldQtyOrder.setText("");
+
 					comboBoxOrderNumberOrder.setSelectedItem(t);
 
 				} else {
@@ -509,40 +461,15 @@ public class OrderPanel extends Tab {
 		});
 
 		comboBoxOrderNumberOrder.addActionListener(new OrderNumberListener(this));
-//				new ActionListener() {
-//			@Override
-//			public void actionPerformed(ActionEvent e) {
-//				if (comboBoxProviderOrder.getSelectedItem().toString().isEmpty()) {
-//					if (comboBoxOrderNumberOrder.getSelectedItem() != null) {
-//
-//						if (!comboBoxOrderNumberOrder.getSelectedItem().toString().isEmpty()) {
-//							var order = (new OrderDAO()).find("idOrders",
-//									comboBoxOrderNumberOrder.getSelectedItem().toString());
-////							System.out.println("order number act");
-//
-//							comboBoxProviderOrder.setSelectedItem(order.getProvider().getCompanyName());
-//
-//						} else {
-//
-//							comboBoxProviderOrder.setSelectedIndex(0);
-//
-//						}
-//
-//						refreshArticle();
-//					}
-//
-//				}
-//				refreshTable();
-//			}
-//		});
+
 
 		tableOrder.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-//				System.out.println("testttt");
+
 				if (!tableOrder.getSelectionModel().isSelectionEmpty()) {
 					int row = tableOrder.getSelectedRow();
-//					(Integer.toString((Integer)modelOrder.getValueAt(row, 0))
+
 					comboBoxArticleOrder.setSelectedItem((Integer.toString((Integer) tableOrder.getValueAt(row, 0)))
 							+ " - " + (tableOrder.getValueAt(row, 1).toString()));
 					textFieldQtyOrder.setText(tableOrder.getValueAt(row, 2).toString());
@@ -570,7 +497,7 @@ public class OrderPanel extends Tab {
 		System.out.println(modelOrder.getRowCount());
 		var totalPrice = 0.0;
 		for (int i = 0; i < modelOrder.getRowCount(); i++) {
-//			System.out.println(modelOrder.getValueAt(i, 3));
+
 			totalPrice += (Double) modelOrder.getValueAt(i, 3);
 		}
 

@@ -7,12 +7,17 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
 import dao.AdministratorDAO;
+import dao.MeasurementDAO;
+import dao.ProductDAO;
+import dao.SuperAdminDAO;
 import model.Administrator;
+import model.Measurement;
 import model.SuperAdmin;
 import tools.AppSettings;
 import tools.Useful;
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JButton;
 import javax.swing.SwingConstants;
 import java.awt.Font;
@@ -23,7 +28,11 @@ import javax.swing.JTable;
 import javax.swing.JPasswordField;
 import javax.swing.JRadioButton;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.sql.Date;
+import java.sql.SQLException;
+import java.util.List;
 import java.awt.event.ActionEvent;
 import javax.swing.DefaultComboBoxModel;
 
@@ -34,29 +43,15 @@ public class AdminManagement extends JFrame {
 	private JTable table;
 	private JTextField textFieldResearch;
 	private JPasswordField passwordField;
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					AdminManagement frame = new AdminManagement();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+	DefaultTableModel model;
 
 	/**
 	 * Create the frame.
 	 */
 	public AdminManagement() {
 		var adminId = Integer.parseInt(AppSettings.get("loginUser"));
-		SuperAdmin admin1 = (SuperAdmin) (new AdministratorDAO()).find("userId", adminId);
+		SuperAdmin superAdmin = (new SuperAdminDAO()).find("idAdministrator", adminId);
+
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1440, 810);
 		contentPane = new JPanel();
@@ -97,26 +92,31 @@ public class AdminManagement extends JFrame {
 		JButton btnCreate = new JButton("Cr\u00E9er");
 		btnCreate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
-				if (Useful.isUserNameValid(textFieldUserName.getText())
-						&& Useful.isPasswordValid(String.valueOf(passwordField.getPassword()))) {
+				var userName = textFieldUserName.getText();
+				var password = String.valueOf(passwordField.getPassword());
+				if ((new AdministratorDAO()).find("userName ", userName) == null) {
 					Administrator admin = new Administrator();
-					var userName = textFieldUserName.getText();
-					var password = String.valueOf(passwordField.getPassword());
 					admin.setUserName(userName);
 					admin.setPassword(password);
 					admin.setAdminState("a");
 					java.util.Date sqlDate = new java.util.Date();
 					Date createDate = new Date(sqlDate.getTime());
 					admin.setCreatedAt(createDate);
-//					admin1.createAccount(admin);
 
-//					if (comboBoxRights.getToolTipText().equals("Admin")) {
-//						// 2
-//					} else if (comboBoxRights.getToolTipText().equals("Super Admin")) {
-//						// 1
-//					}
+					int role = 0;
+					if (comboBoxRights.getSelectedItem().toString().equals("Admin")) {
+						role = 0;
+					} else if (comboBoxRights.getSelectedItem().toString().equals("Super Admin")) {
+						role = 1;
+					}
+					superAdmin.createAccount(admin, role);
+					refreshUnitTable();
+					JOptionPane.showInternalMessageDialog(null, "reussi.", "success", JOptionPane.INFORMATION_MESSAGE);
+				} else {
+					JOptionPane.showInternalMessageDialog(null, "Cet administrateur existe déjà.", "Champs vide",
+							JOptionPane.INFORMATION_MESSAGE);
 				}
+
 			}
 		});
 		btnCreate.setFont(new Font("Tahoma", Font.PLAIN, 16));
@@ -131,11 +131,77 @@ public class AdminManagement extends JFrame {
 		textFieldUserName.setColumns(10);
 
 		JButton btnUpdate = new JButton("Modifier");
+		btnUpdate.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+				if (!table.getSelectionModel().isSelectionEmpty()) {
+					var userName = textFieldUserName.getText();
+					var password = String.valueOf(passwordField.getPassword());
+					if (!userName.isEmpty()) {
+
+						int row = table.getSelectedRow();
+						int idAdmin = (Integer) table.getValueAt(row, 0);
+						var admin = (new AdministratorDAO()).find("idAdministrator", idAdmin);
+						admin.setUserName(userName);
+
+						try {
+							if (!password.isEmpty()) {
+								(new AdministratorDAO()).updatePassword(idAdmin, password);
+							}
+
+							(new AdministratorDAO()).update(admin);
+							if (comboBoxRights.getSelectedItem().toString().equals("Super Admin")) {
+								var isSuperAdmin = (new SuperAdminDAO()).find("idAdministrator", idAdmin);
+								if (isSuperAdmin == null) {
+
+									(new SuperAdminDAO()).insert(admin);
+								}
+							}
+						} catch (SQLException e1) {
+							e1.printStackTrace();
+						}
+
+						JOptionPane.showInternalMessageDialog(null,
+								"Administrateur modifier avec succès.", "Champs vide",
+								JOptionPane.INFORMATION_MESSAGE);
+						refreshUnitTable();
+						textFieldUserName.setText("");
+					}else {
+						JOptionPane.showInternalMessageDialog(null, "Tous les champ ne sont pas rempli",
+								"Champs vide", JOptionPane.INFORMATION_MESSAGE);
+					}
+
+				} else {
+					JOptionPane.showInternalMessageDialog(null, "veuillez sélectionner un administrateur.",
+							"Sélection incorrecte", JOptionPane.INFORMATION_MESSAGE);
+				}
+			}
+		});
 		btnUpdate.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		btnUpdate.setBounds(300, 520, 100, 40);
 		contentPane.add(btnUpdate);
 
 		JButton btnLock = new JButton("Bloquer");
+		btnLock.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (!table.getSelectionModel().isSelectionEmpty()) {
+					int row = table.getSelectedRow();
+					int idAdmin = (Integer) table.getValueAt(row, 0);
+					try {
+						(new AdministratorDAO()).block(idAdmin);
+					} catch (SQLException e1) {
+						e1.printStackTrace();
+					}
+					JOptionPane.showInternalMessageDialog(null,
+							"Administrateur bloqué avec succès." + String.valueOf(idAdmin), "Champs vide",
+							JOptionPane.INFORMATION_MESSAGE);
+					refreshUnitTable();
+				} else {
+					JOptionPane.showInternalMessageDialog(null, "veuillez sélectionner un administrateur.",
+							"Sélection incorrecte", JOptionPane.INFORMATION_MESSAGE);
+				}
+			}
+		});
 		btnLock.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		btnLock.setBounds(500, 520, 100, 40);
 		contentPane.add(btnLock);
@@ -147,7 +213,7 @@ public class AdminManagement extends JFrame {
 		table = new JTable();
 		scrollPane.setViewportView(table);
 
-		DefaultTableModel model = new DefaultTableModel(new Object[][] {,},
+		model = new DefaultTableModel(new Object[][] {,},
 				new String[] { "Identifiant", "Nom d'utilisateur", "Droits", "Date de creation", "Statut" });
 
 		table.setModel(model);
@@ -157,6 +223,20 @@ public class AdminManagement extends JFrame {
 		table.getColumnModel().getColumn(3).setResizable(false);
 		table.getColumnModel().getColumn(4).setResizable(false);
 		scrollPane.setViewportView(table);
+
+		table.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+
+				if (!table.getSelectionModel().isSelectionEmpty()) {
+					int row = table.getSelectedRow();
+
+					var userName = table.getValueAt(row, 1).toString();
+					textFieldUserName.setText(userName);
+
+				}
+			}
+		});
 
 		JLabel lblResearch = new JLabel("Rechercher");
 		lblResearch.setHorizontalAlignment(SwingConstants.CENTER);
@@ -178,6 +258,11 @@ public class AdminManagement extends JFrame {
 		contentPane.add(passwordField);
 
 		JButton btnReturn = new JButton("Retour");
+		btnReturn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				setVisible(false);
+			}
+		});
 		btnReturn.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		btnReturn.setBounds(250, 650, 200, 40);
 		contentPane.add(btnReturn);
@@ -193,5 +278,26 @@ public class AdminManagement extends JFrame {
 		rdbnState.setHorizontalAlignment(SwingConstants.CENTER);
 		rdbnState.setBounds(1100, 60, 100, 40);
 		contentPane.add(rdbnState);
+
+		refreshUnitTable();
 	}
+
+	/**
+	 * refresh the unit list table
+	 * 
+	 * @param articles array of articles
+	 */
+	public void refreshUnitTable() {
+		List<Administrator> admins = (new AdministratorDAO()).findALL();
+		model.setRowCount(0);
+		admins.forEach(p -> {
+
+			Object[] row1 = p.toRow();
+			// Ajout d'une rang�e
+			model.addRow(row1);
+
+		});
+
+	}
+
 }

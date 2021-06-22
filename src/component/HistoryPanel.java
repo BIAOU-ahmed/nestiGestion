@@ -47,6 +47,7 @@ public class HistoryPanel extends Tab {
 	
 	/**
 	 * Create the panel.
+	 * @param c the management panel
 	 */
 	public HistoryPanel(Management c) {
 

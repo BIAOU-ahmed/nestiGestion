@@ -33,7 +33,7 @@ public class ArticleDAO extends BaseDAO<Article> {
 	/**
 	 * this functions get a query in parameter and 
 	 * return an object of type article
-	 * @param resultSet the query ResultSet
+	 * @param rs the query ResultSet
 	 * @return the article
 	 */
 	@Override
@@ -60,19 +60,15 @@ public class ArticleDAO extends BaseDAO<Article> {
 	/**
 	 * this function take the object administrator in parameter and 
 	 * insert it in the database
-	 * @param article
-	 * @throws SQLException
+	 * @param article the object article
+	 * @throws SQLException all SQL Exceptions
 	 */
 	public void insert(Article article) throws SQLException {
 		var sql = "INSERT INTO " + getTableName()
-				+ "(`weight`,`amount`,`articleState`,`createdAt`,`idAdministrator`,`idProduct`,`idConditioning`) VALUES (?,?,?,?,?,?,?);"; 
-		// auto-increment it.
-
+				+ "(`weight`,`amount`,`articleState`,`createdAt`,`idAdministrator`,`idProduct`,`idConditioning`)"
+				+ " VALUES (?,?,?,?,?,?,?);"; 
+		
 		var insertArticle = DBConnection.get().prepareStatement(sql);
-
-//		System.out.println("admin " + article.getIdAdministrator());
-//		System.out.println("product " + article.getIdProduct());
-//		System.out.println("condi " + article.getIdConditioning());
 
 		insertArticle.setDouble(1, article.getWeight());
 		insertArticle.setInt(2, article.getAmount());
@@ -83,34 +79,33 @@ public class ArticleDAO extends BaseDAO<Article> {
 		insertArticle.setInt(7, article.getIdConditioning());
 
 		insertArticle.executeUpdate();
-		
-		
-		
 
 	}
 
 	/**
 	 * this function take on article id in parameter and return 
 	 * the max price of the article
-	 * @param IdArticle
+	 * @param IdArticle the id of the article
 	 * @return article price
-	 * @throws SQLException
+	 * @throws SQLException all SQL Exceptions
 	 */
 	public double getMaxPrice(int IdArticle) throws SQLException {
 
-		String query = "SELECT Max(s.price) as price FROM provider p INNER JOIN orders o "
-				+ "ON p.idProvider = o.idProvider INNER JOIN order_line ol "
-				+ "ON o.idOrders = ol.idOrders INNER JOIN sell s "
-				+ "ON p.idProvider = s.idProvider WHERE ol.idArticle = ? AND s.idArticle = ?";
+		String query = " SELECT `get_max_price`(?) AS `get_max_price`";
+//		
+//		String query = "SELECT Max(s.price) as price FROM provider p INNER JOIN orders o "
+//				+ "ON p.idProvider = o.idProvider INNER JOIN order_line ol "
+//				+ "ON o.idOrders = ol.idOrders INNER JOIN sell s "
+//				+ "ON p.idProvider = s.idProvider WHERE ol.idArticle = ? AND s.idArticle = ?";
 		PreparedStatement declaration = DBConnection.get().prepareStatement(query);
 
 		declaration.setInt(1, IdArticle);
-		declaration.setInt(2, IdArticle);
+//		declaration.setInt(2, IdArticle);
 //		declaration.setString(3, password);
 		ResultSet resultat = declaration.executeQuery();
 		double price = 0.0;
 		if (resultat.next()) {
-			price = resultat.getDouble("price");
+			price = resultat.getDouble("get_max_price");
 		}
 //		System.out.println(price);
 		return price;
@@ -122,7 +117,7 @@ public class ArticleDAO extends BaseDAO<Article> {
 	 * this function take an article in parameter and 
 	 * find the article in the database if the article 
 	 * is found is returned if not null is returned
-	 * @param article
+	 * @param article the object article
 	 * @return article
 	 */
 	public Article find(Article article) {
@@ -154,8 +149,8 @@ public class ArticleDAO extends BaseDAO<Article> {
 
 	/**
 	 * this function update the article pass in parameter in the database
-	 * @param article
-	 * @throws SQLException
+	 * @param article the object article
+	 * @throws SQLException all SQL Exception
 	 */
 	public void update(Article article) throws SQLException {
 		String sql = "UPDATE " + getTableName()
@@ -174,12 +169,12 @@ public class ArticleDAO extends BaseDAO<Article> {
 
 	/**
 	 * this delete the article passed in the database
-	 * @param article
-	 * @throws SQLException
+	 * @param article the object article
+	 * @throws SQLException all SQL Exception
 	 */
 	public void delete(Article article) throws SQLException {
 		var sql = "DELETE FROM "  + getTableName()
-		+ " WHERE  	amount = ? AND idProduct = ? AND idConditioning =?"; // Don't insert ID, let database auto-increment it.
+		+ " WHERE  	amount = ? AND idProduct = ? AND idConditioning =?"; 
 
 		var deleteArticle = DBConnection.get().prepareStatement(sql);
 

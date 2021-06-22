@@ -24,10 +24,11 @@ public abstract class BaseDAO<E> {
 	}
 
 	/**
-	 * this function is a common function which allow to find an object according to the fieldName passing in parameter
-	 * @param <T>
-	 * @param fieldName
-	 * @param fieldValue
+	 * this function is a common function which allow to find an object 
+	 * according to the fieldName passing in parameter
+	 * @param <T> specific multiple object possible
+	 * @param fieldName the name of the attribute
+	 * @param fieldValue the value which select by
 	 * @return Object
 	 */
 	public <T> E find(String fieldName, T fieldValue) {
@@ -73,10 +74,10 @@ public abstract class BaseDAO<E> {
 
 	/**
 	 * find all values by the passed parameter
-	 * @param <T>
-	 * @param fieldName
-	 * @param fieldValue
-	 * @return
+	 * @param <T> designates the type of the variable to be generic 
+	 * @param fieldName the name of the attribute
+	 * @param fieldValue the value which select by
+	 * @return array of object
 	 */
 	public <T> ArrayList<E> findALLBy(String fieldName, T fieldValue) {
 		ArrayList<E> result = null;
@@ -100,9 +101,9 @@ public abstract class BaseDAO<E> {
 
 	/**
 	 * find with the like statement
-	 * @param <T>
-	 * @param fieldName
-	 * @param fieldValue
+	 * @param <T> designates the type of the variable to be generic 
+	 * @param fieldName the name of the attribute
+	 * @param fieldValue the value which select by
 	 * @return array of object
 	 */
 	public <T> ArrayList<E> findAllLike(String fieldName, T fieldValue) {
@@ -128,7 +129,7 @@ public abstract class BaseDAO<E> {
 
 	/**
 	 * make array of object with query resultSet
-	 * @param rs
+	 * @param rs the SQL query resultSet
 	 * @return array of object
 	 * @throws SQLException
 	 */

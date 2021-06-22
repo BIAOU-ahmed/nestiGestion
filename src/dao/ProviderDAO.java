@@ -29,7 +29,7 @@ public class ProviderDAO extends BaseDAO<Provider> {
 	/**
 	 * this functions get a resultSet in parameter and 
 	 * return an object of type Provider
-	 * @param resultSet the query ResultSet
+	 * @param rs the query ResultSet
 	 * @return the Provider
 	 */
 	@Override
@@ -54,8 +54,8 @@ public class ProviderDAO extends BaseDAO<Provider> {
 
 	/**
 	 * insert the provider received as a parameter in the database
-	 * @param provider
-	 * @throws SQLException
+	 * @param provider the object provider
+	 * @throws SQLException all SQL Exceptions
 	 */
 	public void insert(Provider provider) throws SQLException {
 		var sql = "INSERT INTO " + getTableName()
@@ -80,8 +80,8 @@ public class ProviderDAO extends BaseDAO<Provider> {
 
 	/**
 	 * updates the provider received as a parameter in the database
-	 * @param provider
-	 * @throws SQLException
+	 * @param provider the object provider
+	 * @throws SQLException all SQL Exceptions
 	 */
 	public void update(Provider provider) throws SQLException {
 		String sql = "UPDATE "+ getTableName() +" SET `compagnyName` = ?, `contactLastName` = ?, `contactFirstName` = ?, `providerState` = ?, `contactPhoneNumber` = ? WHERE `provider`.`idProvider` = ?; ";

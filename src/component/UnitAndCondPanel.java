@@ -4,6 +4,7 @@ import java.awt.Font;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -11,9 +12,24 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 
+import dao.ArticleDAO;
+import dao.ConditioningDAO;
+import dao.MeasurementDAO;
+import model.Article;
+import model.Conditioning;
+import model.Measurement;
+import model.OrderLine;
 import view.Management;
-import java.awt.event.ActionListener;
+import java.util.List;
+import java.awt.TextField;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.sql.Date;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 public class UnitAndCondPanel extends Tab {
 	JButton btnAddUnit;
@@ -21,12 +37,20 @@ public class UnitAndCondPanel extends Tab {
 	JButton btnModifyCond;
 	JButton btnAddCond;
 	Management mainContent;
+	JTable tableUnit;
+	DefaultTableModel unitModel;
+	JTextField textFieldUnit;
+	JTextField textFieldCond;
+	DefaultTableModel condModel;
+	JTable tableCond;
 	
 	/**
 	 * Create the panel.
+	 * 
+	 * @param c the management panel
 	 */
 	public UnitAndCondPanel(Management c) {
-		mainContent=c;
+		this.mainContent = c;
 		setLayout(null);
 		refreshTab();
 
@@ -34,6 +58,7 @@ public class UnitAndCondPanel extends Tab {
 
 	@Override
 	public void refreshTab() {
+		super.refreshTab();
 
 		JLabel lblTitleUnit = new JLabel("Unit\u00E9 de mesure");
 		lblTitleUnit.setFont(new Font("Tahoma", Font.PLAIN, 24));
@@ -59,14 +84,14 @@ public class UnitAndCondPanel extends Tab {
 		lblCond.setBounds(905, 150, 300, 30);
 		this.add(lblCond);
 
-		JTextField textFieldUnit = new JTextField();
+		textFieldUnit = new JTextField();
 		textFieldUnit.setHorizontalAlignment(SwingConstants.CENTER);
 		textFieldUnit.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		textFieldUnit.setBounds(200, 180, 300, 40);
 		this.add(textFieldUnit);
 		textFieldUnit.setColumns(10);
 
-		JTextField textFieldCond = new JTextField();
+		textFieldCond = new JTextField();
 		textFieldCond.setHorizontalAlignment(SwingConstants.CENTER);
 		textFieldCond.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		textFieldCond.setBounds(905, 180, 300, 40);
@@ -74,18 +99,18 @@ public class UnitAndCondPanel extends Tab {
 		textFieldCond.setColumns(10);
 
 		JScrollPane scrollPaneUnit = new JScrollPane();
+
 		scrollPaneUnit.setBounds(200, 400, 300, 300);
 		this.add(scrollPaneUnit);
 
-		JTable tableUnit = new JTable() {
+		tableUnit = new JTable() {
 			public boolean isCellEditable(int row, int column) {
 				return false;
 			}
 		};
 		scrollPaneUnit.setViewportView(tableUnit);
 
-		DefaultTableModel unitModel = new DefaultTableModel(new Object[][] {,},
-				new String[] { "Identifiant", "Unite" });
+		unitModel = new DefaultTableModel(new Object[][] {,}, new String[] { "Identifiant", "Unite" });
 
 		tableUnit.setModel(unitModel);
 		tableUnit.getColumnModel().getColumn(0).setResizable(false);
@@ -96,15 +121,14 @@ public class UnitAndCondPanel extends Tab {
 		scrollPaneCond.setBounds(905, 400, 300, 300);
 		this.add(scrollPaneCond);
 
-		JTable tableCond = new JTable() {
+		tableCond = new JTable() {
 			public boolean isCellEditable(int row, int column) {
 				return false;
 			}
 		};
 		scrollPaneCond.setViewportView(tableCond);
 
-		DefaultTableModel condModel = new DefaultTableModel(new Object[][] {,},
-				new String[] { "Identifiant", "Conditionnement" });
+		condModel = new DefaultTableModel(new Object[][] {,}, new String[] { "Identifiant", "Conditionnement" });
 
 		tableCond.setModel(condModel);
 		tableCond.getColumnModel().getColumn(0).setResizable(false);
@@ -118,6 +142,7 @@ public class UnitAndCondPanel extends Tab {
 		this.add(btnAddUnit);
 
 		btnModifyUnit = new JButton("Modifier");
+
 		btnModifyUnit.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		btnModifyUnit.setBounds(400, 250, 150, 30);
 		this.add(btnModifyUnit);
@@ -143,30 +168,160 @@ public class UnitAndCondPanel extends Tab {
 		lblCondTable.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		lblCondTable.setBounds(905, 350, 300, 50);
 		this.add(lblCondTable);
+
 		setUpListener();
+		List<Measurement> unitList = (new MeasurementDAO()).findALL();
+		refreshUnitTable(unitList);
+		
+		List<Conditioning> condList = (new ConditioningDAO()).findALL();
+		refreshConditioningTable(condList);
 	}
 
 	/**
-	 * this function allows you to add an event listener 
-	 * on all the elements on which you want to put an event
+	 * refresh the unit list table
+	 * 
+	 * @param articles array of articles
+	 */
+	public void refreshUnitTable(List<Measurement> mesurements) {
+		unitModel.setRowCount(0);
+		mesurements.forEach(p -> {
+
+			Object[] row1 = p.toRow();
+			// Ajout d'une rang�e
+			unitModel.addRow(row1);
+
+		});
+
+	}
+
+	/**
+	 * refresh the conditioning list table
+	 * 
+	 * @param articles array of articles
+	 */
+	public void refreshConditioningTable(List<Conditioning> conditioning) {
+		condModel.setRowCount(0);
+		conditioning.forEach(p -> {
+
+			Object[] row1 = p.toRow();
+			// Ajout d'une rang�e
+			condModel.addRow(row1);
+
+		});
+
+	}
+
+	/**
+	 * this function allows you to add an event listener on all the elements on
+	 * which you want to put an event
 	 */
 	public void setUpListener() {
 
 		btnAddUnit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				var unit = textFieldUnit.getText().isEmpty();
+
+				if (unit == false) {
+					Measurement measurement = new Measurement();
+					measurement.setUnit(textFieldUnit.getText());
+					measurement.createMeasurementUnit();
+					List<Measurement> unitList = (new MeasurementDAO()).findALL();
+					refreshUnitTable(unitList);
+					textFieldUnit.setText("");
+				} else {
+					JOptionPane.showInternalMessageDialog(null, "Tous les champs ne sont pas remplis.", "Champs vide",
+							JOptionPane.INFORMATION_MESSAGE);
+				}
+
+			}
+		});
+
+		btnModifyUnit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (!tableUnit.getSelectionModel().isSelectionEmpty()) {
+					int row = tableUnit.getSelectedRow();
+					Measurement measurement = new Measurement();
+					measurement.setId(Integer.parseInt(tableUnit.getValueAt(row, 0).toString()));
+					measurement.setUnit(textFieldUnit.getText());
+					measurement.updateMeasurement();
+					List<Measurement> unitList = (new MeasurementDAO()).findALL();
+					refreshUnitTable(unitList);
+					textFieldUnit.setText("");
+				} else {
+					JOptionPane.showInternalMessageDialog(null, "Veuillez d'abord sélectionner une unité",
+							"Sélection incorrecte", JOptionPane.INFORMATION_MESSAGE);
+				}
+
+			}
+		});
+
+		tableUnit.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+
+				if (!tableUnit.getSelectionModel().isSelectionEmpty()) {
+					int row = tableUnit.getSelectedRow();
+
+					textFieldUnit.setText(tableUnit.getValueAt(row, 1).toString());
+
+				}
 			}
 		});
 
 		btnAddCond.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 
+				var cond = textFieldCond.getText().isEmpty();
+
+				if (cond == false) {
+					Conditioning conditioning = new Conditioning();
+					conditioning.setConditioningName(textFieldCond.getText());
+					conditioning.createconditioning();
+					List<Conditioning> condList = (new ConditioningDAO()).findALL();
+					refreshConditioningTable(condList);
+					textFieldCond.setText("");
+				} else {
+					JOptionPane.showInternalMessageDialog(null, "Tous les champs ne sont pas remplis.", "Champs vide",
+							JOptionPane.INFORMATION_MESSAGE);
+				}
+
 			}
 		});
 
-		btnAddUnit.addActionListener(new ActionListener() {
+		tableCond.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+
+				if (!tableCond.getSelectionModel().isSelectionEmpty()) {
+					int row = tableCond.getSelectedRow();
+
+					textFieldCond.setText(tableCond.getValueAt(row, 1).toString());
+
+				}
+			}
+		});
+		
+		
+		btnModifyCond.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				if (!tableCond.getSelectionModel().isSelectionEmpty()) {
+					int row = tableCond.getSelectedRow();
+					
+					Conditioning conditioning = new Conditioning();
+					conditioning.setId(Integer.parseInt(tableCond.getValueAt(row, 0).toString()));
+					conditioning.setConditioningName(textFieldCond.getText());
+					conditioning.updateconditioning();
+					List<Conditioning> condList = (new ConditioningDAO()).findALL();
+					refreshConditioningTable(condList);
+					textFieldCond.setText("");
+				} else {
+					JOptionPane.showInternalMessageDialog(null, "Veuillez d'abord sélectionner un Conditionnement",
+							"Sélection incorrecte", JOptionPane.INFORMATION_MESSAGE);
+				}
 
 			}
 		});
+		
+		
 	}
 }
