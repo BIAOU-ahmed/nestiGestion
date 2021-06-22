@@ -11,6 +11,7 @@ import model.*;
 import tools.DBConnection;
 
 /**
+ * This class contain all query of the provider
  * @author ahmed
  *
  */
@@ -25,6 +26,12 @@ public class ProviderDAO extends BaseDAO<Provider> {
 	// INSERT INTO `product` (`idProduct`, `productName`) VALUES (NULL,
 	// 'testProduct');
 
+	/**
+	 * this functions get a resultSet in parameter and 
+	 * return an object of type Provider
+	 * @param rs the query ResultSet
+	 * @return the Provider
+	 */
 	@Override
 	public Provider getFromResultSet(ResultSet rs) throws SQLException {
 		Provider result = null;
@@ -45,14 +52,14 @@ public class ProviderDAO extends BaseDAO<Provider> {
 		return result;
 	}
 
+	/**
+	 * insert the provider received as a parameter in the database
+	 * @param provider the object provider
+	 * @throws SQLException all SQL Exceptions
+	 */
 	public void insert(Provider provider) throws SQLException {
 		var sql = "INSERT INTO " + getTableName()
-				+ "(`compagnyName`,`contactLastName`,`contactFirstName`,`providerState`,`contactPhoneNumber`,`idAdministrator`) VALUES (?,?,?,?,?,?);"; // Don't
-																																						// insert
-																																						// ID,
-																																						// let
-																																						// database
-		// auto-increment it.
+				+ "(`compagnyName`,`contactLastName`,`contactFirstName`,`providerState`,`contactPhoneNumber`,`idAdministrator`) VALUES (?,?,?,?,?,?);"; 
 
 		var insertArticle = DBConnection.get().prepareStatement(sql);
 
@@ -71,6 +78,11 @@ public class ProviderDAO extends BaseDAO<Provider> {
 
 	}
 
+	/**
+	 * updates the provider received as a parameter in the database
+	 * @param provider the object provider
+	 * @throws SQLException all SQL Exceptions
+	 */
 	public void update(Provider provider) throws SQLException {
 		String sql = "UPDATE "+ getTableName() +" SET `compagnyName` = ?, `contactLastName` = ?, `contactFirstName` = ?, `providerState` = ?, `contactPhoneNumber` = ? WHERE `provider`.`idProvider` = ?; ";
 //		System.out.println("update provider");

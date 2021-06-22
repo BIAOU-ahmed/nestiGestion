@@ -49,6 +49,8 @@ public class DeliveryPanel extends Tab {
 
 	/**
 	 * Create the panel.
+	 * 
+	 * @param c management panel
 	 */
 	public DeliveryPanel(Management c) {
 
@@ -57,6 +59,9 @@ public class DeliveryPanel extends Tab {
 
 	}
 
+	/**
+	 * refresh the selectable list of provider
+	 */
 	public void refreshProvider() {
 
 		var provider = (new ProviderDAO()).findALLBy("providerState", "a");//
@@ -71,14 +76,14 @@ public class DeliveryPanel extends Tab {
 
 	}
 
+	/**
+	 * refresh the order lines table of a order
+	 */
 	public void refreshTable() {
-//		JComboBox<String> comboBoxArticleOrder, JComboBox<String> comboBoxOrderNumberOrder
 		if (comboBoxOrderNumberDelivery.getSelectedItem() != null) {
 			if (!comboBoxOrderNumberDelivery.getSelectedItem().toString().isEmpty()) {
-//				System.out.println("refresh table");
 				List<OrderLine> updateLine = (new OrderLineDAO()).findALLBy("idOrders",
-						Integer.parseInt(comboBoxOrderNumberDelivery.getSelectedItem().toString()));//
-//				Useful.displayOrderLine(updateLine, modelDelivery);
+						Integer.parseInt(comboBoxOrderNumberDelivery.getSelectedItem().toString()));
 				modelDelivery.setRowCount(0);
 				updateLine.forEach(s -> {
 //					if (s.getDeliveryDate() == null) {
@@ -99,19 +104,29 @@ public class DeliveryPanel extends Tab {
 
 	}
 
+	/**
+	 * refresh article combobox
+	 */
 	public void refreshArticle() {
-		var article = (new ArticleDAO()).findALL();//
+		List<OrderLine> updateLine = (new OrderLineDAO()).findALLBy("idOrders",
+				Integer.parseInt(comboBoxOrderNumberDelivery.getSelectedItem().toString()));//
 		comboBoxArticleDelivery.removeAllItems();
-		article.forEach(a -> {
 
-			comboBoxArticleDelivery.addItem(a.getId() + " - " + a.getConditioning().getConditioningName() + " de "
-					+ a.getAmount() + " " + a.getProduct().getProductName());
-
+		updateLine.forEach(ol -> {
+			comboBoxArticleDelivery.addItem(
+					ol.getArticle().getId() + " - " + ol.getArticle().getConditioning().getConditioningName() + " de "
+							+ ol.getArticle().getAmount() + " " + ol.getArticle().getProduct().getProductName());
 		});
+
 	}
 
+	/**
+	 * format the date entered by the user in the correct format
+	 * 
+	 * @param dateSize
+	 * @return formated date
+	 */
 	private String formatDeliveryDate(String dateSize) {
-		// TODO Auto-generated method stub
 		String result = "";
 		int i = 0;
 		for (char c : dateSize.toCharArray()) {
@@ -127,6 +142,11 @@ public class DeliveryPanel extends Tab {
 		return result;
 	}
 
+	/**
+	 * this function allows to refresh all the elements of the tab so that in the
+	 * event of change in the data base on another tab one can recover the data on
+	 * the current tab
+	 */
 	@Override
 	public void refreshTab() {
 		super.refreshTab();
@@ -142,7 +162,6 @@ public class DeliveryPanel extends Tab {
 		comboBoxArticleDelivery.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		comboBoxArticleDelivery.setBounds(25, 320, 250, 40);
 		this.add(comboBoxArticleDelivery);
-		refreshArticle();
 
 		comboBoxOrderNumberDelivery = new JComboBox();
 		comboBoxOrderNumberDelivery.setFont(new Font("Tahoma", Font.PLAIN, 16));
@@ -257,6 +276,10 @@ public class DeliveryPanel extends Tab {
 		setUpListener();
 	}
 
+	/**
+	 * this function allows you to add an event listener on all the elements on
+	 * which you want to put an event
+	 */
 	public void setUpListener() {
 
 		textFieldAmountReceived.addKeyListener(new KeyAdapter() {
@@ -278,7 +301,6 @@ public class DeliveryPanel extends Tab {
 						if (!getComboBoxOrderNumberDelivery().getSelectedItem().toString().isEmpty()) {
 							var order = (new OrderDAO()).find("idOrders",
 									getComboBoxOrderNumberDelivery().getSelectedItem().toString());
-//							System.out.println("order number act");
 
 							getComboBoxProviderDelivery().setSelectedItem(order.getProvider().getCompanyName());
 
@@ -288,10 +310,18 @@ public class DeliveryPanel extends Tab {
 
 						}
 
-						refreshArticle();
 					}
 
 				}
+				if (getComboBoxOrderNumberDelivery().getSelectedItem() != null) {
+					if (!getComboBoxOrderNumberDelivery().getSelectedItem().toString().isEmpty()) {
+						refreshArticle();
+					} else {
+						comboBoxArticleDelivery.removeAllItems();
+					}
+
+				}
+
 				refreshTable();
 			}
 
@@ -305,7 +335,7 @@ public class DeliveryPanel extends Tab {
 
 					var provider = (new ProviderDAO()).find("compagnyName",
 							comboBoxProviderDelivery.getSelectedItem().toString());
-					System.out.println("test " + comboBoxProviderDelivery.getSelectedItem().toString());
+
 					var t = comboBoxOrderNumberDelivery.getSelectedItem().toString();
 					comboBoxOrderNumberDelivery.removeAllItems();
 					comboBoxOrderNumberDelivery.addItem("");
@@ -317,7 +347,7 @@ public class DeliveryPanel extends Tab {
 						}
 
 					});
-//						textFieldQtyOrder.setText("");
+
 					comboBoxOrderNumberDelivery.setSelectedItem(t);
 
 				} else {
@@ -334,7 +364,7 @@ public class DeliveryPanel extends Tab {
 					});
 
 				}
-				refreshArticle();
+
 			}
 
 		});
@@ -342,10 +372,10 @@ public class DeliveryPanel extends Tab {
 		tableDelivery.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-//				System.out.println("testttt");
+
 				if (!tableDelivery.getSelectionModel().isSelectionEmpty()) {
 					int row = tableDelivery.getSelectedRow();
-//					(Integer.toString((Integer)modelOrder.getValueAt(row, 0))
+
 					comboBoxArticleDelivery
 							.setSelectedItem((Integer.toString((Integer) tableDelivery.getValueAt(row, 0))) + " - "
 									+ (tableDelivery.getValueAt(row, 1).toString()));
@@ -358,15 +388,13 @@ public class DeliveryPanel extends Tab {
 							date = new SimpleDateFormat("dd/MM/yyyy")
 									.parse(tableDelivery.getValueAt(row, 6).toString());
 						} catch (ParseException e1) {
-							// TODO Auto-generated catch block
 							e1.printStackTrace();
 						}
 						DateFormat formatter = new SimpleDateFormat("dd/MM/yy");
 						dateDelevery = formatter.format(date);
-						
+
 					}
 					textFieldDeliveryDate.setText(dateDelevery);
-					
 
 				}
 			}
@@ -377,34 +405,42 @@ public class DeliveryPanel extends Tab {
 
 				var amount = textFieldAmountReceived.getText().isEmpty();
 				var date = textFieldDeliveryDate.getText().isEmpty();
+
 				if (!tableDelivery.getSelectionModel().isSelectionEmpty()) {
+					var receivedAmountIsCorect = (Integer.parseInt(textFieldAmountReceived.getText()) <= Integer
+							.parseInt(textFieldAmountExpected.getText()));
 					if (amount == false && date == false) {
+						if (receivedAmountIsCorect) {
+							int row = tableDelivery.getSelectedRow();
+							OrderLine orderLine = new OrderLine();
+							orderLine.setIdArticle(Integer.parseInt(tableDelivery.getValueAt(row, 0).toString()));
+							orderLine.setIdOrders(
+									Integer.parseInt(comboBoxOrderNumberDelivery.getSelectedItem().toString()));
+							orderLine.setAmount(Integer.parseInt(tableDelivery.getValueAt(row, 2).toString()));
+							orderLine.setAmountReceive(Integer.parseInt(textFieldAmountReceived.getText()));
+							java.util.Date sqlDate = null;
+							try {
+								sqlDate = new SimpleDateFormat("dd/MM/yy").parse(textFieldDeliveryDate.getText());
+							} catch (ParseException e1) {
+								e1.printStackTrace();
+							}
+							Date createDate = new Date(sqlDate.getTime());
 
-						int row = tableDelivery.getSelectedRow();
-						OrderLine orderLine = new OrderLine();
-						orderLine.setIdArticle(Integer.parseInt(tableDelivery.getValueAt(row, 0).toString()));
-						orderLine.setIdOrders(
-								Integer.parseInt(comboBoxOrderNumberDelivery.getSelectedItem().toString()));
-						orderLine.setAmount(Integer.parseInt(tableDelivery.getValueAt(row, 2).toString()));
-						orderLine.setAmountReceive(Integer.parseInt(textFieldAmountReceived.getText()));
-//						  Date date1=new SimpleDateFormat("dd/MM/yyyy").parse(sDate1); 
-						java.util.Date sqlDate = null;
-						try {
-							sqlDate = new SimpleDateFormat("dd/MM/yy").parse(textFieldDeliveryDate.getText());
-						} catch (ParseException e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
+							orderLine.setDeliveryDate(createDate);
+							orderLine.update();
+							refreshTable();
+							textFieldAmountReceived.setText("");
+							textFieldDeliveryDate.setText("");
+							textFieldAmountExpected.setText("");
+						}else {
+							JOptionPane.showInternalMessageDialog(null, "La quantité reçut est incorrecte", "Entré invalid", JOptionPane.INFORMATION_MESSAGE);
 						}
-						Date createDate = new Date(sqlDate.getTime());
 
-						orderLine.setDeliveryDate(createDate);
-						orderLine.update();
-
-						textFieldAmountReceived.setText("");
-						textFieldDeliveryDate.setText("");
 					} else {
-						JOptionPane.showMessageDialog(null, "Tous les champs ne sont pas remplis.");
+						JOptionPane.showInternalMessageDialog(null, "Tous les champs ne sont pas remplis.", "Champs vide",JOptionPane.INFORMATION_MESSAGE);
 					}
+				} else {
+					JOptionPane.showInternalMessageDialog(null, "Veuillez d'abord sélectionner une ligne de commande", "Sélection incorrecte", JOptionPane.INFORMATION_MESSAGE);
 				}
 			}
 		});
@@ -412,16 +448,27 @@ public class DeliveryPanel extends Tab {
 		btnDeleteDelivery.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				var amount = textFieldAmountReceived.getText().isEmpty();
-				var date = textFieldDeliveryDate.getText().isEmpty();
+				if (!tableDelivery.getSelectionModel().isSelectionEmpty()) {
 
-				if (amount == false && date == false) {
+					int p = JOptionPane.showConfirmDialog(null,
+							"Voulez vous vraiment supprimer cettligne de commande ?", "Confirmation",
+							JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 
-					textFieldAmountReceived.setText("");
-					textFieldDeliveryDate.setText("");
+					if (p == 0) {
+						int row = tableDelivery.getSelectedRow();
+						OrderLine orderLine = new OrderLine();
+						orderLine.setIdArticle(Integer.parseInt(tableDelivery.getValueAt(row, 0).toString()));
+						orderLine.setIdOrders(
+								Integer.parseInt(comboBoxOrderNumberDelivery.getSelectedItem().toString()));
+						orderLine.delete();
+						refreshTable();
+						textFieldAmountReceived.setText("");
+						textFieldDeliveryDate.setText("");
+						textFieldAmountExpected.setText("");
+						JOptionPane.showInternalMessageDialog(null, "Supprimer avec succes", "Succès", JOptionPane.INFORMATION_MESSAGE);
+					}
 				} else {
-					JOptionPane.showMessageDialog(null, "Tous les champs ne sont pas remplis.");
-
+					JOptionPane.showInternalMessageDialog(null, "Veuillez d'abord selectioner une ligne de commande", "Entré invalid", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		});

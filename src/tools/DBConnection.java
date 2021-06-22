@@ -40,7 +40,7 @@ public class DBConnection {
 	 */
 	public void startCo() {
 		/* Parametres de connexion */
-		String url = "jdbc:mysql://127.0.0.1/nestigestion";
+		String url = Config.URL;
 		// nesti = nom de ma bdd
 		String utilisateur = Config.USER;
 		String motDePasse = Config.PASSWORD;
@@ -68,7 +68,6 @@ public class DBConnection {
 
 			/* Parametres de connexion */
 			String url = Config.URL;
-			// nesti = nom de ma bdd
 
 			String utilisateur = Config.USER;
 			String motDePasse = Config.PASSWORD;
@@ -76,7 +75,6 @@ public class DBConnection {
 			if(isTest) {
 				
 				url = Config.URL_TEST;
-				// nesti = nom de ma bdd
 
 				utilisateur = Config.USER_TEST;
 				motDePasse = Config.PASSWORD_TEST;

@@ -30,13 +30,13 @@ public class Product extends DBConnection {
 	/**
 	 * 
 	 */
-	public int id;
+	protected int id;
 
 	/**
 	 * 
 	 */
-	public String productName;
-	public String type;
+	protected String productName;
+	protected String type;
 
 	/**
 	 * @return the type
@@ -81,11 +81,13 @@ public class Product extends DBConnection {
 	}
 
 	/**
-	 * 
+	 * adds a new product if it does not exist and depending on the
+	 * type chosen either an ingredient or a utensil is created
+	 * @param libeleTxt the JTextField
+	 * @param typeCombo the JComboBox
+	 * @param Unity the JComboBox
 	 */
 	public void create(JTextField libeleTxt, JComboBox typeCombo, JComboBox Unity) {
-
-//		System.out.println("not" + libeleTxt.getText());
 		Product newProduct = new Product();
 
 		newProduct.setProductName(libeleTxt.getText());
@@ -97,14 +99,12 @@ public class Product extends DBConnection {
 				(new ProductDAO()).insert(newProduct);
 
 			} catch (SQLException e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
 
 			var insertedProduct = (new ProductDAO()).find("productName", newProduct.getProductName());
 			Product temp;
 			if (typeCombo.getSelectedItem().equals("Ingredients")) {
-//		    		newProduct = new Ingredient();
 				var i = new Ingredient();
 
 				i.setId(insertedProduct.getId());
@@ -112,43 +112,24 @@ public class Product extends DBConnection {
 				try {
 					(new IngredientDAO()).insert(i);
 				} catch (SQLException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			} else {
-//		    		newProduct = new Utensil();
 				var u = new Utensil();
 				u.setId(insertedProduct.getId());
 				try {
 					(new UtensilDAO()).insert(u);
 				} catch (SQLException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
 
 		} else {
-			JOptionPane.showMessageDialog(null, "Product alrady exist");
+			JOptionPane.showMessageDialog(null, "le produit existe déjà", "Error de création", JOptionPane.ERROR_MESSAGE);
 
 		}
 		libeleTxt.setText("");
 		typeCombo.setSelectedIndex(0);
-//	 var myIngredient = new Ingredient();
-//	 
-//			try {
-//				startCo();
-//				String query = "INSERT INTO `product` (`productName`) VALUES ?;";
-//				PreparedStatement declaration = accessDataBase.prepareStatement(query);
-//				declaration.setString(1,libeleTxt.getText());
-//				int executeUpdate = declaration.executeUpdate();
-//
-//				flag = (executeUpdate == 1);
-//			} catch (Exception e) {
-//				System.err.println("Erreur d'insertion d'utilisateur: " + e.getMessage());
-//			}
-//			startCo();
-
-//		return flag;
 	}
 
 	public Object[] toRow() {
@@ -165,7 +146,8 @@ public class Product extends DBConnection {
 	}
 
 	/**
-	 * 
+	 * update the product
+	 * @param Unity the unit of the product
 	 */
 	public void update(JComboBox Unity) {
 
@@ -176,7 +158,6 @@ public class Product extends DBConnection {
 		try {
 			(new ProductDAO()).update(product);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		Utensil u = new Utensil();
@@ -197,20 +178,15 @@ public class Product extends DBConnection {
 					(new UtensilDAO()).delete(u);
 					(new IngredientDAO()).insert(ig);
 				} catch (SQLException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}else {
 				Ingredient ing = new Ingredient();
 				ing.setId(id);
 				ing.setMeasurementFromUnit(Unity.getSelectedItem().toString());
-//				System.out.println("unity"+Unity.getSelectedItem().toString());
-//				System.out.println("value"+ing.getMeasurementId());
 				ing.update();
 			}
 			
-
-//			System.out.println("ingrd");
 		}else {
 			
 			var utensil = (new UtensilDAO()).find("idProduct", product.getId());
@@ -222,7 +198,6 @@ public class Product extends DBConnection {
 					(new UtensilDAO()).insert(u);
 					(new IngredientDAO()).delete(ig);
 				} catch (SQLException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}

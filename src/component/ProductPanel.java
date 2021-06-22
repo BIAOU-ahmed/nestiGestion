@@ -20,6 +20,7 @@ import javax.swing.table.DefaultTableModel;
 
 import dao.MeasurementDAO;
 import dao.ProductDAO;
+import dao.ProviderDAO;
 import listener.AddProductListener;
 import listener.ProductListListener;
 import model.Measurement;
@@ -27,6 +28,8 @@ import model.Product;
 import tools.Useful;
 import view.Management;
 import javax.swing.SwingConstants;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class ProductPanel extends Tab {
 
@@ -38,7 +41,7 @@ public class ProductPanel extends Tab {
 	JButton btnAdd;
 	JButton btnUpdate;
 	JTextField textFieldProductName;
-
+	JTextField textFieldSearch;
 	protected DefaultTableModel productModel;
 
 	/**
@@ -58,6 +61,8 @@ public class ProductPanel extends Tab {
 
 	/**
 	 * Create the panel.
+	 * 
+	 * @param mainController the management panel
 	 */
 	public ProductPanel(Management mainController) {
 		this.mainController = mainController;
@@ -67,6 +72,9 @@ public class ProductPanel extends Tab {
 
 	}
 
+	/**
+	 * refresh the measurement combo box
+	 */
 	public void refreshMeasurement() {
 		var unitys = (new MeasurementDAO()).findALL();//
 		unitys.forEach(m -> {
@@ -89,16 +97,27 @@ public class ProductPanel extends Tab {
 		this.productList = productList;
 	}
 
-	public void refreshTable() {
-		List<Product> updateProducts = (new ProductDAO()).findALL();//
+	/**
+	 * refresh products table
+	 */
+	public void refreshTable(List<Product> updateProducts) {
 		Useful.display(updateProducts, productModel);
+	}
+
+	/**
+	 * refresh products table
+	 */
+	public void refreshTableAll() {
+		List<Product> updateProducts = (new ProductDAO()).findALL();//
+		refreshTable(updateProducts);
 	}
 
 	@Override
 	public void refreshTab() {
 		super.refreshTab();
 
-		JTextField textFieldSearch = new JTextField();
+		textFieldSearch = new JTextField();
+
 		textFieldSearch.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		textFieldSearch.setBounds(809, 70, 571, 27);
 		this.add(textFieldSearch);
@@ -126,9 +145,7 @@ public class ProductPanel extends Tab {
 		productList.setModel(productModel);
 		scrollPaneProductList.setViewportView(productList);
 		var conbo = mainController.getPanelArticle().getComboBoxProductArticle();
-//		productModel.addTableModelListener(e->refreshProduct(productList));
 		productModel.addTableModelListener(e -> {
-			// mon code a executer quand table change
 			mainController.getPanelArticle().refreshProduct();
 		});
 
@@ -147,7 +164,6 @@ public class ProductPanel extends Tab {
 		unityCombo.setFont(new Font("Tahoma", Font.PLAIN, 16));
 
 		comboBoxType.setBounds(350, 200, 150, 40);
-//		typeCombo.addItem(new ComboItem("Visible String 1", "Value 1"));
 
 		this.add(comboBoxType);
 
@@ -197,28 +213,28 @@ public class ProductPanel extends Tab {
 		lblTitleProduct.setBounds(200, 70, 300, 50);
 		add(lblTitleProduct);
 
-		refreshTable();
+		refreshTableAll();
 		setUpListener();
 	}
 
+	/**
+	 * this function allows you to add an event listener on all the elements on
+	 * which you want to put an event
+	 */
 	public void setUpListener() {
-		
-		
+
 		creatArticlebtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (!productList.getSelectionModel().isSelectionEmpty()) {
-//					System.out.println("oui in the dd");
 
 					int row = productList.getSelectedRow();
-//					libeleTxt.setText((String) productModel.getValueAt(row, 1));
-////					String t = ((String) productModel.getValueAt(row, 1));
 					String p = (String) productModel.getValueAt(row, 1);
-//					System.out.println(p);
 					mainController.getTabbedPane().setSelectedIndex(3);
 					mainController.getPanelArticle().getComboBoxProductArticle().setSelectedItem(p);
-					
+
 				} else {
-					JOptionPane.showMessageDialog(null, "Select product first");
+					JOptionPane.showInternalMessageDialog(null, "Veuillez d'abord sélectionner un produit",
+							"Sélection incorrecte", JOptionPane.INFORMATION_MESSAGE);
 				}
 
 			}
@@ -228,14 +244,10 @@ public class ProductPanel extends Tab {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (comboBoxType.getSelectedItem() == "Ingredients") {
-//					Querys querys = new Querys();
-//					querys.getUnitys(unityCombo);
 					unityCombo.removeAllItems();
 					refreshMeasurement();
 					unityCombo.setEnabled(true);
 				} else {
-//		  					DefaultComboBoxModel unityModel = new DefaultComboBoxModel();
-//		  					unityCombo.setModel(unityModel);
 					unityCombo.removeAllItems();
 					unityCombo.setEnabled(false);
 
@@ -244,12 +256,19 @@ public class ProductPanel extends Tab {
 			}
 		});
 
+		textFieldSearch.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				var list = (new ProductDAO()).findAllLike("productName ", textFieldSearch.getText());
+				refreshTable(list);
+			}
+		});
+
 		btnUpdate.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
 				if (!productList.getSelectionModel().isSelectionEmpty()) {
-//					System.out.println("oui in the dd");
 					int row = productList.getSelectedRow();
 
 					Product updateProduct = new Product();
@@ -257,18 +276,15 @@ public class ProductPanel extends Tab {
 					updateProduct.setProductName(textFieldProductName.getText());
 					updateProduct.setType(comboBoxType.getSelectedItem().toString());
 					updateProduct.update(unityCombo);
-					refreshTable();
-					
+					List<Product> updateProducts = (new ProductDAO()).findALL();
+					refreshTableAll();
+
 					textFieldProductName.setText("");
 					comboBoxType.setSelectedIndex(0);
-//					libeleTxt.setText((String) productModel.getValueAt(row, 1));
-////					String t = ((String) productModel.getValueAt(row, 1));
-//					String p = (String) productModel.getValueAt(row, 1);
-//					System.out.println(p);
-//					comboBoxProductArticle.setSelectedItem(p);
-//					tabbedPane.setSelectedIndex(3);
+
 				} else {
-					JOptionPane.showMessageDialog(null, "Select product first");
+					JOptionPane.showInternalMessageDialog(null, "Veuillez d'abord sélectionner un produit",
+							"Sélection incorrecte", JOptionPane.INFORMATION_MESSAGE);
 				}
 
 			}

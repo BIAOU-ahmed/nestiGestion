@@ -8,7 +8,6 @@ import java.util.*;
 import dao.ArticleDAO;
 import dao.OrderDAO;
 import dao.OrderLineDAO;
-import dao.ProductDAO;
 import dao.SellDAO;
 
 /**
@@ -25,16 +24,16 @@ public class OrderLine {
 	/**
 	 * 
 	 */
-	public int amount;
+	private int amount;
 
 	private int idArticle;
 	private int idOrders;
-	public int amountReceive;
+	private int amountReceive;
 
 	/**
 	 * 
 	 */
-	public Date deliveryDate;
+	private Date deliveryDate;
 
 	public Order getOrder() {
 
@@ -144,21 +143,29 @@ public class OrderLine {
 	}
 
 	public void update() {
-		OrderLine orderLine = new OrderLine();
-		orderLine.setIdArticle(idArticle);
-		orderLine.setIdOrders(idOrders);
-		orderLine.setAmount(amount);
-		orderLine.setAmountReceive(amountReceive);
-		orderLine.setDeliveryDate(deliveryDate);
+//		OrderLine orderLine = new OrderLine();
+//		orderLine.setIdArticle(idArticle);
+//		orderLine.setIdOrders(idOrders);
+//		orderLine.setAmount(amount);
+//		orderLine.setAmountReceive(amountReceive);
+//		orderLine.setDeliveryDate(deliveryDate);
 
 //		System.out.println("orderLine idArt"+orderLine.getIdArticle());
 //		System.out.println("orderLine idOrder"+orderLine.getIdOrders());
 //		System.out.println("orderLine amount"+orderLine.getAmount());
 		try {
-			(new OrderLineDAO()).update(orderLine);
+			(new OrderLineDAO()).update(this);
 
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public void delete() {
+		try {
+			(new OrderLineDAO()).delete(this);
+
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}

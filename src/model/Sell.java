@@ -30,6 +30,10 @@ public class Sell {
 
 	public double price;
 
+	/**
+	 * 
+	 * @param compagnyName the name of the company 
+	 */
 	public void setProviderFromName(String compagnyName) {
 		var provider = (new ProviderDAO()).find("compagnyName", compagnyName);
 		this.idProvider = provider.getId();
@@ -98,6 +102,9 @@ public class Sell {
 		this.idArticle = idArticle;
 	}
 
+	/**
+	 * enters a new item sold by a supplier
+	 */
 	public void create() {
 		var sell = new Sell();
 		sell.setIdProvider(idProvider);
@@ -124,6 +131,9 @@ public class Sell {
 
 	}
 
+	/**
+	 * updates a supplier's sales information on an item 
+	 */
 	public void update() {
 		var updatesell = new Sell();
 
@@ -136,11 +146,13 @@ public class Sell {
 			(new SellDAO()).update(updatesell);
 			JOptionPane.showMessageDialog(null, "Sell update succesfully");
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
+	/**
+	 * delete a sel
+	 */
 	public void delete() {
 		var deleteSell = new Sell();
 
@@ -174,18 +186,29 @@ public class Sell {
 
 	}
 
+	/**
+	 * 
+	 * @return Article
+	 */
 	public Article getArticle() {
 		
 		return (new ArticleDAO()).find("idArticle", this.idArticle);
 	}
 	
+	/**
+	 * 
+	 * @return provider
+	 */
 	public Provider getProvider() {
 		
 		return (new ProviderDAO()).find(" 	idProvider", this.idProvider);
 	}
 
 	
-	
+	/**
+	 * allows you to create an object array for display in tables
+	 * @return array of object
+	 */
 	public Object[] toRowForArticle() {
 		
 		int amounReceive = 0;

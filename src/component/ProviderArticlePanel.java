@@ -36,7 +36,7 @@ import view.Management;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
-public class ProviderArticlePanel extends Tab{
+public class ProviderArticlePanel extends Tab {
 
 	JComboBox comboBoxProvider;
 	JComboBox comboBoxArticle;
@@ -47,20 +47,27 @@ public class ProviderArticlePanel extends Tab{
 	JTextField textFieldPrice;
 	DefaultTableModel providerModel;
 	Management mainContent;
-	
+
 	/**
 	 * Create the panel.
+	 * 
+	 * @param c the management panel
 	 */
 	public ProviderArticlePanel(Management c) {
-		mainContent =c;
+		mainContent = c;
 		this.setLayout(null);
 
 		refreshTab();
 
-
 //		refreshTable(comboBoxProvider, providerModel);
 	}
 
+	/**
+	 * refresh the table of items sold by the supplier select
+	 * 
+	 * @param comboBoxProvider the combo box of all provider
+	 * @param providerModel    the model of the list put in the combo box
+	 */
 	public void refreshTable(JComboBox<String> comboBoxProvider, DefaultTableModel providerModel) {
 
 		var sell = new Sell();
@@ -78,6 +85,9 @@ public class ProviderArticlePanel extends Tab{
 
 	}
 
+	/**
+	 * refresh provider combo box
+	 */
 	public void refreshProvider() {
 		var provider = (new ProviderDAO()).findALL();//
 		comboBoxProvider.addItem("");
@@ -88,6 +98,9 @@ public class ProviderArticlePanel extends Tab{
 		});
 	}
 
+	/**
+	 * refresh articles combo box
+	 */
 	public void refreshArticle() {
 		var article = (new ArticleDAO()).findALL();//
 
@@ -102,7 +115,6 @@ public class ProviderArticlePanel extends Tab{
 	@Override
 	public void refreshTab() {
 		super.refreshTab();
-		
 
 		JLabel lblTitleProviderArticle = new JLabel("Gestion Articles Fournisseurs");
 		lblTitleProviderArticle.setFont(new Font("Tahoma", Font.PLAIN, 24));
@@ -129,7 +141,7 @@ public class ProviderArticlePanel extends Tab{
 		refreshProvider();
 
 		textFieldPrice = new JTextField();
-	
+
 		textFieldPrice.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		textFieldPrice.setHorizontalAlignment(SwingConstants.CENTER);
 		textFieldPrice.setBounds(250, 480, 200, 40);
@@ -161,8 +173,7 @@ public class ProviderArticlePanel extends Tab{
 		tableArticleProvider.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		scrollPaneArticleProvider.setViewportView(tableArticleProvider);
 
-		providerModel = new DefaultTableModel(new Object[][] {,},
-				new String[] { "Article", "Prix (en Euros)" });
+		providerModel = new DefaultTableModel(new Object[][] {,}, new String[] { "Article", "Prix (en Euros)" });
 
 		tableArticleProvider.setModel(providerModel);
 		tableArticleProvider.getColumnModel().getColumn(0).setResizable(false);
@@ -193,14 +204,17 @@ public class ProviderArticlePanel extends Tab{
 		add(btnDelete);
 		setUpListener();
 	}
-	
-	
-	public void setUpListener(){
-		
+
+	/**
+	 * this function allows you to add an event listener on all the elements on
+	 * which you want to put an event
+	 */
+	public void setUpListener() {
+
 		textFieldPrice.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent e) {
-				
+
 				char testChar = e.getKeyChar();
 
 				if ((!(Character.isDigit(testChar)) && !(e.getKeyChar() == KeyEvent.VK_PERIOD))
@@ -209,7 +223,6 @@ public class ProviderArticlePanel extends Tab{
 				}
 			}
 		});
-		
 
 		btnAdd.addActionListener(new ActionListener() {
 			@Override
@@ -238,7 +251,7 @@ public class ProviderArticlePanel extends Tab{
 
 					refreshTable(comboBoxProvider, providerModel);
 				} else {
-					JOptionPane.showMessageDialog(null, "required camp empty");
+					JOptionPane.showMessageDialog(null, "Tous les champs requis ne sont pas remplis.");
 				}
 
 			}
@@ -253,9 +266,12 @@ public class ProviderArticlePanel extends Tab{
 						var sell = new Sell();
 //				var adminId = Integer.parseInt(AppSettings.get("loginUser"));
 //				var admin = (new AdministratorDAO()).find("idAdministrator", adminId);
-						var article = comboBoxArticle.getSelectedItem().toString();
+//						var article = comboBoxArticle.getSelectedItem().toString();
 //				var provider = new Provider();
 //				provider.s
+						int row = tableArticleProvider.getSelectedRow();
+						var article = (String) providerModel.getValueAt(row, 0);
+
 						sell.setProviderFromName(comboBoxProvider.getSelectedItem().toString());
 						sell.setIdArticle(Integer.parseInt(article.split(" - ")[0]));
 //				sell.setIdProvider();
@@ -276,7 +292,11 @@ public class ProviderArticlePanel extends Tab{
 						List<Sell> sells = (new SellDAO()).findALL();//
 						Useful.displaySell(sells, providerModel);
 						refreshTable(comboBoxProvider, providerModel);
+					} else {
+						JOptionPane.showMessageDialog(null, "Tous les champs requis ne sont pas remplis.");
 					}
+				} else {
+					JOptionPane.showMessageDialog(null, "Veuillez d'abord selectioner une vente");
 				}
 			}
 		});
@@ -285,30 +305,31 @@ public class ProviderArticlePanel extends Tab{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (!tableArticleProvider.getSelectionModel().isSelectionEmpty()) {
-					var sell = new Sell();
+					int p = JOptionPane.showConfirmDialog(null,
+							"Voulez vous vraiment supprimer cette vente ?", "Confirmation",
+							JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+
+					if (p == 0) {
+						var sell = new Sell();
 //				var adminId = Integer.parseInt(AppSettings.get("loginUser"));
 //				var admin = (new AdministratorDAO()).find("idAdministrator", adminId);
-					var article = comboBoxArticle.getSelectedItem().toString();
-//				var provider = new Provider();
-//				provider.s
-					sell.setProviderFromName(comboBoxProvider.getSelectedItem().toString());
-					sell.setIdArticle(Integer.parseInt(article.split(" - ")[0]));
-//				sell.setIdProvider();
-					sell.setPrice(Double.parseDouble(textFieldPrice.getText()));
+						int row = tableArticleProvider.getSelectedRow();
+						var article = (String) providerModel.getValueAt(row, 0);
 
-					java.util.Date sqlDate = new java.util.Date();
-					Date createDate = new Date(sqlDate.getTime());
+						sell.setProviderFromName(comboBoxProvider.getSelectedItem().toString());
+						sell.setIdArticle(Integer.parseInt(article.split(" - ")[0]));
 
-					sell.setUpdateDate(createDate);
+						sell.delete();
+						comboBoxProvider.setSelectedIndex(0);
+						comboBoxArticle.setSelectedIndex(0);
+						textFieldPrice.setText("");
 
-					sell.delete();
-					comboBoxProvider.setSelectedIndex(0);
-					comboBoxArticle.setSelectedIndex(0);
-					textFieldPrice.setText("");
-
-					comboBoxProvider.setEnabled(true);
-					comboBoxArticle.setEnabled(true);
-					refreshTable(comboBoxProvider, providerModel);
+						comboBoxProvider.setEnabled(true);
+						comboBoxArticle.setEnabled(true);
+						refreshTable(comboBoxProvider, providerModel);
+					}
+				} else {
+					JOptionPane.showMessageDialog(null, "Veuillez d'abord selectioner une vente");
 				}
 			}
 		});
@@ -334,6 +355,6 @@ public class ProviderArticlePanel extends Tab{
 				}
 			}
 		});
-		
+
 	}
 }

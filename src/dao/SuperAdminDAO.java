@@ -44,19 +44,10 @@ public class SuperAdminDAO extends BaseDAO<SuperAdmin> {
 	}
 
 	public void insert(Administrator admin) throws SQLException {
-		var sql = "INSERT INTO " + getTableName()
-				+ "(`idAdministrator`) VALUES (?);"; // Don't
-																																			// insert
-																																			// ID,
-																																			// let
-																																			// database
-		// auto-increment it.
+		var sql = " CALL `add_superadmin`(?);"; 
 
 		var insertAdmin = DBConnection.get().prepareStatement(sql);
 
-//		System.out.println("admin " + article.getIdAdministrator());
-//		System.out.println("product " + article.getIdProduct());
-//		System.out.println("condi " + article.getIdConditioning());
 
 		insertAdmin.setInt(1, admin.getId());
 		insertAdmin.executeUpdate();

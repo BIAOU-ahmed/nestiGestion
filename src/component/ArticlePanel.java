@@ -53,36 +53,42 @@ public class ArticlePanel extends Tab {
 	JButton btnOrderArticle;
 	JComboBox<String> comboBoxStatutArticle;
 	DefaultTableModel providerListArticleModel;
-	
+
 	JTextField textFieldSearchArticle;
-	
+
 	/**
 	 * Create the panel.
+	 * 
+	 * @param c the management panel
 	 */
 	public ArticlePanel(Management c) {
 		mainController = c;
-//		comboBoxProductArticle = comboBoxProductArticles;
-//		tabbedPane.addTab("Gestion Article", null, this, null);
 		this.setLayout(null);
 
 		refreshTab();
 
 	}
 
-	public void refreshTable(List<Article> products) {
-//		List<Article> updateProducts = (new ArticleDAO()).findALL();//
+	/**
+	 * refresh the article list table
+	 * 
+	 * @param articles array of articles
+	 */
+	public void refreshTable(List<Article> articles) {
 		articleModel.setRowCount(0);
-		products.forEach(p -> {
-			
+		articles.forEach(p -> {
+
 			Object[] row1 = p.toRow();
 			// Ajout d'une rang�e
 			articleModel.addRow(row1);
 
 		});
-		
-//		Useful.displayArticle(updateProducts, articleModel);
+
 	}
 
+	/**
+	 * refresh the selectable list of products
+	 */
 	public void refreshProduct() {
 		var productList = (new ProductDAO()).findALL();//
 		comboBoxProductArticle.removeAllItems();
@@ -93,6 +99,9 @@ public class ArticlePanel extends Tab {
 		});
 	}
 
+	/**
+	 * refresh the selectable list of conditions
+	 */
 	public void refreshConditioning() {
 		var conditioning = (new ConditioningDAO()).findALL();//
 		comboBoxConditioningArticle.removeAllItems();
@@ -117,9 +126,13 @@ public class ArticlePanel extends Tab {
 		this.comboBoxProductArticle = comboBoxProductArticle;
 	}
 
+	/**
+	 * this function allows to refresh all the elements of the tab so that in the
+	 * event of change in the data base on another tab one can recover the data on
+	 * the current tab
+	 */
 	@Override
 	public void refreshTab() {
-		// TODO Auto-generated method stub
 		super.refreshTab();
 
 		JLabel lblSearchArticle = new JLabel("Rechercher");
@@ -158,8 +171,6 @@ public class ArticlePanel extends Tab {
 		tableArticle.getColumnModel().getColumn(5).setResizable(false);
 		tableArticle.getColumnModel().getColumn(6).setResizable(false);
 		tableArticle.getColumnModel().getColumn(7).setResizable(false);
-//		scrollPane.setViewportView(table);
-//		scrollPane.setColumnHeaderView(table);
 
 		JLabel lblWeightArticle = new JLabel("Poids");
 		lblWeightArticle.setFont(new Font("Tahoma", Font.PLAIN, 16));
@@ -226,20 +237,7 @@ public class ArticlePanel extends Tab {
 		this.add(btnAddArticle);
 
 		btnEditArticle = new JButton("Modfifier");
-//		btnEditArticle.addMouseListener(new MouseAdapter() {
-//			@Override
-//			public void mouseClicked(MouseEvent e) {
-//				var qty = textFieldQtyArticle.getText().isEmpty();
-//				var weight = textFieldWeightArticle.getText().isEmpty();
-//
-//				if (qty == false && weight == false) {
-//					textFieldQtyArticle.setText("");
-//					textFieldWeightArticle.setText("");
-//				} else {
-//					JOptionPane.showMessageDialog(null, "Tous les champs ne sont pas remplis.");
-//				}
-//			}
-//		});
+
 		btnEditArticle.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		btnEditArticle.setBounds(349, 286, 111, 40);
 		this.add(btnEditArticle);
@@ -283,30 +281,33 @@ public class ArticlePanel extends Tab {
 		tableProviderListArticle.getColumnModel().getColumn(2).setResizable(false);
 		tableProviderListArticle.getColumnModel().getColumn(3).setResizable(false);
 		tableProviderListArticle.getColumnModel().getColumn(4).setResizable(false);
-//		scrollPane.setViewportView(table);
-//		scrollPane.setColumnHeaderView(table);
 
 		setUpListener();
 		refreshConditioning();
 
-//		var productList = (new ProductDAO()).findALL();//
 		refreshProduct();
-//		mainController.getPanelProduct().getProductList().getModel().addTableModelListener(e->refreshProduct(productList));
+
 		List<Article> productsList = (new ArticleDAO()).findALL();
 		refreshTable(productsList);
 
 		Useful.sort(articleModel, tableArticle);
 	}
 
+	/**
+	 * this function allows you to add an event listener on all the elements on
+	 * which you want to put an event
+	 */
 	public void setUpListener() {
 
 		textFieldWeightArticle.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent e) {
 				char testChar = e.getKeyChar();
-				if (!(Character.isDigit(testChar))) {
+				if (!(Character.isDigit(testChar))
+						&& (!(testChar == '.') || textFieldWeightArticle.getText().indexOf(".") != -1)) {
 					e.consume();
 				}
+
 			}
 		});
 
@@ -314,6 +315,7 @@ public class ArticlePanel extends Tab {
 			@Override
 			public void keyTyped(KeyEvent e) {
 				char testChar = e.getKeyChar();
+				System.out.println();
 				if (!(Character.isDigit(testChar))) {
 					e.consume();
 				}
@@ -323,13 +325,13 @@ public class ArticlePanel extends Tab {
 		tableArticle.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-//				System.out.println("testttt");
+
 				if (!tableArticle.getSelectionModel().isSelectionEmpty()) {
 					int row = tableArticle.getSelectedRow();
 
 					if (tableArticle.getValueAt(row, 7).toString().equals("Brouillon")) {
 						comboBoxStatutArticle.setSelectedItem((String) tableArticle.getValueAt(row, 7));
-//						textFieldWeightArticle.setText((String) articleModel.getValueAt(row, 4));
+
 						comboBoxProductArticle.setSelectedItem((String) tableArticle.getValueAt(row, 1));
 
 						comboBoxConditioningArticle.setSelectedItem((String) tableArticle.getValueAt(row, 3));
@@ -368,7 +370,7 @@ public class ArticlePanel extends Tab {
 						Article article = new Article();
 						var adminId = Integer.parseInt(AppSettings.get("loginUser"));
 						var admin = (new AdministratorDAO()).find("idAdministrator", adminId);
-//						System.out.println("art " + ((Integer) tableArticle.getValueAt(row, 0)));
+
 						if (comboBoxStatutArticle.getSelectedItem().toString().equals("Retiré")) {
 							state = "b";
 						}
@@ -388,26 +390,29 @@ public class ArticlePanel extends Tab {
 
 						textFieldQtyArticle.setText("");
 						textFieldWeightArticle.setText("");
-					} else {
-						JOptionPane.showMessageDialog(null, "Tous les champs ne sont pas remplis.");
-					}
+					} 
 
+				}else {
+					JOptionPane.showInternalMessageDialog(null,
+							"Veuillez d'abord sélectionner une ligne de commande", "Sélection incorrecte",
+							JOptionPane.INFORMATION_MESSAGE);
 				}
 			}
 		});
-		
 
 		btnOrdering.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
-				if (!tableProviderListArticle.getSelectionModel().isSelectionEmpty()) {
-					
+				if (!tableProviderListArticle.getSelectionModel().isSelectionEmpty()
+						&& !tableArticle.getSelectionModel().isSelectionEmpty()) {
+
 					int row = tableArticle.getSelectedRow();
 
 					String article = tableArticle.getValueAt(row, 0).toString() + " - "
 							+ tableArticle.getValueAt(row, 3).toString() + " de "
-							+ tableArticle.getValueAt(row, 2).toString()+" " + tableArticle.getValueAt(row, 1).toString();
-//					System.out.println("article "+article);
+							+ tableArticle.getValueAt(row, 2).toString() + " "
+							+ tableArticle.getValueAt(row, 1).toString();
+
 					int providerRow = tableProviderListArticle.getSelectedRow();
 					mainController.getTabbedPane().setSelectedIndex(2);
 					mainController.getPanelOrder().getComboBoxProviderOrder()
@@ -415,6 +420,10 @@ public class ArticlePanel extends Tab {
 
 					mainController.getPanelOrder().getComboBoxArticleOrder().setSelectedItem(article);
 
+				} else {
+					JOptionPane.showInternalMessageDialog(null,
+							"Veuillez d'abord sélectionner une ligne de produit et de fournisseur",
+							"Sélection incorrecte", JOptionPane.INFORMATION_MESSAGE);
 				}
 
 			}
@@ -425,20 +434,18 @@ public class ArticlePanel extends Tab {
 			public void keyReleased(KeyEvent e) {
 				List<Article> productsList = (new ArticleDAO()).findALL();
 				var list = new ArrayList<Article>();
-				productsList.forEach(a->{
+				productsList.forEach(a -> {
 					var productName = a.getProduct().getProductName();
-					if(productName.indexOf(textFieldSearchArticle.getText()) != -1) {
+					if (productName.indexOf(textFieldSearchArticle.getText()) != -1) {
 						list.add(a);
 					}
 				});
-				
-//				System.out.println(list.size());
-				
+
 				refreshTable(list);
 
 			}
 		});
-		
+
 		btnAddArticle.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -453,11 +460,11 @@ public class ArticlePanel extends Tab {
 					var adminId = Integer.parseInt(AppSettings.get("loginUser"));
 					var admin = (new AdministratorDAO()).find("idAdministrator", adminId);
 
-					article.setWeight(Useful.parseDouble(Double.parseDouble(textFieldWeightArticle.getText()),2));
+					article.setWeight(Useful.parseDouble(Double.parseDouble(textFieldWeightArticle.getText()), 2));
 					article.setAmount(Integer.parseInt(textFieldQtyArticle.getText()));
 					if (comboBoxStatutArticle.getSelectedItem().toString().equals("Retiré")) {
 						state = "b";
-						
+
 					}
 					article.setArticleState(state);
 					java.util.Date sqlDate = new java.util.Date();
@@ -474,7 +481,8 @@ public class ArticlePanel extends Tab {
 					textFieldQtyArticle.setText("");
 					textFieldWeightArticle.setText("");
 				} else {
-					JOptionPane.showMessageDialog(null, "Tous les champs ne sont pas remplis.");
+					JOptionPane.showMessageDialog(null, "Tous les champs ne sont pas remplis.", "Champs vide",
+							JOptionPane.INFORMATION_MESSAGE);
 				}
 
 			}

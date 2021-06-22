@@ -13,6 +13,7 @@ import model.*;
 import tools.DBConnection;
 
 /**
+ * This class contain all query of the article
  * @author ahmed
  *
  */
@@ -27,6 +28,12 @@ public class IngredientDAO extends BaseDAO<Ingredient> {
 	// INSERT INTO `product` (`idProduct`, `productName`) VALUES (NULL,
 	// 'testProduct');
 
+	/**
+	 * this functions get a query in parameter and 
+	 * return an object of type ingredient
+	 * @param rs the query ResultSet
+	 * @return the ingredient
+	 */
 	@Override
 	public Ingredient getFromResultSet(ResultSet rs) throws SQLException {
 		Ingredient result = null;
@@ -42,6 +49,12 @@ public class IngredientDAO extends BaseDAO<Ingredient> {
 		return result;
 	}
 
+	/**
+	 * this function take the object Ingredient in parameter and 
+	 * insert it in the database
+	 * @param ing the object ingredient
+	 * @throws SQLException all SQL Exception
+	 */
 	public void insert(Ingredient ing) throws SQLException {
 		var sql = "INSERT INTO " + getTableName() + "(`idProduct`,`idMeasurement`) VALUES (?,?);";
 
@@ -54,6 +67,11 @@ public class IngredientDAO extends BaseDAO<Ingredient> {
 
 	}
 
+	/**
+	 * this function update the Ingredient pass in parameter in the database
+	 * @param ing the object ingredient
+	 * @throws SQLException all SQL Exceptions
+	 */
 	public void update(Ingredient ing) throws SQLException {
 //		System.out.println("id" + ing.getId());
 //		System.out.println("idM" + ing.getMeasurementId());
@@ -74,6 +92,11 @@ public class IngredientDAO extends BaseDAO<Ingredient> {
 	}
 //tttt
 	
+	/**
+	 * this delete the Ingredient passed in the database
+	 * @param ing the object ingredient
+	 * @throws SQLException all SQL Exceptions
+	 */
 	public void delete (Ingredient ing) throws SQLException {
         var sql = "DELETE FROM `ingredient` WHERE  	idProduct = ?"; // Don't insert ID, let database auto-increment it.
 

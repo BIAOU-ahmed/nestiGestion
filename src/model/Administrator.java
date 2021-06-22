@@ -4,151 +4,158 @@ import java.util.*;
 
 import com.lambdaworks.crypto.SCryptUtil;
 
+import dao.SuperAdminDAO;
+
 /**
  * 
  */
 public class Administrator {
 
-    /**
-     * Default constructor
-     */
-    public Administrator() {
-    }
+	/**
+	 * Default constructor
+	 */
+	public Administrator() {
+	}
 
-    /**
-     * 
-     */
-    public int id;
+	/**
+	 * 
+	 */
+	private int id;
 
-    /**
-     * 
-     */
-    public String userName;
+	/**
+	 * 
+	 */
+	private String userName;
 
-    /**
-     * 
-     */
-    public String password;
+	/**
+	 * 
+	 */
+	private String password;
 
-    /**
-     * 
-     */
-    public String adminState;
+	/**
+	 * 
+	 */
+	private String adminState;
 
-    /**
-     * 
-     */
-    public Date createdAt;
+	/**
+	 * 
+	 */
+	private Date createdAt;
 
+	/**
+	 * checks if the password entered matches the user's password
+	 * @param plaintTextPassword the non-hashed password  
+	 * @return true | false
+	 */
+	public boolean isPassword(String plaintTextPassword) {
+		boolean matched = SCryptUtil.check(plaintTextPassword, this.password);
+		return matched;
 
+	}
 
-    public boolean isPassword(String plaintTextPassword) {
-    	boolean matched = SCryptUtil.check(plaintTextPassword, this.password);
-    	return matched;
-    	
-    }
+	/**
+	 * 
+	 */
+	public void ordering() {
+		// TODO implement here
+	}
 
-    /**
-     * 
-     */
-    public void ordering() {
-        // TODO implement here
-    }
+	/**
+	 * create a new article in the database
+	 * @param article the object article
+	 */
+	public void createArticle(Article article) {
+		article.create();
+	}
 
-    /**
-     * 
-     */
-    public void createArticle(Article article) {
-        article.create();
-    }
-    /**
-     * 
-     */
-    public void updateArticle(Article article) {
-    	article.update();
-    }
+	/**
+	 * update an article in the database
+	 * @param article the object article
+	 */
+	public void updateArticle(Article article) {
+		article.update();
+	}
 
-    /**
-     * 
-     */
-    public void createProvider(Provider provider) {
-    	provider.create();
-    }
+	/**
+	 * create a new provider 
+	 * @param provider the provider  
+	 */
+	public void createProvider(Provider provider) {
+		provider.create();
+	}
 
-    
-    /**
-     * 
-     */
-    public void updateProvider(Provider provider) {
-    	provider.update();
-    }
+	/**
+	 * update the provider passed
+	 * @param provider the provider
+	 */
+	public void updateProvider(Provider provider) {
+		provider.update();
+	}
 
-    
-    /**
-     * 
-     */
-    public void createOrder(Order order) {
-    	order.create(order);
-    }
-    
-    /**
-     * 
-     */
-    public void deleteProvider() {
-        // TODO implement here
-    }
+	/**
+	 * add new order in the database
+	 * @param order the order
+	 */
+	public void createOrder(Order order) {
+		order.create(order);
+	}
 
-    /**
-     * 
-     */
-    public void addProduct() {
-        // TODO implement here
-    }
+	/**
+	 * 
+	 */
+	public void deleteProvider() {
+		// TODO implement here
+	}
 
-    /**
-     * 
-     */
-    public void updateProduct() {
-        // TODO implement here
-    }
+	/**
+	 * 
+	 */
+	public void addProduct() {
+		// TODO implement here
+	}
 
-    /**
-     * 
-     */
-    public void deleteProduct() {
-        // TODO implement here
-    }
+	/**
+	 * 
+	 */
+	public void updateProduct() {
+		// TODO implement here
+	}
 
-    /**
-     * 
-     */
-    public void showProvider() {
-        // TODO implement here
-    }
+	/**
+	 * 
+	 */
+	public void deleteProduct() {
+		// TODO implement here
+	}
 
-    /**
-     * 
-     */
-    public void manageStateOrder() {
-        // TODO implement here
-    }
+	/**
+	 * 
+	 */
+	public void showProvider() {
+		// TODO implement here
+	}
 
-    /**
-     * 
-     */
-    public void updateArticleStorage() {
-        // TODO implement here
-    }
+	/**
+	 * 
+	 */
+	public void manageStateOrder() {
+		// TODO implement here
+	}
 
+	/**
+	 * 
+	 */
+	public void updateArticleStorage() {
+		// TODO implement here
+	}
 
+	/**
+	 * 
+	 */
+	public void isSuperAdmin() {
+		// TODO implement here
 
-    /**
-     * 
-     */
-    public void isSuperAdmin() {
-        // TODO implement here
-    	
-    }
+	}
 
 	/**
 	 * @return the id
@@ -219,11 +226,20 @@ public class Administrator {
 	public void setCreatedAt(Date createdAt) {
 		this.createdAt = createdAt;
 	}
+	
+	public String getRole() {
+		String role = "Administrateur";
+		var isSuperAdmin =  (new SuperAdminDAO()).find("idAdministrator", this.getId());
+		if(isSuperAdmin == null) {
+			 role = "Super Administrateur";
+		}
+		return adminState;
+		
+	}
 
-    public Object[] toRow() {
-    	Object[] administrator = { getId(), getUserName(), "getdroits", getCreatedAt(), getAdminState()};
-    	return administrator;
-    }
-    
+	public Object[] toRow() {
+		Object[] administrator = { getId(), getUserName(), getRole(), getCreatedAt(), getAdminState() };
+		return administrator;
+	}
 
 }

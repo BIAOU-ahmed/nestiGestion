@@ -44,6 +44,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.event.CaretEvent;
 import javax.swing.SwingConstants;
+import javax.swing.ButtonGroup;
 
 public class ProviderPanel extends Tab {
 	DefaultTableModel providerModel;
@@ -62,9 +63,15 @@ public class ProviderPanel extends Tab {
 	Management mainController;
 	JLabel lblSelectedCompanyNameProvider;
 	JButton OrderButton;
+	JRadioButton LastNameRadio;
+	JRadioButton FirstNameRadio;
+	JRadioButton CompanyRadio;
+	private final ButtonGroup buttonGroup = new ButtonGroup();
 	
 	/**
 	 * Create the panel.
+	 * 
+	 * @param c the management panel
 	 */
 	public ProviderPanel(Management c) {
 		this.mainController = c;
@@ -72,8 +79,14 @@ public class ProviderPanel extends Tab {
 		refreshTab();
 	}
 
+	/**
+	 * this is a function that formats what the user enters into a correct phone
+	 * number format
+	 * 
+	 * @param textSize the size of the text entered
+	 * @return formated phone number
+	 */
 	private String formatPhoneNumber(String textSize) {
-		// TODO Auto-generated method stub
 		String result = "";
 		int i = 0;
 		for (char c : textSize.toCharArray()) {
@@ -90,6 +103,9 @@ public class ProviderPanel extends Tab {
 		return result;
 	}
 
+	/**
+	 * refresh table of provider
+	 */
 	public void refreshTable() {
 		List<Provider> updateProvider = (new ProviderDAO()).findALL();//
 		Useful.displayProvider(updateProvider, providerModel);
@@ -98,7 +114,7 @@ public class ProviderPanel extends Tab {
 	@Override
 	public void refreshTab() {
 		super.refreshTab();
-		
+
 		JLabel lblCompanyNameProvider = new JLabel("Nom d'entreprise");
 		lblCompanyNameProvider.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		lblCompanyNameProvider.setBounds(143, 59, 129, 23);
@@ -160,7 +176,6 @@ public class ProviderPanel extends Tab {
 		textFieldFirstNameProvider.setColumns(10);
 
 		textFieldPhoneNumberProvider = new JTextField();
-	
 
 		textFieldPhoneNumberProvider.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		textFieldPhoneNumberProvider.setBounds(508, 261, 176, 35);
@@ -214,30 +229,28 @@ public class ProviderPanel extends Tab {
 		this.add(ProviderSearchLabel);
 
 		ProviderSearchBarField = new JTextField();
-		
+
 		ProviderSearchBarField.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		ProviderSearchBarField.setBounds(771, 62, 595, 35);
 		this.add(ProviderSearchBarField);
 		ProviderSearchBarField.setColumns(10);
 
-		JRadioButton LastNameRadio = new JRadioButton("Nom");
+		LastNameRadio = new JRadioButton("Nom");
+		buttonGroup.add(LastNameRadio);
 		LastNameRadio.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		LastNameRadio.setBounds(992, 109, 73, 23);
+		LastNameRadio.setBounds(1066, 109, 73, 23);
 		this.add(LastNameRadio);
 
-		JRadioButton FirstNameRadio = new JRadioButton("Pr\u00E9nom");
+		FirstNameRadio = new JRadioButton("Pr\u00E9nom");
+		buttonGroup.add(FirstNameRadio);
 		FirstNameRadio.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		FirstNameRadio.setBounds(1067, 109, 85, 23);
+		FirstNameRadio.setBounds(1177, 109, 85, 23);
 		this.add(FirstNameRadio);
 
-		JRadioButton StatusRadio = new JRadioButton("Statut");
-		StatusRadio.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		StatusRadio.setBounds(1154, 109, 73, 23);
-		this.add(StatusRadio);
-
-		JRadioButton CompanyRadio = new JRadioButton("Entreprise");
+		CompanyRadio = new JRadioButton("Entreprise");
+		buttonGroup.add(CompanyRadio);
 		CompanyRadio.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		CompanyRadio.setBounds(886, 109, 104, 23);
+		CompanyRadio.setBounds(925, 109, 104, 23);
 		this.add(CompanyRadio);
 
 		JScrollPane ProviderScrollPanel = new JScrollPane();
@@ -275,9 +288,12 @@ public class ProviderPanel extends Tab {
 		setUpListener();
 	}
 
+	/**
+	 * this function allows you to add an event listener on all the elements on
+	 * which you want to put an event
+	 */
 	public void setUpListener() {
 
-		
 		textFieldPhoneNumberProvider.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent e) {
@@ -301,18 +317,25 @@ public class ProviderPanel extends Tab {
 			}
 
 		});
-		
+
 		ProviderSearchBarField.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyReleased(KeyEvent e) {
-				var list = (new ProviderDAO()).findAllLike("compagnyName", ProviderSearchBarField.getText());
+				var key = "compagnyName";
+				if(LastNameRadio.isSelected()) {
+					key="contactLastName";
+				}
+				
+				if(FirstNameRadio.isSelected()) {
+					key="contactFirstName";
+				}
+				var list = (new ProviderDAO()).findAllLike(key, ProviderSearchBarField.getText());
 //				System.out.println(list.size());
 				Useful.displayProvider(list, providerModel);
 
 			}
 		});
-		
-		
+
 		ProviderTable.addMouseListener(new MouseAdapter() {
 
 			@Override
@@ -333,30 +356,30 @@ public class ProviderPanel extends Tab {
 				}
 			}
 		});
-		
-		
+
 		OrderButton.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (!tableSelectedProvider.getSelectionModel().isSelectionEmpty()) {
-//					System.out.println("oui in the dd");
 
 					int row = tableSelectedProvider.getSelectedRow();
 					int providerRow = ProviderTable.getSelectedRow();
-//					libeleTxt.setText((String) productModel.getValueAt(row, 1));
-////					String t = ((String) productModel.getValueAt(row, 1));
+
 					var a = (new ArticleDAO()).find("idArticle", tableSelectedProvider.getValueAt(row, 0));
-					String article =tableSelectedProvider.getValueAt(row, 0).toString()+ " - " +tableSelectedProvider.getValueAt(row, 1).toString();
+					String article = tableSelectedProvider.getValueAt(row, 0).toString() + " - "
+							+ tableSelectedProvider.getValueAt(row, 1).toString();
 					System.out.println(article);
 					mainController.getTabbedPane().setSelectedIndex(2);
 					mainController.getPanelOrder().getComboBoxProviderOrder()
 							.setSelectedItem(providerModel.getValueAt(providerRow, 1));
-					
+
 					mainController.getPanelOrder().getComboBoxArticleOrder().setSelectedItem(article);
 
 				} else {
-					JOptionPane.showMessageDialog(null, "Select product first");
+					JOptionPane.showInternalMessageDialog(null,
+							"Veuillez d'abord sélectionner un fournisseur et un article", "Sélection incorrecte",
+							JOptionPane.INFORMATION_MESSAGE);
 				}
 
 				textFieldCompanyNameProvider.setText("");
@@ -367,8 +390,7 @@ public class ProviderPanel extends Tab {
 //				
 			}
 		});
-		
-		
+
 		btnEditProvider.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -378,41 +400,40 @@ public class ProviderPanel extends Tab {
 				var firstName = textFieldFirstNameProvider.getText().isEmpty();
 				var phoneNumber = textFieldPhoneNumberProvider.getText().isEmpty();
 
-				if (compName == false && lastName == false && firstName == false && phoneNumber == false) {
-
-					if (!ProviderTable.getSelectionModel().isSelectionEmpty()) {
-						Provider newProvider = new Provider();
-						var adminId = Integer.parseInt(AppSettings.get("loginUser"));
-						var admin = (new AdministratorDAO()).find("idAdministrator", adminId);
-						int row = ProviderTable.getSelectedRow();
-						var providerState = "a";
-						if (comboBoxStatusProvider.getSelectedIndex() == 1) {
-							providerState = "b";
-						}
-
-						newProvider.setId((Integer) providerModel.getValueAt(row, 0));
-						newProvider.setCompanyName(textFieldCompanyNameProvider.getText());
-						newProvider.setContactLastName(textFieldLastNameProvider.getText());
-						newProvider.setContactFirstName(textFieldFirstNameProvider.getText());
-						newProvider.setProviderState(providerState);
-						newProvider.setContactPhoneNumber(textFieldPhoneNumberProvider.getText());
-						newProvider.setIdAdministrator(adminId);
-						admin.updateProvider(newProvider);
-
-						refreshTable();
-
-						textFieldCompanyNameProvider.setText("");
-						textFieldLastNameProvider.setText("");
-						textFieldFirstNameProvider.setText("");
-						comboBoxStatusProvider.setSelectedIndex(0);
-						textFieldPhoneNumberProvider.setText("");
+				if (!ProviderTable.getSelectionModel().isSelectionEmpty()) {
+					Provider newProvider = new Provider();
+					var adminId = Integer.parseInt(AppSettings.get("loginUser"));
+					var admin = (new AdministratorDAO()).find("idAdministrator", adminId);
+					int row = ProviderTable.getSelectedRow();
+					var providerState = "a";
+					if (comboBoxStatusProvider.getSelectedIndex() == 1) {
+						providerState = "b";
 					}
+
+					newProvider.setId((Integer) providerModel.getValueAt(row, 0));
+					newProvider.setCompanyName(textFieldCompanyNameProvider.getText());
+					newProvider.setContactLastName(textFieldLastNameProvider.getText());
+					newProvider.setContactFirstName(textFieldFirstNameProvider.getText());
+					newProvider.setProviderState(providerState);
+					newProvider.setContactPhoneNumber(textFieldPhoneNumberProvider.getText());
+					newProvider.setIdAdministrator(adminId);
+					admin.updateProvider(newProvider);
+
+					refreshTable();
+
+					textFieldCompanyNameProvider.setText("");
+					textFieldLastNameProvider.setText("");
+					textFieldFirstNameProvider.setText("");
+					comboBoxStatusProvider.setSelectedIndex(0);
+					textFieldPhoneNumberProvider.setText("");
 				} else {
-					JOptionPane.showMessageDialog(null, "Tous les champs ne sont pas remplis.");
+					JOptionPane.showInternalMessageDialog(null, "Veuillez d'abord sélectionner un fournisseur",
+							"Sélection incorrecte", JOptionPane.INFORMATION_MESSAGE);
 				}
+
 			}
 		});
-		
+
 		btnAddProvider.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -447,7 +468,8 @@ public class ProviderPanel extends Tab {
 					textFieldFirstNameProvider.setText("");
 					textFieldPhoneNumberProvider.setText("");
 				} else {
-					JOptionPane.showMessageDialog(null, "Tous les champs ne sont pas remplis.");
+					JOptionPane.showInternalMessageDialog(null, "Tous les champs ne sont pas remplis.", "Champs vide",
+							JOptionPane.INFORMATION_MESSAGE);
 				}
 
 			}

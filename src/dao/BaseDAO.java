@@ -12,6 +12,7 @@ import model.Administrator;
 import tools.DBConnection;
 
 /**
+ * This class contain all common queries
  * @author ahmed
  *
  */
@@ -22,17 +23,22 @@ public abstract class BaseDAO<E> {
 		return "";
 	}
 
+	/**
+	 * this function is a common function which allow to find an object 
+	 * according to the fieldName passing in parameter
+	 * @param <T> specific multiple object possible
+	 * @param fieldName the name of the attribute
+	 * @param fieldValue the value which select by
+	 * @return Object
+	 */
 	public <T> E find(String fieldName, T fieldValue) {
 		E result = null;
 
-//		System.out.println("table " + getTableName());
 		try {
 			PreparedStatement find = DBConnection.get()
 					.prepareStatement("SELECT * FROM " + getTableName() + " WHERE " + fieldName + " = ?");
 
 			find.setObject(1, fieldValue);
-//			System.out.println(fieldValue);
-//			System.out.println("ee " + fieldName);
 
 			result = getFromResultSet(find.executeQuery());
 
@@ -48,6 +54,10 @@ public abstract class BaseDAO<E> {
 		return null;
 	}
 
+	/**
+	 * find all element of the table
+	 * @return array of object
+	 */
 	public ArrayList<E> findALL() {
 		ArrayList<E> result = null;
 
@@ -62,6 +72,13 @@ public abstract class BaseDAO<E> {
 		return result;
 	}
 
+	/**
+	 * find all values by the passed parameter
+	 * @param <T> designates the type of the variable to be generic 
+	 * @param fieldName the name of the attribute
+	 * @param fieldValue the value which select by
+	 * @return array of object
+	 */
 	public <T> ArrayList<E> findALLBy(String fieldName, T fieldValue) {
 		ArrayList<E> result = null;
 
@@ -82,6 +99,13 @@ public abstract class BaseDAO<E> {
 		return result;
 	}
 
+	/**
+	 * find with the like statement
+	 * @param <T> designates the type of the variable to be generic 
+	 * @param fieldName the name of the attribute
+	 * @param fieldValue the value which select by
+	 * @return array of object
+	 */
 	public <T> ArrayList<E> findAllLike(String fieldName, T fieldValue) {
 		ArrayList<E> result = null;
 
@@ -103,6 +127,12 @@ public abstract class BaseDAO<E> {
 		return result;
 	}
 
+	/**
+	 * make array of object with query resultSet
+	 * @param rs the SQL query resultSet
+	 * @return array of object
+	 * @throws SQLException
+	 */
 	protected ArrayList<E> getAllFromResultSet(ResultSet rs) throws SQLException {
 		ArrayList<E> resultList = new ArrayList<>();
 		E result = getFromResultSet(rs);
